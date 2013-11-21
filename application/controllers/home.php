@@ -4,9 +4,16 @@
 		{
 		        parent::__construct();
 		        // Your own constructor code
+
 		}
 		public function index(){
-			$this->load->view("home");
+			$name ="Andrew";
+			$build = "huge";
+
+			$data['name'] = $name;
+			$data['build'] = $build;
+
+			$this->load->view("home",$data);
 		}
 
 	}

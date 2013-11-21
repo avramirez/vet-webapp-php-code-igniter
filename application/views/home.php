@@ -1,1 +1,1 @@
-Hello you mother fucker!
+Hello you mother fucker! <?=$name?> <?=$build?>
