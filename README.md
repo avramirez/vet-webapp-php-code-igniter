@@ -29,6 +29,8 @@ XAMPP/etc/extra/httpd-xampp.conf
 ```
 
 
+
+.htaccess file
 ```
 <IfModule mod_rewrite.c>
     RewriteEngine On
@@ -45,3 +47,8 @@ XAMPP/etc/extra/httpd-xampp.conf
     RewriteRule ^(.*)$ index.php?/$1 [L]
 </IfModule> 
 ```
+
+
+QUERY 
+
+http://ellislab.com/codeigniter/user-guide/database/results.html
