@@ -12,8 +12,9 @@
 
 			$data['name'] = $name;
 			$data['build'] = $build;
+			$data['content_body'] = $this->load->view('homepage','',true);
 
-			$this->load->view("home",$data);
+			$this->load->view("layout",$data);
 		}
 
 	}
