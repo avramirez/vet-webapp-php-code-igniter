@@ -43,4 +43,12 @@ $(document).ready(function(){
 			$('#myModal .alert').show();
 		}
 	})
+
+
+	if($('#userManageReservation').length){
+		$('.userNavbar li.navReserveManage').addClass('active');
+	}else if($('#userReserve').length){
+		$('.userNavbar li.navReserve').addClass('active');
+	}
+
 })

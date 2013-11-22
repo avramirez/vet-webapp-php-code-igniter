@@ -1,4 +1,4 @@
-        <div class="panel panel-default">
+        <div class="panel panel-default" id="userReserve">
           <!-- Default panel contents -->
           <div class="panel-heading">Services Offered</div>
           <div class="panel-body">
