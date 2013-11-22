@@ -3,7 +3,7 @@
           <li class="active"><a href="#">Reserve</a></li>
           <li><a href="#">Order</a></li>
           <li><a href="#">View Cart</a></li>
-          <li><a href="#">Manage Reservations</a></li>
+          <li><a href="<?php echo base_url(); ?>user/manageReservation">Manage Reservations</a></li>
           <li><a href="#">Edit Profile</a></li>
           <li><a href="#">Log-Out</a></li>
         </ul>
