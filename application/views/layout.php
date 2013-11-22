@@ -17,6 +17,7 @@
       }
 
     ?>
+    <link href="<?php echo base_url();?>assets/css/custom.css" rel="stylesheet">
   </head>
 
   <body>
@@ -29,10 +30,11 @@
       
       <?=$content_body?>
 
-       
+
     </div>
     <script src="<?php echo base_url();?>assets/js/jquery-1.10.2.min.js"></script>
     <script src="<?php echo base_url();?>assets/js/bootstrap.js"></script>
     <script src="<?php echo base_url();?>assets/js/holder.js"></script>
+    <script src="<?php echo base_url();?>assets/js/site.js"></script>
   </body>
 </html>
