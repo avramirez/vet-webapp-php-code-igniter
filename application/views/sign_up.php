@@ -3,7 +3,7 @@
   <div class="panel-heading"> Register</div>
   <div class="panel-body">
     <div class="col-md-12">
-    	<form role="form" action="registration/register" method="POST">
+    	<form id="userRegister" role="form" action="registration/register" method="POST">
 		  <div class="form-group">
 		    <label for="inputEmail">Email address</label>
 		    <input type="email" class="form-control" name="inputEmail" id="inputEmail" placeholder="Enter email" required>
@@ -14,7 +14,7 @@
 		  </div>
 		  <div class="form-group">
 		    <label for="inputPassword">Password</label>
-		    <input type="password" class="form-control" name="inputPassword" id="inputPassword" placeholder="Password" required>
+		    <input type="password" class="form-control" name="inputPassword" id="inputPassword" placeholder="Password" minlength="6" maxlength="50" required>
 		  </div>
 		  <div class="form-group">
 		    <label for="firstName">First Name</label>

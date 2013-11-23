@@ -49,6 +49,12 @@ $(document).ready(function(){
 		$('.userNavbar li.navReserveManage').addClass('active');
 	}else if($('#userReserve').length){
 		$('.userNavbar li.navReserve').addClass('active');
+	}else if($('#userRegister').length){
+		$('.navMainLayout li').removeClass('active');
+		$('.navMainLayout li#navUserRegister').addClass('active');
+		$("#userRegister").validate();
 	}
+
+
 
 })
