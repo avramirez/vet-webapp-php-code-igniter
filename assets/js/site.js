@@ -114,7 +114,29 @@ $(document).ready(function(){
 	}else if($('#userReserve').length){
 		$('.userNavbar li.navReserve').addClass('active');
 	}else if($('#sigInPage').length){
+
 	$('.navMainLayout li#navSignin').addClass('active');
+		$(".form-signin").validate({
+			submitHandler:function(form){
+				$.ajax({  
+				  type: "POST",  
+				  url: $("form").attr("action"),  
+				  data: $("form").serialize(),  
+				  success: function(data,status,jqXHR) {  
+					location.reload();
+				  },
+				  error:function(data,status,jqXHR){
+				  	
+				  },
+				  statusCode:{
+				  	401:function(){
+				  		$(".alert-danger").show();
+				  	}
+				  }
+				}); 
+			}
+		});
+
 	}else if($('#homepage').length){
 		$('.navMainLayout li#navHome').addClass('active');
 	}else if($('#userRegister').length){

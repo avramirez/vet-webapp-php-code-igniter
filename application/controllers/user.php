@@ -44,9 +44,9 @@
 
 			  $this->session->set_userdata('user_objectId',''.$row->objectId.'');
 
-			  redirect("user");
+			  set_status_header((int)200);
 			}else{
-				 $this->output->append_output("Wrong Username or Password");
+				set_status_header((int)401);
 			}
 		}
 
