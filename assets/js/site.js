@@ -112,13 +112,17 @@ $(document).ready(function(){
 		}
 
 	}else if($('#userReserve').length){
-		console.log("boom");
 		$('.userNavbar li.navReserve').addClass('active');
+	}else if($('#sigInPage').length){
+	$('.navMainLayout li#navSignin').addClass('active');
+	}else if($('#homepage').length){
+		$('.navMainLayout li#navHome').addClass('active');
 	}else if($('#userRegister').length){
-		$('.navMainLayout li').removeClass('active');
 		$('.navMainLayout li#navUserRegister').addClass('active');
 		$("#userRegister").validate();
-	}
+	}else if ($('#orderPage').length) {
+		$('.userNavbar li.navOrder').addClass('active');
+	};
 
 	function reloadUserManageReservationTable(){
 		$.ajax({

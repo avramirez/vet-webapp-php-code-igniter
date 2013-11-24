@@ -1,4 +1,4 @@
-        <div class="panel panel-default" id="userManageReservation">
+        <div class="panel panel-default" id="orderPage">
           <!-- Default panel contents -->
           <div class="panel-heading">List of Products</div>
           <div class="panel-body">
