@@ -119,7 +119,28 @@ $(document).ready(function(){
 		$('.navMainLayout li#navHome').addClass('active');
 	}else if($('#userRegister').length){
 		$('.navMainLayout li#navUserRegister').addClass('active');
-		$("#userRegister").validate();
+
+		$("#userRegister").validate({
+			submitHandler:function(form){
+				$.ajax({  
+				  type: "POST",  
+				  url: $("form").attr("action"),  
+				  data: $("form").serialize(),  
+				  success: function(data,status,jqXHR) {  
+				  	$("form").hide();
+				  	$(".alert-success").show();
+				  },
+				  error:function(data,status,jqXHR){
+				  	
+				  },
+				  statusCode:{
+				  	400:function(){
+				  		console.log("nooo");
+				  	}
+				  }
+				}); 
+			}
+		});
 	}else if ($('#orderPage').length) {
 		$('.userNavbar li.navOrder').addClass('active');
 	};

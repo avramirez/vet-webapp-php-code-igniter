@@ -31,12 +31,12 @@
 
 				if ($this->db->affected_rows() > 0)
 				{
-					redirect("registration");
+					set_status_header((int)200);
 				}else{
-					redirect("registration");
+					set_status_header((int)400);
 				}
 			}else{
-					redirect("registration");
+					set_status_header((int)400);
 			}
 		}
 	}

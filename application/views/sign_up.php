@@ -3,6 +3,7 @@
   <div class="panel-heading"> Register</div>
   <div class="panel-body">
     <div class="col-md-12">
+    	<div class="alert alert-success" style="display:none;">Registration Successful!</div>
     	<form id="userRegister" role="form" action="registration/register" method="POST">
 		  <div class="form-group">
 		    <label for="inputEmail">Email address</label>
