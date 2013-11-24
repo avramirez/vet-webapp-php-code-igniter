@@ -173,6 +173,34 @@
 
 		}
 
+
+		public function viewCart(){
+			if($this->session->userdata('user_objectId')){
+				
+				$userId = $this->session->userdata('user_objectId');
+
+				$query = $this->db->query("SELECT uo.objectId as orderObjectid, prod.objectId as productObjectId, uo.productAmount, uo.totalPrice
+				 from vet_app.users_order uo 
+				 INNER JOIN  vet_app.products prod ON uo.productId = prod.objectId 
+				 WHERE ur.userId='".$userId."' 
+				 LIMIT 0 , 2000;");	
+	
+				$data['stylesheets'] =array('jumbotron-narrow.css');
+				$data['show_navbar'] ="true";
+				$data['content_navbar'] = $this->load->view('user_navbar','',true);
+
+				$servicesData['list_of_poducts'] = $query->result_array();
+
+				$data['content_body'] = $this->load->view('user_order',$servicesData,true);
+				
+
+				$this->load->view("layout",$data);
+			}else{
+				redirect("/");
+			}
+
+		}
+
 		public function logout(){
 			$this->session->sess_destroy();
 			redirect("/");
