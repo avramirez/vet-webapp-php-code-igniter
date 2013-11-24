@@ -32,6 +32,7 @@ $(document).ready(function(){
 				url:"user/addReservation",
 				success:function(data,status,jqXHR){
 					$('#myModal').modal('hide');
+					$('.addSuccess').show();
 				}
 
 			})
@@ -70,9 +71,7 @@ $(document).ready(function(){
 					success:function(data,status,jqXHR){
 						$('#editReserveModal').modal('hide');
 					}
-
 				})
-				$('#editReserveModal .alert').hide();
 			}else{
 				$('#editReserveModal .alert').show();
 			}
