@@ -1,3 +1,7 @@
+        <div class="alert alert-success orderSuccess" style="display:none;">
+                  <button type="button" class="close" data-hide="alert" aria-hidden="true">&times;</button>
+                  <strong><strong>
+        </div>
         <div class="panel panel-default" id="orderPage">
           <!-- Default panel contents -->
           <div class="panel-heading">List of Products</div>
@@ -30,9 +34,10 @@
                 echo "<td class='vert productName'>".$row['product_name']."</td>";
                 echo "<td class='vert productType'>".$row['product_type']."</td>";
                 echo "<td class='vert productQuantity rightalignPadding'>".$row['product_quantity']."</td>";
-                echo "<td class='vert productPrice rightalignPadding'>&#8369; ".$row['product_price']."</td>";
-                echo '<td class="vert orderQuantity"><input type="text" class="form-control" name="orderQuantity" style="text-align:right;"></td>';
-                echo "<td class='vert'><button type='button' data-objectId='".$row['objectId']."' class='btn btn-primary btn-sm editReservation pull-left'>Add to Cart</button>";
+                echo "<td class='vert productPrice rightalignPadding'>&#8369; <span>".$row['product_price']."</span></td>";
+                echo '<td class="vert orderQuantity"><input type="number" min="1" value="1" class="form-control" name="orederQuantity" style="text-align:right;"></td>';
+                echo "<td class='vert'>";
+                echo "<button type='button' data-objectId='".$row['objectId']."' class='btn btn-primary btn-sm addToCart pull-left'>Add to Cart</button>";
                 echo "</td>";
                 echo "</tr>";
                 }
@@ -41,30 +46,7 @@
           </table>
         </div>
 
-        <!-- Modal -->
-        <div class="modal fade" id="editReserveModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-              </div>
 
-              <div class="modal-body clearfix">
-                <div class="alert alert-info alert-dismissable" style="display:none;">
-                  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                  <strong>Warning!</strong> Fill up all the fields.
-                </div>
-                
-                
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary updateReservation">Update Reservation</button>
-              </div>
-            </div><!-- /.modal-content -->
-          </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
 
         <!-- Modal -->
         <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -72,17 +54,38 @@
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">&nbsp;</h4>
+                <h4 class="modal-title" id="myModalLabel">Confirm Order</h4>
               </div>
-
+              
               <div class="modal-body clearfix">
-
-                <h5 class="message"></h4>
-                
+                <h3 class="orderTitle"></h3>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h3 class="panel-title">Item order details</h3>
+                    </div>
+                    <div class="panel-body">
+                      <p class="detailProductName"></p>
+                      <p class="detailProductType">Type : <span class="pull-right"></span></p>
+                      <p class="detailProductAmount">Order Quantity : <span class="pull-right"></span></p>
+                      <input type="hidden" name="detailProductAmount" value=""/>
+                      <p class="detailPrice">Price :  
+                        <span class="pull-right value"></span>
+                        <span class="pull-right">&#8369</span>
+                      </p>
+                      <hr />
+                      <p class="detailTotalPrice">
+                        Total Price :
+                        <span class="pull-right value"></span>
+                        <span class="pull-right">&#8369</span>
+                      </p>
+                      <input type="hidden" name="detailTotalPrice" value=""/>
+                    </div>
+                </div>
               </div>
+
               <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary confirmAction">Yes</button>
+                <button type="button" class="btn btn-primary confirmAction" data-confirm="confirmAddOrder">Yes</button>
               </div>
             </div><!-- /.modal-content -->
           </div><!-- /.modal-dialog -->

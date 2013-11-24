@@ -116,10 +116,9 @@
               </div>
 
               <div class="modal-body clearfix">
-
-                <h5 class="message">Are you sure you want to delete this item?</h4>
-                
+                <h5 class="message">Are you sure you want to delete this item?</h5>
               </div>
+
               <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 <button type="button" class="btn btn-primary confirmAction">Yes</button>

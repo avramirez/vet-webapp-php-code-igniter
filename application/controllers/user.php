@@ -149,6 +149,30 @@
 
 		}
 
+		public function addOrder(){
+			if($this->session->userdata('user_objectId')){
+				
+				$userId = $this->session->userdata('user_objectId');
+				$productId=$this->input->post('productId');
+				$productAmount=$this->input->post('productAmount');
+				$totalPrice=$this->input->post('totalPrice');
+
+				$query = $this->db->query("INSERT INTO `vet_app`.`users_order` VALUES (NULL,'".$productId."','".$userId."','".$productAmount."','".$totalPrice."');");
+				$updateProduct = $this->db->simple_query("UPDATE vet_app.products set product_quantity = (CASE WHEN ((product_quantity - ".$productAmount.") < 0) THEN 0 ELSE (product_quantity - ".$productAmount.") END) WHERE objectId='".$productId."';");
+
+				if ($this->db->affected_rows() > 0 && updateProduct)
+				{
+					set_status_header((int)200); 
+				}else{
+					set_status_header((int)500); 
+				}
+				
+			}else{
+				redirect("/");
+			}
+
+		}
+
 		public function logout(){
 			$this->session->sess_destroy();
 			redirect("/");

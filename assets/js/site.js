@@ -46,6 +46,7 @@ $(document).ready(function(){
 	if($('#userManageReservation').length){
 
 		$('.userNavbar li.navReserveManage').addClass('active');
+
 		$("body").on("click",".editReservation",function(e){
 			$("#editReserveModal #myModalLabel").text($(this).parent().parent().children('.serviceTitle').text());
 			$("#editReserveModal .reserveDate").text($(this).parent().parent().children('.serviceDate').text());
@@ -53,6 +54,7 @@ $(document).ready(function(){
 			$(".updateReservation").attr("data-objectId",$(this).attr("data-objectId"));
 			$("#editReserveModal").modal();
 		})
+
 		$('#editReserveModal').on('hidden.bs.modal', function () {
 	  		resetReservationModal("#editReserveModal");
 		})
@@ -95,7 +97,6 @@ $(document).ready(function(){
 		})
 
 		function deleteUserReserVation(){
-
 			$.ajax({
 					method:"POST",
 					async:true,
@@ -116,7 +117,8 @@ $(document).ready(function(){
 		$('.userNavbar li.navReserve').addClass('active');
 	}else if($('#sigInPage').length){
 
-	$('.navMainLayout li#navSignin').addClass('active');
+		$('.navMainLayout li#navSignin').addClass('active');
+
 		$(".form-signin").validate({
 			submitHandler:function(form){
 				$.ajax({  
@@ -141,6 +143,7 @@ $(document).ready(function(){
 	}else if($('#homepage').length){
 		$('.navMainLayout li#navHome').addClass('active');
 	}else if($('#userRegister').length){
+
 		$('.navMainLayout li#navUserRegister').addClass('active');
 
 		$("#userRegister").validate({
@@ -164,11 +167,64 @@ $(document).ready(function(){
 				}); 
 			}
 		});
+
 	}else if ($('#orderPage').length) {
+
 		$('.userNavbar li.navOrder').addClass('active');
+
+		$('body').on('click','.addToCart',function(e){
+			$orderRow = $(this).parent().parent();
+			$orderQuantityInput = $orderRow.children(".orderQuantity").children("input");
+
+			if($orderQuantityInput.val() == ""){
+				
+			}else{
+				$('.detailProductName').text($orderRow.children('.productName').text());
+				$('.detailProductType span').text($orderRow.children('.productType').text());
+				$('.detailProductAmount span').text($orderQuantityInput.val());
+				$("#confirmationModal input[name='detailProductAmount']").val($('.detailProductAmount span').text());
+				$('.detailPrice span.value').text($orderRow.children('.productPrice').children("span").text());
+				$('.detailTotalPrice span.value').text(parseFloat($orderRow.children('.productPrice').children("span").text()) * parseFloat($orderQuantityInput.val()));
+				$("#confirmationModal input[name='detailTotalPrice']").val($('.detailTotalPrice span.value').text());
+				$('#confirmationModal').modal();
+				$('.confirmAction').attr('data-objectId',$(this).attr('data-objectId'));
+			}
+
+		})
+
+		$("body").on("click","#confirmationModal .confirmAction",function(e){
+			var $this = $(this);
+			if($this.attr("data-confirm")=="confirmAddOrder"){
+				$.ajax({
+					type:"POST",
+					async:true,
+					data:{
+						'productId':$("#confirmationModal .confirmAction").attr("data-objectId"),
+						'productAmount':$("input[name='detailProductAmount']").val(),
+						'totalPrice':$("input[name='detailTotalPrice']").val()
+					},
+					url:'addOrder',
+					success:function(data,status,jqXHR){
+						$('.orderSuccess strong').text("Added order successfuly! You may view it in view cart page.")
+						$('.orderSuccess').show();
+						$('#confirmationModal').modal('hide');
+						$.ajax({
+							url:document.URL,
+							success:function(data){
+								$("#orderPage").html($(data).find("#orderPage").html());
+							}
+						})
+					}
+				})
+			}	
+		})		
+
 	};
 
-
+	// $('body').on('focus','.inputError.error',function(){
+	// 	$(this).val("");
+	// 	$(this).removeClass("inputError error");
+	// })
 
 	function reloadUserManageReservationTable(){
 		$.ajax({
