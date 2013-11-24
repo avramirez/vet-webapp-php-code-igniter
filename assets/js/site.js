@@ -70,6 +70,7 @@ $(document).ready(function(){
 					url:"updateReservation",
 					success:function(data,status,jqXHR){
 						$('#editReserveModal').modal('hide');
+						reloadUserManageReservationTable();
 					}
 				})
 			}else{
@@ -105,7 +106,8 @@ $(document).ready(function(){
 					success:function(data,status,jqXHR){
 						reloadUserManageReservationTable();
 						$('#confirmationModal').modal('hide');
-
+						$(".reservationAlert strong").text("Delete Success!");
+						$(".reservationAlert").show();
 					}
 				})				
 		}
@@ -166,13 +168,14 @@ $(document).ready(function(){
 		$('.userNavbar li.navOrder').addClass('active');
 	};
 
+
+
 	function reloadUserManageReservationTable(){
 		$.ajax({
 			url:'manageReservation',
 			success:function(data){
+				console.log("updatee");
 				$("#userManageReservation").html($(data).find("#userManageReservation").html());
-				console.log("HEre");
-				console.log($(data).find("#userManageReservation").html());
 			}
 		})
 	}
@@ -184,4 +187,10 @@ $(document).ready(function(){
   		$(''+modalName+' .alert').hide();
 	}
 
+
+	//FIX FOR BS3 Alert dismissable
+	$("body").on("click",".alert .close",function(e){
+		$(this).closest("." + $(this).attr("data-hide")).hide();	
+	})
+	
 })

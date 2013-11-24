@@ -1,3 +1,7 @@
+        <div class="alert alert-success alert-dismissable reservationAlert" style="display:none;">
+                  <button type="button" class="close" data-hide="alert" aria-hidden="true">&times;</button>
+                  <strong><strong>
+        </div>
         <div class="panel panel-default" id="userManageReservation">
           <!-- Default panel contents -->
           <div class="panel-heading">List of Reservations</div>
@@ -50,7 +54,7 @@
 
               <div class="modal-body clearfix">
                 <div class="alert alert-info alert-dismissable" style="display:none;">
-                  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                  <button type="button" class="close" data-hide="alert" aria-hidden="true">&times;</button>
                   <strong>Warning!</strong> Fill up all the fields.
                 </div>
                 <div class="col-md-6">
