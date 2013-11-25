@@ -37,14 +37,20 @@
 			$password = $this->input->post("userPassword");
 			$password =  $hash = $this->encrypt->sha1($password);
 
-			$query = $this->db->query("SELECT objectId from users where password='".$password."' AND email='".$email."';");
+			$query = $this->db->query("SELECT objectId,user_level from users where password='".$password."' AND email='".$email."';");
 			if ($query->num_rows() > 0)
 			{
-				 $row = $query->row();
+				$row = $query->row();
+				
 
-			  $this->session->set_userdata('user_objectId',''.$row->objectId.'');
-
-			  set_status_header((int)200);
+				if($row->user_level == 1){
+					$this->session->set_userdata('user_objectId',''.$row->objectId.'');	
+				}else if($row->user_level == 2){
+					$this->session->set_userdata('admin_objectId',''.$row->objectId.'');	
+				}
+				
+			  	
+			  	set_status_header((int)200);
 			}else{
 				set_status_header((int)401);
 			}
@@ -205,7 +211,7 @@
 				$orderObjectid =$this->input->post("orderObjectId");
 				$incremental=$this->input->post("incremental");
 				$productId=$this->input->post("productId");
-				
+
 				$query = $this->db->query("DELETE FROM vet_app.users_order WHERE users_order.objectId = ".$orderObjectid.";");
 				$updateProduct = $this->db->simple_query("UPDATE vet_app.products set 
 					product_quantity = (product_quantity + ".$incremental.") 

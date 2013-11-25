@@ -10,6 +10,8 @@
 		public function index(){
 			if($this->session->userdata('user_objectId')){
 				redirect("/user");
+			}else if($this->session->userdata('admin_objectId')){
+				$this->output->append_output('dasdasd');
 			}else{
 				// $data['stylesheets'] =array('0'=>'signin.css');
 				// $data['show_navbar'] ="true";

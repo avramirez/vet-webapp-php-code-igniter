@@ -126,6 +126,7 @@ $(document).ready(function(){
 				  url: $("form").attr("action"),  
 				  data: $("form").serialize(),  
 				  success: function(data,status,jqXHR) {  
+				  	console.log(data);
 					location.reload();
 				  },
 				  error:function(data,status,jqXHR){
