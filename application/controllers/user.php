@@ -173,6 +173,53 @@
 
 		}
 
+		public function updateOrder(){
+			if($this->session->userdata('user_objectId')){
+				$orderObjectId= $this->input->post("orderObjectId");
+				$newAmount= $this->input->post("newAmount");
+				$newTotalPrice =$this->input->post("newTotalPrice");
+				$incremental=$this->input->post("incremental");
+				$productId=$this->input->post("productId");
+				$userId = $this->session->userdata('user_objectId');
+	
+				$query = $this->db->query("UPDATE  vet_app.users_order SET  productAmount= '".$newAmount."',totalPrice='".$newTotalPrice."' WHERE users_order.objectId =".$orderObjectId.";");
+				$updateProduct = $this->db->simple_query("UPDATE vet_app.products set 
+					product_quantity = (product_quantity + ".$incremental.") 
+					WHERE objectId='".$productId."';");
+
+
+
+				if ($this->db->affected_rows() > 0)
+				{
+					set_status_header((int)200); 
+				}else{
+					set_status_header((int)500); 
+				}
+			}
+			 
+		}
+
+		public function deleteUserOrder(){
+			if($this->session->userdata('user_objectId')){
+
+				$orderObjectid =$this->input->post("orderObjectId");
+				$incremental=$this->input->post("incremental");
+				$productId=$this->input->post("productId");
+				
+				$query = $this->db->query("DELETE FROM vet_app.users_order WHERE users_order.objectId = ".$orderObjectid.";");
+				$updateProduct = $this->db->simple_query("UPDATE vet_app.products set 
+					product_quantity = (product_quantity + ".$incremental.") 
+					WHERE objectId='".$productId."';");
+
+				if ($this->db->affected_rows() > 0)
+				{
+					set_status_header((int)200); 
+				}else{
+					set_status_header((int)500); 
+				}
+			}
+			 
+		}
 
 		public function viewCart(){
 			if($this->session->userdata('user_objectId')){

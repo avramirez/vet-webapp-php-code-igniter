@@ -219,7 +219,110 @@ $(document).ready(function(){
 			}	
 		})		
 
-	};
+	}else if($('#viewCartPage').length){
+		$('body').on('click','.editOrder',function(){
+			$orderRow = $(this).parent().parent();
+			$orderQuantityInput = $orderRow.children(".orderAmount").text();
+		
+			$("#confirmationModal .detailProductName").text($orderRow.children(".productName").text());
+			$("#confirmationModal .detailProductAmount input").val($orderRow.children(".orderAmount").text());
+			$("#confirmationModal .detailPrice .value").text($orderRow.children(".productPrice").children("span").text());
+			$("#confirmationModal .detailTotalPrice .value").text($orderRow.children(".productTotal").children("span").text());
+			$("#confirmationModal input[name='detailTotalPrice']").val($orderRow.children(".productTotal").children("span").text());
+			$("#confirmationModal input[name='oldValueAmount']").val($("#confirmationModal .detailProductAmount input").val());
+
+
+
+			$("#confirmationModal #myModalLabel").text("Edit Order");
+			$("#confirmationModal").modal();
+
+			$("#confirmationModal .confirmAction").attr("data-confirm","confirmUpdate");
+			$("#confirmationModal .confirmAction").text("Update");
+			$("#confirmationModal .confirmAction").attr("data-objectId",$(this).attr("data-objectId"));
+			$("#confirmationModal .confirmAction").attr("data-productId",$(this).attr("data-productId"));
+			$("#confirmationModal .editOrderBody").show();
+
+		})
+
+		$('body').on('change','#confirmationModal .detailProductAmount input',function(){
+			$("#confirmationModal .detailTotalPrice .value").text(parseFloat($("#confirmationModal .detailProductAmount input").val()) * parseFloat($("#confirmationModal .detailPrice .value").text()));
+			$("#confirmationModal input[name='detailTotalPrice']").val($("#confirmationModal .detailTotalPrice .value").text());
+		})
+		
+
+		$('body').on('click','.removeFromCart',function(){
+			$orderRow = $(this).parent().parent();
+			$("#confirmationModal #myModalLabel").text("Confirm Remove");
+			$("#confirmationModal").modal();
+			$("#confirmationModal .detailProductAmount input").val($orderRow.children(".orderAmount").text());
+			$("#confirmationModal .removeFromCartBody h4").text("Are you sure you want to delete this order?");
+
+			$("#confirmationModal .removeFromCartBody").show();
+
+			$("#confirmationModal .confirmAction").attr("data-objectId",$(this).attr("data-objectId"));
+			$("#confirmationModal .confirmAction").attr("data-productId",$(this).attr("data-productId"));
+			$("#confirmationModal .confirmAction").attr("data-confirm","confirmDeleteOrder");
+			$("#confirmationModal .confirmAction").text("Yes");
+		})
+
+		$('#confirmationModal').on('hidden.bs.modal', function () {
+  			$("#confirmationModal .removeFromCartBody").hide();
+  			$("#confirmationModal .editOrderBody").hide();
+		})
+
+		$('body').on('click','.confirmAction',function(){
+
+			var $this = $(this);
+			if($this.attr("data-confirm") =="confirmUpdate"){
+				$.ajax({
+					type:"POST",
+					async:true,
+					url:'updateOrder',
+					data:{
+						'orderObjectId':$this.attr("data-objectId"),
+						'newAmount':$("#confirmationModal .detailProductAmount input").val(),
+						'newTotalPrice':$("#confirmationModal input[name='detailTotalPrice']").val(),
+						'productId':$this.attr("data-productId"),
+						'incremental':parseFloat($("#confirmationModal input[name='oldValueAmount']").val()) -parseFloat($("#confirmationModal .detailProductAmount input").val())
+					},
+					success:function(data,status,jqXHR){
+						$('.cartSuccess strong').text("Update successful!");
+						$('.cartSuccess').show();
+						$.ajax({
+							url:document.URL,
+							success:function(data){
+								$("#viewCartPage").html($(data).find("#viewCartPage").html());
+								$("#confirmationModal").modal('hide');
+							}
+						})
+					}
+				})
+
+			}else if($this.attr("data-confirm") =="confirmDeleteOrder"){
+				$.ajax({
+					type:"POST",
+					async:true,
+					url:'deleteUserOrder',
+					data:{
+						'orderObjectId':$this.attr("data-objectId"),
+						'incremental':$("#confirmationModal .detailProductAmount input").val(),
+						'productId':$this.attr("data-productId")
+					},
+					success:function(data,status,jqXHR){
+						$('.cartSuccess strong').text("Delete successful!");
+						$('.cartSuccess').show();
+						$.ajax({
+							url:document.URL,
+							success:function(data){
+								$("#viewCartPage").html($(data).find("#viewCartPage").html());
+								$("#confirmationModal").modal('hide');
+							}
+						})
+					}
+				});
+			}
+		})
+	}
 
 	// $('body').on('focus','.inputError.error',function(){
 	// 	$(this).val("");
