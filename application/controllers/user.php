@@ -179,19 +179,19 @@
 				
 				$userId = $this->session->userdata('user_objectId');
 
-				$query = $this->db->query("SELECT uo.objectId as orderObjectid, prod.objectId as productObjectId, uo.productAmount, uo.totalPrice
+				$query = $this->db->query("SELECT uo.objectId as orderObjectid, prod.objectId as productObjectId, uo.productAmount, uo.totalPrice, prod.product_name,prod.product_price
 				 from vet_app.users_order uo 
 				 INNER JOIN  vet_app.products prod ON uo.productId = prod.objectId 
-				 WHERE ur.userId='".$userId."' 
+				 WHERE uo.usersId='".$userId."' 
 				 LIMIT 0 , 2000;");	
 	
 				$data['stylesheets'] =array('jumbotron-narrow.css');
 				$data['show_navbar'] ="true";
 				$data['content_navbar'] = $this->load->view('user_navbar','',true);
 
-				$servicesData['list_of_poducts'] = $query->result_array();
+				$servicesData['list_of_orders'] = $query->result_array();
 
-				$data['content_body'] = $this->load->view('user_order',$servicesData,true);
+				$data['content_body'] = $this->load->view('user_viewcart',$servicesData,true);
 				
 
 				$this->load->view("layout",$data);
