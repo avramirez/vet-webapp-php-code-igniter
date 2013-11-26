@@ -7,12 +7,12 @@
           <div class="panel-heading">List of Users</div>
           <div class="panel-body">
             <p>Here you can manage your users, who registered to your website.</p>
-            <div class="panel panel-default">
+            <div class="panel panel-default panelAddEditUser">
                     <div class="panel-heading">
                       <h3 class="panel-title">Add a User</h3>
                     </div>
                     <div class="panel-body">
-                      <form action="admin/addUser" method="POST" id="addUserAdmin">
+                      <form action="admin/addUser" method="POST" id="addUserAdmin" name="adduseradmin">
                         <table class="table table-hover">
                           <thead>
                             <tr>
@@ -42,7 +42,38 @@
                             </tr>
                           </tbody>
                         </table>
-                         <button type="submit" class="btn btn-success pull-right">Add User</button>
+                         <button type="submit" name="adduserbtn" class="btn btn-success pull-right">Add User</button>
+                      </form>
+                      <form action="admin/updateUser" method="POST" id="updateUser" name="updateuseradmin" style="display:none;">
+                        <table class="table table-hover">
+                          <thead>
+                            <tr>
+                              <th style="width:200px;">Email</th>
+                              <th>Username</th>
+                              <th style="">First Name</th>
+                              <th style="">Last Name</th>
+                              <th style="">User Level</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td><input type="email" class="form-control" name="inputEmailUpdate" id="inputEmail" placeholder="Enter email" required></td>
+                              <td><input type="text" class="form-control" name="usernameUpdate" id="username" placeholder="Username" required></td>
+                              <td><input type="text" class="form-control" name="firstNameUpdate" id="firstName" placeholder="First Name" required></td>
+                              <td><input type="text" class="form-control" name="lastNameUpdate" id="lastName" placeholder="Last Name" required></td>
+                              <td>
+                                <select class="form-control" name="userLevelUpdate">
+                                  <option value=1>User</option>
+                                  <option value=3>Admin - User</option>
+                                  <option value=4>Admin - Resertvation</option>
+                                  <option value=2>Super Admin</option>
+                                </select>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                         <button type="button" data-objectid="1" name="backtoadd" class="btn btn-success backToAddUser pull-right">Back to Add User</button>
+                         <button type="submit" class="btn btn-primary pull-right" name="updateuserbtn" style="margin-right:10px;">Save Changes</button>
                       </form>
                     </div>
               </div>
@@ -73,11 +104,11 @@
               foreach ($users as $row){
 
                 echo "<tr>";
-                echo "<td class='vert productName'>".$row['email']."</td>";
-                echo "<td class='vert productType'>".$row['username']."</td>";
-                echo "<td class='vert productType'>".$row['first_name']."</td>";
-                echo "<td class='vert productType'>".$row['last_name']."</td>";
-                echo "<td class='vert productType'>";
+                echo "<td class='vert userEmail'>".$row['email']."</td>";
+                echo "<td class='vert userUsername'>".$row['username']."</td>";
+                echo "<td class='vert userFirstName'>".$row['first_name']."</td>";
+                echo "<td class='vert userLastName'>".$row['last_name']."</td>";
+                echo "<td class='vert userUserLevel'>";
                   if($row['user_level'] == 1){
                     echo "<span data-userlevel=".$row['user_level'].">User</span>";
                   }else if($row['user_level'] == 2){

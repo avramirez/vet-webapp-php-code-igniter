@@ -221,8 +221,18 @@ $(document).ready(function(){
 		})		
 
 	}else if ($("#adminAddUser").length) {
-		$('body').on('click','.editUserFromAdmin',function(){
-			console.log("tae");
+		$('body').on('click','.editUserFromAdmin',function(e){
+			var $row = $(this).closest("tr");
+			
+			$("#addUserAdmin").hide();
+			$("#updateUser").show();
+			$(".panelAddEditUser > .panel-heading .panel-title").text("Update User");
+		});
+		$('body').on('click','.backToAddUser',function(e){
+			$("#updateUser").hide();
+			$("#addUserAdmin").show();
+			$(".panelAddEditUser > .panel-heading .panel-title").text("Add a User");
+			
 		});
 
 		$("#addUserAdmin").validate({
