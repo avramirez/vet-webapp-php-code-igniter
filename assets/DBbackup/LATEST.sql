@@ -83,8 +83,9 @@ CREATE TABLE `users` (
   `first_name` varchar(40) NOT NULL,
   `last_name` varchar(40) NOT NULL,
   `email` varchar(40) NOT NULL,
+  `user_level` int(11) DEFAULT NULL,
   PRIMARY KEY (`objectId`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -93,7 +94,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'asd','ds','asd','ad','dsada'),(2,'sdsadsa','da39a3ee5e6b4b0d3255bfef95601890afd80709','ssss','sadsad','sda'),(3,'sdsadsa','da39a3ee5e6b4b0d3255bfef95601890afd80709','ssss','sadsad','sda'),(4,'sdsadsa','da39a3ee5e6b4b0d3255bfef95601890afd80709','ssss','sadsad','sda'),(5,'sdsadsa','f7c3bc1d808e04732adf679965ccc34ca7ae3441','ssss','sadsad','sda'),(6,'aj_chichi','7c4a8d09ca3762af61e59520943dc26494f8941b','Andrew','Ramirez','aj_chichi@yahoo.com'),(10,'avramirez','7c4a8d09ca3762af61e59520943dc26494f8941b','av','ramirez','avramirez@dynamicobjx.com'),(11,'testing','dc724af18fbdd4e59189f5fe768a5f8311527050','test','tis','testing@yahoo.com'),(12,'sad','a6c78cad8916fbc6e07cbcfd3c601d446798becd','sad','dsa','sda@yah.com'),(13,'sdasda','f2f26783d8d487ef785cbe74ba35843a33affbbb','asdas','asdasd','dasdsa@yahoo.com'),(14,'sadada','00ea1da4192a2030f9ae023de3b3143ed647bbab','asdasd','asdasd','asdas@yahoo.com'),(15,'asdasd','d5644e8105ad77c3c3324ba693e83d8fffd54950','asdasdsa','sadasd','dsadasd@yahoo.com'),(16,'asdasd','b3be08ea24c5c3d983d1fbabfc694a8b7301c939','asdasd','asdasd','sdsad@yahoo.com'),(17,'sadas','b263a7df8ed761390d22ac0864db693d109f9d1a','asdasd','sdasd','asdasd@yahoo.com');
+INSERT INTO `users` VALUES (1,'asd','ds','asd','ad','dsada',1),(2,'sdsadsa','da39a3ee5e6b4b0d3255bfef95601890afd80709','ssss','sadsad','sda',1),(3,'sdsadsa','da39a3ee5e6b4b0d3255bfef95601890afd80709','ssss','sadsad','sda',1),(4,'sdsadsa','da39a3ee5e6b4b0d3255bfef95601890afd80709','ssss','sadsad','sda',1),(5,'sdsadsa','f7c3bc1d808e04732adf679965ccc34ca7ae3441','ssss','sadsad','sda',1),(6,'aj_chichi','7c4a8d09ca3762af61e59520943dc26494f8941b','Andrew','Ramirez','aj_chichi@yahoo.com',1),(10,'avramirez','7c4a8d09ca3762af61e59520943dc26494f8941b','av','ramirez','avramirez@dynamicobjx.com',1),(11,'testing','dc724af18fbdd4e59189f5fe768a5f8311527050','test','tis','testing@yahoo.com',1),(12,'sad','a6c78cad8916fbc6e07cbcfd3c601d446798becd','sad','dsa','sda@yah.com',1),(13,'sdasda','f2f26783d8d487ef785cbe74ba35843a33affbbb','asdas','asdasd','dasdsa@yahoo.com',1),(14,'sadada','00ea1da4192a2030f9ae023de3b3143ed647bbab','asdasd','asdasd','asdas@yahoo.com',1),(15,'asdasd','d5644e8105ad77c3c3324ba693e83d8fffd54950','asdasdsa','sadasd','dsadasd@yahoo.com',1),(16,'asdasd','b3be08ea24c5c3d983d1fbabfc694a8b7301c939','asdasd','asdasd','sdsad@yahoo.com',1),(17,'sadas','b263a7df8ed761390d22ac0864db693d109f9d1a','asdasd','sdasd','asdasd@yahoo.com',1),(18,'admin','7c4a8d09ca3762af61e59520943dc26494f8941b','admin','admin','admin1@admin.com',2),(19,'tresting','7c4a8d09ca3762af61e59520943dc26494f8941b','terst','ting','tresting@yahoo.com',3),(20,'eliboy','7c4a8d09ca3762af61e59520943dc26494f8941b','eli','zer','ellizer@yahoo.com',2),(21,'mariaozawa','7c4a8d09ca3762af61e59520943dc26494f8941b','maria','ozawaw','mariaozawa@yahoo.com',1);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -113,9 +114,9 @@ CREATE TABLE `users_order` (
   PRIMARY KEY (`objectId`),
   KEY `productId` (`productId`),
   KEY `usersId` (`usersId`),
-  CONSTRAINT `users_order_ibfk_2` FOREIGN KEY (`usersId`) REFERENCES `users` (`objectId`),
-  CONSTRAINT `users_order_ibfk_1` FOREIGN KEY (`productId`) REFERENCES `products` (`objectId`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+  CONSTRAINT `users_order_ibfk_1` FOREIGN KEY (`productId`) REFERENCES `products` (`objectId`),
+  CONSTRAINT `users_order_ibfk_2` FOREIGN KEY (`usersId`) REFERENCES `users` (`objectId`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -168,4 +169,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-11-25 11:41:08
+-- Dump completed on 2013-11-26 10:09:31
