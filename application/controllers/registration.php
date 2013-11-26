@@ -17,8 +17,6 @@
 		public function register(){
 
 			$this->load->library('encrypt');
-			
-			
 			$inputEmail = $this->input->post("inputEmail");
 			$inputPassword = $this->input->post("inputPassword");
 			$inputPassword = $hash = $this->encrypt->sha1($inputPassword);

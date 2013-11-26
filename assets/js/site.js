@@ -220,6 +220,38 @@ $(document).ready(function(){
 			}	
 		})		
 
+	}else if ($("#adminAddUser").length) {
+		$('body').on('click','.editUserFromAdmin',function(){
+			console.log("tae");
+		});
+
+		$("#addUserAdmin").validate({
+			submitHandler:function(form){
+				$.ajax({  
+				  type: "POST",  
+				  url: $("form").attr("action"),  
+				  data: $("form").serialize(),  
+				  success: function(data,status,jqXHR) {  
+				  	$(".addUserSuccess strong").text("Successfuly added a user!")
+				  	$(".addUserSuccess").show();
+				  	$.ajax({
+							url:document.URL,
+							success:function(data){
+								$("#adminAddUser").html($(data).find("#adminAddUser").html());
+							}
+					})
+				  },
+				  error:function(data,status,jqXHR){
+				  	
+				  },
+				  statusCode:{
+				  	400:function(){
+				  		console.log("nooo");
+				  	}
+				  }
+				}); 
+			}
+		});
 	}else if($('#viewCartPage').length){
 		$('body').on('click','.editOrder',function(){
 			$orderRow = $(this).parent().parent();

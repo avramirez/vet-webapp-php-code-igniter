@@ -9,3 +9,7 @@
 .inputError{
 	color:rgb(241, 90, 90);
 }
+
+#addUserAdmin label.error{
+		font-size: 10px;
+}
