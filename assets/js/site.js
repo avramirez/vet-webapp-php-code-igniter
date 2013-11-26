@@ -223,7 +223,12 @@ $(document).ready(function(){
 	}else if ($("#adminAddUser").length) {
 		$('body').on('click','.editUserFromAdmin',function(e){
 			var $row = $(this).closest("tr");
-			
+			$("#inputEmailUpdate").val($row.find(".userEmail").text());
+			$("#usernameUpdate").val($row.find(".userUsername").text());
+			$("#firstNameUpdate").val($row.find(".userFirstName").text());
+			$("#lastNameUpdate").val($row.find(".userLastName").text());
+			$("#userLevelUpdate").val($row.find(".userUserLevel span").attr("data-userlevel"));
+			$("#userObjectIdUpdate").val($(this).attr("data-objectid"));
 			$("#addUserAdmin").hide();
 			$("#updateUser").show();
 			$(".panelAddEditUser > .panel-heading .panel-title").text("Update User");
@@ -239,15 +244,15 @@ $(document).ready(function(){
 			submitHandler:function(form){
 				$.ajax({  
 				  type: "POST",  
-				  url: $("form").attr("action"),  
-				  data: $("form").serialize(),  
+				  url: $("#addUserAdmin").attr("action"),  
+				  data: $("#addUserAdmin").serialize(),  
 				  success: function(data,status,jqXHR) {  
 				  	$(".addUserSuccess strong").text("Successfuly added a user!")
 				  	$(".addUserSuccess").show();
 				  	$.ajax({
 							url:document.URL,
 							success:function(data){
-								$("#adminAddUser").html($(data).find("#adminAddUser").html());
+								$("#adminUsersTable").html($(data).find("#adminUsersTable").html());
 							}
 					})
 				  },
@@ -262,6 +267,34 @@ $(document).ready(function(){
 				}); 
 			}
 		});
+		$("#updateUser").validate({
+			submitHandler:function(form){
+				$.ajax({  
+				  type: "POST",  
+				  url: $("#updateUser").attr("action"),  
+				  data: $("#updateUser").serialize(),  
+				  success: function(data,status,jqXHR) {  
+				  	$(".addUserSuccess strong").text("Successfuly updated user!")
+				  	$(".addUserSuccess").show();
+				  	$.ajax({
+							url:document.URL,
+							success:function(data){
+								$("#adminUsersTable").html($(data).find("#adminUsersTable").html());
+							}
+					})
+				  },
+				  error:function(data,status,jqXHR){
+				  	
+				  },
+				  statusCode:{
+				  	400:function(){
+				  		console.log("nooo");
+				  	}
+				  }
+				}); 
+			}
+		});
+
 	}else if($('#viewCartPage').length){
 		$('body').on('click','.editOrder',function(){
 			$orderRow = $(this).parent().parent();

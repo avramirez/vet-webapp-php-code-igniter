@@ -57,12 +57,12 @@
                           </thead>
                           <tbody>
                             <tr>
-                              <td><input type="email" class="form-control" name="inputEmailUpdate" id="inputEmail" placeholder="Enter email" required></td>
-                              <td><input type="text" class="form-control" name="usernameUpdate" id="username" placeholder="Username" required></td>
-                              <td><input type="text" class="form-control" name="firstNameUpdate" id="firstName" placeholder="First Name" required></td>
-                              <td><input type="text" class="form-control" name="lastNameUpdate" id="lastName" placeholder="Last Name" required></td>
+                              <td><input type="hidden" name="userObjectIdUpdate" value="" id="userObjectIdUpdate"><input type="email" class="form-control" name="inputEmailUpdate" id="inputEmailUpdate" placeholder="Enter email" required></td>
+                              <td><input type="text" class="form-control" name="usernameUpdate" id="usernameUpdate" placeholder="Username" required></td>
+                              <td><input type="text" class="form-control" name="firstNameUpdate" id="firstNameUpdate" placeholder="First Name" required></td>
+                              <td><input type="text" class="form-control" name="lastNameUpdate" id="lastNameUpdate" placeholder="Last Name" required></td>
                               <td>
-                                <select class="form-control" name="userLevelUpdate">
+                                <select class="form-control" name="userLevelUpdate" id="userLevelUpdate">
                                   <option value=1>User</option>
                                   <option value=3>Admin - User</option>
                                   <option value=4>Admin - Resertvation</option>
@@ -87,7 +87,7 @@
 
           <div style="height:300px; overflow:auto;border: 1px solid rgba(51, 51, 51, 0.17);margin: 5px;">
           <!-- Table -->
-          <table class="table table-hover">
+          <table class="table table-hover" id="adminUsersTable">
             <thead>
               <tr>
                 <th style="width:270px;">Email</th>
@@ -112,7 +112,11 @@
                   if($row['user_level'] == 1){
                     echo "<span data-userlevel=".$row['user_level'].">User</span>";
                   }else if($row['user_level'] == 2){
-                    echo "<span data-userlevel=".$row['user_level'].">Admin</span>";
+                    echo "<span data-userlevel=".$row['user_level'].">Super Admin</span>";
+                  }else if($row['user_level'] == 3){
+                    echo "<span data-userlevel=".$row['user_level'].">Admin User</span>";
+                  }else if($row['user_level'] == 3){
+                    echo "<span data-userlevel=".$row['user_level'].">Admin Resertvation</span>";
                   }
                 echo "</td>";
                 echo "<td class='vert'>";
