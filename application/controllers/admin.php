@@ -25,6 +25,44 @@
 				redirect("/");
 			}
 		}
+
+		public function manageReservation(){
+			if($this->session->userdata('admin_objectId')){
+				$data['stylesheets'] =array('jumbotron-narrow.css');
+				$data['show_navbar'] ="true";
+				$data['content_navbar'] = $this->load->view('admin_navbar','',true);
+
+				$query = $this->db->query("SELECT 
+					ur.objectId as reservationobjectId,
+					svs.objectId as serviceObjectId,
+					u.objectId as usersObjectId,
+					u.username,
+					u.email,
+					u.first_name,
+					u.last_name,
+					svs.service_name,
+					ur.reserveDate,
+					ur.reserveTime,
+					svs.price 
+					FROM users_reservation ur 
+					INNER JOIN services svs ON ur.serviceId = svs.objectId 
+					INNER JOIN users u ON ur.userId = u.objectId;");
+
+				$usersData['reservations'] = $query->result_array();
+
+				$data['content_body'] = $this->load->view('admin_reservation',$usersData,true);
+				
+				$this->load->view("layout",$data);
+
+			}else{
+				redirect("/");
+			}
+		}
+
+		public function addReservation(){
+
+		}
+
 		public function addUser(){
 			$this->load->library('encrypt');
 
@@ -76,5 +114,16 @@
 			}
 		}
 
+		public function deleteUser(){
+			$userObjectId=$this->input->post("userObjectId");
+			$query = $this->db->query("DELETE FROM vet_app.users WHERE users.objectId = ".$userObjectId.";");
+
+				if ($this->db->affected_rows() > 0)
+				{
+					set_status_header((int)200); 
+				}else{
+					set_status_header((int)500); 
+				}
+		}
 	}
 ?>

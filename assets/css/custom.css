@@ -13,3 +13,7 @@
 #addUserAdmin label.error{
 		font-size: 10px;
 }
+
+label.error{
+	color: red;
+}

@@ -63,7 +63,7 @@
 			$serviceId =$this->input->post("serviceId");
 			$userId = $this->session->userdata('user_objectId');
 	
-				$query = $this->db->query("INSERT INTO `vet_app`.`users_reservation` VALUES (NULL,'".$serviceId."','".$userId."','".$reserveDate."','".$reserveTime."');");
+				$query = $this->db->query("INSERT INTO `vet_app`.`users_reservation` VALUES (NULL,'".$serviceId."','".$userId."','".$reserveDate."','".$reserveTime."',0);");
 
 				if ($this->db->affected_rows() > 0)
 				{
