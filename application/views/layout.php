@@ -10,7 +10,9 @@
 
     <title>Vet App</title>
     <link href="<?php echo base_url();?>assets/css/bootstrap.css" rel="stylesheet">
+        <link href="<?php echo base_url();?>assets/js/select2-3.4.5/select2.css" rel="stylesheet">
     <link href="<?php echo base_url();?>assets/css/redmond/jquery-ui-1.10.3.custom.css" rel="stylesheet">
+
     <?php
       foreach ($stylesheets as $item => $style) {
         echo '<link href="'.base_url().'assets/css/'.$style.'" rel="stylesheet">';
@@ -36,6 +38,8 @@
     <script src="<?php echo base_url();?>assets/js/jquery-ui-1.10.3.custom.js"></script>
     <script src="<?php echo base_url();?>assets/js/bootstrap.js"></script>
     <script src="<?php echo base_url();?>assets/js/jquery.validate.js"></script>
+    <script src="<?php echo base_url();?>assets/js/jquery.ui.autocomplete.js"></script>
+    <script src="<?php echo base_url();?>assets/js/select2-3.4.5/select2.js"></script>
     <script src="<?php echo base_url();?>assets/js/site.js"></script>
     
   </body>

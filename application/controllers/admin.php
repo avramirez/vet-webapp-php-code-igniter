@@ -48,7 +48,10 @@
 					INNER JOIN services svs ON ur.serviceId = svs.objectId 
 					INNER JOIN users u ON ur.userId = u.objectId;");
 
+				$services = $this->db->query("SELECT * FROM services where active=1;");	
+
 				$usersData['reservations'] = $query->result_array();
+				$usersData['serviceslist'] = $services->result_array();
 
 				$data['content_body'] = $this->load->view('admin_reservation',$usersData,true);
 				
@@ -60,8 +63,20 @@
 		}
 
 		public function addReservation(){
+			// $query = $this->db->query("INSERT INTO `vet_app`.`users_reservation` VALUES (NULL,'".$serviceId."','".$userId."','".$reserveDate."','".$reserveTime."',0);");
 
+			// 	if ($this->db->affected_rows() > 0)
+			// 	{
+			// 		set_status_header((int)200); 
+			// 	}else{
+			// 		set_status_header((int)500); 
+			// 	}
 		}
+
+		public function checkEmailExist(){
+			$inputEmail = $this->input->post("inputEmail");
+
+		}		
 
 		public function addUser(){
 			$this->load->library('encrypt');

@@ -225,7 +225,7 @@ $(document).ready(function(){
 		})		
 
 	}else if ($("#adminManageReservation").length) {
-
+		$('.adminServicesReservation').select2();
 		$("#addReservationAdmin").validate({
 			submitHandler:function(form){
 				if($(".reserveDate").text() =="" || $(".reserveDate label").length){

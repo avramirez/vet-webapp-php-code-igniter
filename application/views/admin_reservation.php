@@ -59,6 +59,14 @@
                                     <h3 class="panel-title">Reservation details</h3>
                                   </div>
                                   <div class="panel-body" style="padding: 5px 15px;">
+                                    <label>Service </label><select class="adminServicesReservation" name="adminServicesReservation" style="width:100%; height:34px;" id="">
+                                    <?php 
+
+                                    foreach ($serviceslist as $row){
+                                      echo '<option value='.$row['objectId'].'>'.$row['service_name'].'</option>';
+                                    }
+                                    ?>
+                                    </select>
                                     <input type="email" class="form-control" name="reservationUserEmail" id="reservationUserEmail" placeholder="User Email" required>
                                     <h5>Date: <span class="reserveDate"></span></h5>
                                     <h5>Time: <span class="reserveTime"></span></h5>
