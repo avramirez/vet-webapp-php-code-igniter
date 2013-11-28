@@ -226,7 +226,6 @@ $(document).ready(function(){
 
 	}else if ($("#adminManageReservation").length) {
 		$('body').on('change','#reservationUserEmail',function(event){
-	 	console.log("change");
 		  $.ajax({
 		  method:"POST",
 		  data:{
@@ -242,9 +241,48 @@ $(document).ready(function(){
 			  	}
 			  }
 		  });
-		 
-		 });
+		});
 		$('.adminServicesReservation').select2();
+
+
+		$("body").on("click","#confirmationModal .confirmAction",function(e){
+			var $this = $(this);
+			if($this.attr("data-confirm")=="confirmDelete"){
+							 $.ajax({
+			  method:"POST",
+			  data:{
+			  'reservationObjecId':$(this).attr("data-objectId")
+			  },
+			  url:"deleteAdminReservation",
+			  sucess:function(data,status,jQxr){
+			  	console.log("PUTANGINA!!!!!!!!!!!!!");
+			  					$("#confirmationModal").modal('hide');
+								$(".addReservationSuccess strong").text("Successfuly removed a reservation!");
+							  	$(".addReservationSuccess").show();
+							  	$.ajax({
+										url:document.URL,
+										success:function(data){
+											$("#adminReservationTable").html($(data).find("#adminReservationTable").html());
+										}
+								})
+				  },
+				  statusCode:{
+					  	400:function(){
+					  	}
+					  }
+			  });
+			}
+			
+		})
+		$('body').on('click','.adminDeleteReservation',function(event){
+			$("#confirmationModal h5.message").text("Are you sure you want to delete "+$(this).parent().parent().children('.serviceTitle').text()+"?")
+			$("#confirmationModal .confirmAction").attr("data-confirm","confirmDelete");
+			$("#confirmationModal .confirmAction").attr("data-objectId",$(this).attr("data-objectId"));
+			$("#confirmationModal").modal();
+		});
+
+
+
 		$("#addReservationAdmin").validate({
 			submitHandler:function(form){
 				if($(".reserveDate").text() =="" || $(".reserveDate label").length){
@@ -257,9 +295,14 @@ $(document).ready(function(){
 							$.ajax({  
 							  type: "POST",  
 							  url: $("#addReservationAdmin").attr("action"),
-							  data: $("#addReservationAdmin").serialize(),
+							  data: {
+							  	'reserveDate':$(".reserveDate").text(),
+							  	'reserveTime':$(".reserveTime").text(),
+							  	'serviceId':$('select.adminServicesReservation').val(),
+							  	'reservationUserEmail':$('#reservationUserEmail').val()
+							  },
 							  success: function(data,status,jqXHR) {  
-							  	$(".addReservationSuccess strong").text("Successfuly added a user!");
+							  	$(".addReservationSuccess strong").text("Successfuly added a reservation!");
 							  	$(".addReservationSuccess").show();
 							  	$.ajax({
 										url:document.URL,

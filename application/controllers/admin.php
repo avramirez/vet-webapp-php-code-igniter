@@ -130,15 +130,30 @@
 			}
 		}
 
+		public function deleteAdminReservation(){
+			if($this->session->userdata('admin_objectId')){
+				$serviceId =$this->input->post("reservationObjecId");
+
+				$query = $this->db->query("DELETE FROM vet_app.users_reservation WHERE users_reservation.objectId = ".$serviceId.";");
+
+				if ($this->db->affected_rows() > 0)
+				{
+					set_status_header((int)200); 
+				}else{
+					set_status_header((int)500); 
+				}
+			}
+		}
+
 		public function addReservation(){
-		
+		if($this->session->userdata('admin_objectId')){
 		 	$reserveDate= $this->input->post("reserveDate");
 			$reserveTime= $this->input->post("reserveTime");
 			$serviceId =$this->input->post("serviceId");
 			
-	 		$inputEmail = $this->input->post("userEmailCheck");
+	 		$inputEmail = $this->input->post("reservationUserEmail");
 	 		
-			$userByEmail=$this->db->query("SELECT  * FROM users where email='".$inputEmail."'");
+			$userByEmail=$this->db->query("SELECT * FROM users where email='".$inputEmail."'");
 			
 			$user = $userByEmail->row();
 
@@ -150,11 +165,11 @@
 
 			 	if ($this->db->affected_rows() > 0)
 			 	{
-			 	
 			 		set_status_header((int)200); 
 			 	}else{
 			 		set_status_header((int)400); 
 			 	}
+			 }
 		}
 
 		public function checkEmailExist(){

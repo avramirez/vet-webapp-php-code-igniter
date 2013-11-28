@@ -4,45 +4,9 @@
         </div>
         <div class="panel panel-default" id="adminViewOrder">
           <!-- Default panel contents -->
-          <div class="panel-heading">List of Users</div>
+          <div class="panel-heading">List of Products</div>
           <div class="panel-body">
- 
-         
-                   
-                    <div class="panel-body">
-                  
-                      <form action="admin/updateUser" method="POST" id="updateUser" name="updateuseradmin" style="display:none;">
-                        <table class="table table-hover">
-                          <thead>
-                            <tr>
-                              <th style="width:200px;">Email</th>
-                              <th>Username</th>
-                              <th style="">First Name</th>
-                              <th style="">Last Name</th>
-                              <th style="">User Level</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td><input type="hidden" name="userObjectIdUpdate" value="" id="userObjectIdUpdate"><input type="email" class="form-control" name="inputEmailUpdate" id="inputEmailUpdate" placeholder="Enter email" required></td>
-                              <td><input type="text" class="form-control" name="usernameUpdate" id="usernameUpdate" placeholder="Username" required></td>
-                              <td><input type="text" class="form-control" name="firstNameUpdate" id="firstNameUpdate" placeholder="First Name" required></td>
-                              <td><input type="text" class="form-control" name="lastNameUpdate" id="lastNameUpdate" placeholder="Last Name" required></td>
-                              <td>
-                                <select class="form-control" name="userLevelUpdate" id="userLevelUpdate">
-                                  <option value=1>User</option>
-                                  <option value=3>Admin - User</option>
-                                  <option value=4>Admin - Resertvation</option>
-                                  <option value=2>Super Admin</option>
-                                </select>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                         <button type="button" data-objectid="1" name="backtoadd" class="btn btn-success backToAddUser pull-right">Back to Add User</button>
-                         <button type="submit" class="btn btn-primary pull-right" name="updateuserbtn" style="margin-right:10px;">Save Changes</button>
-                      </form>
-                    </div>
+
            
              <div class="input-group">
               <span class="input-group-btn">
@@ -67,28 +31,20 @@
             </thead>
             <tbody>
               <?php 
-  foreach ($products as $row){
-
+              foreach ($products as $row){
                 echo "<tr>";
-              
-				echo "<td class='vert productObjectId'>".$row['objectId']."</td>";
-					echo "<td class='vert productName'>".$row['product_name']."</td>";
-					echo "<td class='vert productQuanitty'>".$row['product_quantity']."</td>";
-					
-						echo "<td class='vert productPrice'>".$row['product_price']."</td>";
-							echo "<td class='vert productType'>".$row['product_type']."</td>";
-				
-				   echo "<td class='vert'>";
+                echo "<td class='vert productObjectId'>".$row['objectId']."</td>";
+                echo "<td class='vert productName'>".$row['product_name']."</td>";
+                echo "<td class='vert productQuanitty'>".$row['product_quantity']."</td>";
+                echo "<td class='vert productPrice'>".$row['product_price']."</td>";
+                echo "<td class='vert productType'>".$row['product_type']."</td>";
+                echo "<td class='vert'>";
                 echo "<button type='button' data-objectId='".$row['objectId']."' class='btn btn-primary btn-sm editUserFromAdmin pull-left' style='margin-right: 5px;'>Edit</button>";
                 echo "<button type='button' data-objectId='".$row['objectId']."' class='btn btn-danger btn-sm removeUserFromAdmin pull-right'>Delete</button>";
                 echo "</td>";
                 echo "</td>";
-            /*    echo "<td class='vert'>";
-                echo "<button type='button' data-objectId='".$row['objectId']."' class='btn btn-primary btn-sm editUserFromAdmin pull-left' style='margin-right: 5px;'>Edit</button>";
-                echo "<button type='button' data-objectId='".$row['objectId']."' class='btn btn-danger btn-sm removeUserFromAdmin pull-right'>Delete</button>";
-                echo "</td>"; */
                 echo "</tr>";
-                }
+              }
               ?>
             </tbody>
           </table>

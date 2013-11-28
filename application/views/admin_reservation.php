@@ -8,22 +8,22 @@
           <div class="panel-body">
             <p>Reservations of Users can be confirmed and delete here. You can also add new reservations.</p>
 
- <div class="panel-group" id="accordion" style="margin-bottom:10px;">
-  <div class="panel panel-default" id="addOrEditReservation">
-    <div class="panel-heading">
-      <h4 class="panel-title">
-        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-          <span class="glyphicon glyphicon-hand-right"></span> Add a Reservation
-        </a>
-      </h4>
-    </div>
-    <div id="collapseOne" class="panel-collapse collapse">
-      <div class="alert alert-info alert-dismissable" style="display:none;">
-                  <button type="button" class="close" data-hide="alert" aria-hidden="true">&times;</button>
-                  <strong>Warning!</strong> Fill up all the fields.
-      </div>
-      <div class="panel-body clearfix">
-       <form action="addReservation" method="POST" id="addReservationAdmin">
+           <div class="panel-group" id="accordion" style="margin-bottom:10px;">
+            <div class="panel panel-default" id="addOrEditReservation">
+              <div class="panel-heading">
+                <h4 class="panel-title">
+                  <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                    <span class="glyphicon glyphicon-hand-right"></span> Add a Reservation
+                  </a>
+                </h4>
+              </div>
+              <div id="collapseOne" class="panel-collapse collapse">
+                <div class="alert alert-info alert-dismissable" style="display:none;">
+                            <button type="button" class="close" data-hide="alert" aria-hidden="true">&times;</button>
+                            <strong>Warning!</strong> Fill up all the fields.
+                </div>
+                <div class="panel-body clearfix">
+                 <form action="addReservation" method="POST" id="addReservationAdmin">
                               <div class="col-md-6">
                                 <div id="datepicker" style="margin:0 45px;"></div>
                               </div>
@@ -59,6 +59,16 @@
                                     <h3 class="panel-title">Reservation details</h3>
                                   </div>
                                   <div class="panel-body" style="padding: 5px 15px;">
+                                    
+                                    <label>Service </label><select class="adminServicesReservation" name="adminServicesReservation" style="width:100%; height:34px;" id="">
+                                    <?php 
+
+                                    foreach ($serviceslist as $row){
+                                     echo '<option value='.$row['objectId'].'>'.$row['service_name'].'</option>';
+                                    }
+                                    ?>
+                                    </select>
+
                                     <input type="email" class="form-control" name="reservationUserEmail" id="reservationUserEmail" placeholder="User Email" required>
                                     <h5>Date: <span class="reserveDate"></span></h5>
                                     <h5>Time: <span class="reserveTime"></span></h5>
@@ -68,12 +78,13 @@
                               </div>
 
             
-        </form>
+                    </form>
 
-      </div>
-    </div>
-  </div>
-</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
              <div class="input-group">
               <span class="input-group-btn">
                 <button class="btn btn-default" type="button">Search</button>
@@ -87,10 +98,8 @@
           <table class="table table-hover" id="adminReservationTable">
             <thead>
               <tr>
-                <th style="">Email</th>
-                <th>Username</th>
-                <th style="width:700;">Last Name</th>
-                <th style="width:10000px;">Service Name</th>
+                <th style="width:225px;">Email</th>
+                <th style="width:170px;">Service Name</th>
                 <th style="">Date</th>
                 <th style="">Time</th>
 				 <th style="">Price</th>
@@ -102,22 +111,19 @@
 
               foreach ($reservations as $row){
 
-                 echo "<tr>";
-                 echo "<td class='vert userEmail'>".$row['email']."</td>";
-                 echo "<td class='vert userUsername'>".$row['username']."</td>";
-                 echo "<td class='vert userFirstName'>". $row['last_name']."</td>";
-             echo "<td class='vert serviceTitle'>".$row['service_name']."</td>";
-                echo "<td class='vert serviceDate'>".$row['reserveDate']."</td>";
-                echo "<td class='vert serviceTime'>".$row['reserveTime']."</td>";
-				           echo "<td class='vert servicePrice rightalignPadding'>&#8369; ".$row['price']."</td>";
-						
-				   
-				      echo "<td class='vert'>";
-                echo "<button type='button' data-objectId='".$row['reservationobjectId']."' class='btn btn-primary btn-sm editReservation pull-left' style='margin-right: 5px;'>Edit</button>";
-                echo "<button type='button' data-objectId='".$row['reservationobjectId']."' class='btn btn-danger btn-sm deleteReservation pull-right'>Delete</button>";
-                echo "</td>";
-				   echo "<tr>";
-              
+              echo "<tr>";
+              echo "<td class='vert userEmail' style='word-wrap: break-word;word-break: break-all;'>".$row['email']."</td>";
+              echo "<td class='vert serviceTitle'>".$row['service_name']."</td>";
+              echo "<td class='vert serviceDate'>".$row['reserveDate']."</td>";
+              echo "<td class='vert serviceTime'>".$row['reserveTime']."</td>";
+              echo "<td class='vert servicePrice rightalignPadding'>&#8369; ".$row['price']."</td>";
+
+              echo "<td class='vert'>";
+              echo "<button type='button' data-objectId='".$row['reservationobjectId']."' class='btn btn-primary btn-sm adminEditReservation pull-left' style='margin-right: 5px;'>Edit</button>";
+              echo "<button type='button' data-objectId='".$row['reservationobjectId']."' class='btn btn-danger btn-sm adminDeleteReservation pull-right'>Delete</button>";
+              echo "</td>";
+              echo "<tr>";
+
      
            
                 }
