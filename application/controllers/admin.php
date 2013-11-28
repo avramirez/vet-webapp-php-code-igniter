@@ -44,26 +44,30 @@
 
 		public function searchUserOrder(){
 			if($this->session->userdata('admin_objectId')){
-				$inputEmail = $this->input->post('searchUserEmail');
+				$inputEmail = $this->input->post('userEmailSearch');
 
-				$userByEmail=$this->db->query("SELECT  * FROM users where email='".$inputEmail."'");
-				$user = $userByEmail->row();
 				
-				$userId = $row->objectId;
-				$query = $this->db->query("SELECT uo.objectId as orderObjectid, 
-					prod.objectId as productObjectId, 
-					uo.productAmount, 
-					uo.totalPrice, 
-					prod.product_name,
-					prod.product_price
-				 from vet_app.users_order uo 
-				 INNER JOIN  vet_app.products prod ON uo.productId = prod.objectId 
-				 WHERE uo.usersId='".$userId."' 
-				 LIMIT 0 , 2000;");
+				$userByEmail=$this->db->query("SELECT * FROM users where email='".$inputEmail."'");
+				
+				if($userByEmail->num_rows() > 0){
+					$user = $userByEmail->row();
+				
+					$query = $this->db->query("SELECT uo.objectId as orderObjectid, 
+						prod.objectId as productObjectId, 
+						uo.productAmount, 
+						uo.totalPrice, 
+						prod.product_name,
+						prod.product_price
+					 from vet_app.users_order uo 
+					 INNER JOIN  vet_app.products prod ON uo.productId = prod.objectId 
+					 WHERE uo.usersId='".$user->objectId."' 
+					 LIMIT 0 , 2000;");
 
-				$ordersData['list_of_orders'] = $query->result_array();
+					$ordersData['list_of_orders'] = $query->result_array();
 
-				$this->load->view('admin_order_table',$ordersData);
+					$this->load->view('admin_order_table',$ordersData);
+				}
+				
 
 			}else{
 				redirect("/");

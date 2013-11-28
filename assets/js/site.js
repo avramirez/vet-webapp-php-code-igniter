@@ -282,13 +282,16 @@ $(document).ready(function(){
 			}
 		});
 
-	}else if ($("#adminUsersOrder").length) {
+	}else if ($("#adminUsersOrder").length){
 		$('body').on('click','#adminUsersOrder .searchOrderOfUser',function(e){
 			$.ajax({
 				method:"POST",
 				url:'searchUserOrder',
 				data:{
-					''
+					'userEmailSearch':$("#searchUserEmail").val()
+				},
+				success:function(data,status,jqXHR){
+					$("#adminOrderTable").html(data);
 				}
 			});
 		});

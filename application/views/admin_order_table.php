@@ -1,4 +1,4 @@
-<table class="table table-hover">
+
 <thead>
   <tr>
     <th style="width:270px;">Product Name</th>
@@ -20,4 +20,3 @@
     }
   ?>
 </tbody>
-</table>

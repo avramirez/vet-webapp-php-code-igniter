@@ -9,7 +9,7 @@
             <p>You can search the order of a user here. Just type his/her email to the search bar and press search.</p>
              <div class="input-group">
               <span class="input-group-btn">
-                <button class="btn btn-default" class="searchOrderOfUser" type="button">Search</button>
+                <button class="btn btn-default searchOrderOfUser" type="button">Search</button>
               </span>
               <input type="text" class="form-control" name="searchUserEmail" id="searchUserEmail" placeholder="Enter user email">
             </div>
