@@ -12,9 +12,7 @@
 				$data['stylesheets'] =array('jumbotron-narrow.css');
 				$data['show_navbar'] ="true";
 				$data['content_navbar'] = $this->load->view('admin_navbar','',true);
-
 				$query = $this->db->query("SELECT * FROM users");
-
 				$usersData['users'] = $query->result_array();
 
 				$data['content_body'] = $this->load->view('admin_homepage',$usersData,true);
@@ -37,7 +35,7 @@
 				
 				$usersData['products'] = $query->result_array();
 
-				$data['content_body'] = $this->load->view('admin_productlist',$usersData,true);
+				$data['content_body'] = $this->load->view('admin_products',$usersData,true);
 				
 				$this->load->view("layout",$data);
 
@@ -45,6 +43,9 @@
 				redirect("/");
 			}
 		}
+		
+		
+		
 
 		public function userorder(){
 			if($this->session->userdata('admin_objectId')){

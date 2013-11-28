@@ -59,14 +59,6 @@
                                     <h3 class="panel-title">Reservation details</h3>
                                   </div>
                                   <div class="panel-body" style="padding: 5px 15px;">
-                                    <label>Service </label><select class="adminServicesReservation" name="adminServicesReservation" style="width:100%; height:34px;" id="">
-                                    <?php 
-
-                                    foreach ($serviceslist as $row){
-                                      echo '<option value='.$row['objectId'].'>'.$row['service_name'].'</option>';
-                                    }
-                                    ?>
-                                    </select>
                                     <input type="email" class="form-control" name="reservationUserEmail" id="reservationUserEmail" placeholder="User Email" required>
                                     <h5>Date: <span class="reserveDate"></span></h5>
                                     <h5>Time: <span class="reserveTime"></span></h5>
@@ -97,10 +89,11 @@
               <tr>
                 <th style="">Email</th>
                 <th>Username</th>
-                <th style="">Full Name</th>
-                <th style="width:200px;">Service Name</th>
+                <th style="width:700;">Last Name</th>
+                <th style="width:10000px;">Service Name</th>
                 <th style="">Date</th>
                 <th style="">Time</th>
+				 <th style="">Price</th>
                 <th style="width:130px;"></th>
               </tr>
             </thead>
@@ -109,27 +102,24 @@
 
               foreach ($reservations as $row){
 
-                // echo "<tr>";
-                // echo "<td class='vert userEmail'>".$row['email']."</td>";
-                // echo "<td class='vert userUsername'>".$row['username']."</td>";
-                // echo "<td class='vert userFirstName'>".$row['first_name']."</td>";
-                // echo "<td class='vert userLastName'>".$row['last_name']."</td>";
-                // echo "<td class='vert userUserLevel'>";
-                //   if($row['user_level'] == 1){
-                //     echo "<span data-userlevel=".$row['user_level'].">User</span>";
-                //   }else if($row['user_level'] == 2){
-                //     echo "<span data-userlevel=".$row['user_level'].">Super Admin</span>";
-                //   }else if($row['user_level'] == 3){
-                //     echo "<span data-userlevel=".$row['user_level'].">Admin User</span>";
-                //   }else if($row['user_level'] == 3){
-                //     echo "<span data-userlevel=".$row['user_level'].">Admin Resertvation</span>";
-                //   }
-                // echo "</td>";
-                // echo "<td class='vert'>";
-                // echo "<button type='button' data-objectId='".$row['objectId']."' class='btn btn-primary btn-sm editUserFromAdmin pull-left' style='margin-right: 5px;'>Edit</button>";
-                // echo "<button type='button' data-objectId='".$row['objectId']."' class='btn btn-danger btn-sm removeUserFromAdmin pull-right'>Delete</button>";
-                // echo "</td>";
-                // echo "</tr>";
+                 echo "<tr>";
+                 echo "<td class='vert userEmail'>".$row['email']."</td>";
+                 echo "<td class='vert userUsername'>".$row['username']."</td>";
+                 echo "<td class='vert userFirstName'>". $row['last_name']."</td>";
+             echo "<td class='vert serviceTitle'>".$row['service_name']."</td>";
+                echo "<td class='vert serviceDate'>".$row['reserveDate']."</td>";
+                echo "<td class='vert serviceTime'>".$row['reserveTime']."</td>";
+				           echo "<td class='vert servicePrice rightalignPadding'>&#8369; ".$row['price']."</td>";
+						
+				   
+				      echo "<td class='vert'>";
+                echo "<button type='button' data-objectId='".$row['reservationobjectId']."' class='btn btn-primary btn-sm editReservation pull-left' style='margin-right: 5px;'>Edit</button>";
+                echo "<button type='button' data-objectId='".$row['reservationobjectId']."' class='btn btn-danger btn-sm deleteReservation pull-right'>Delete</button>";
+                echo "</td>";
+				   echo "<tr>";
+              
+     
+           
                 }
               ?>
             </tbody>
