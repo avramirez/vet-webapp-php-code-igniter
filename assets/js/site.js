@@ -27,7 +27,7 @@ $(document).ready(function(){
 
 		$('.userNavbar li.navReserveManage').addClass('active');
 
-		$("body").on("click",".editReservation",function(e){
+		$("body").on("click",".editReservation",function(ccoie){
 			$("#editReserveModal #myModalLabel").text($(this).parent().parent().children('.serviceTitle').text());
 			$("#editReserveModal .reserveDate").text($(this).parent().parent().children('.serviceDate').text());
 			$("#editReserveModal .reserveTime").text($(this).parent().parent().children('.serviceTime').text());
@@ -225,6 +225,25 @@ $(document).ready(function(){
 		})		
 
 	}else if ($("#adminManageReservation").length) {
+		$('body').on('change','#reservationUserEmail',function(event){
+	 	console.log("change");
+		  $.ajax({
+		  method:"POST",
+		  data:{
+		  'userEmailCheck':$(this).val()
+		  },
+		  url:"checkEmailExist",
+		  sucess:function(data,status,jQxr){
+		  
+		  },
+		  statusCode:{
+			  	400:function(){
+			  		$("#reservationUserEmail").val("");
+			  	}
+			  }
+		  });
+		 
+		 });
 		$('.adminServicesReservation').select2();
 		$("#addReservationAdmin").validate({
 			submitHandler:function(form){
@@ -263,6 +282,16 @@ $(document).ready(function(){
 			}
 		});
 
+	}else if ($("#adminUsersOrder").length) {
+		$('body').on('click','#adminUsersOrder .searchOrderOfUser',function(e){
+			$.ajax({
+				method:"POST",
+				url:'searchUserOrder',
+				data:{
+					''
+				}
+			});
+		});
 	}else if ($("#adminAddUser").length) {
 
 		$(".adminNavbar .navAdminUserManage").addClass("active");

@@ -26,6 +26,50 @@
 			}
 		}
 
+
+		public function userorder(){
+			if($this->session->userdata('admin_objectId')){
+				$data['stylesheets'] =array('jumbotron-narrow.css');
+				$data['show_navbar'] ="true";
+				$data['content_navbar'] = $this->load->view('admin_navbar','',true);
+
+				$data['content_body'] = $this->load->view('admin_order','',true);
+				
+				$this->load->view("layout",$data);
+
+			}else{
+				redirect("/");
+			}
+		}
+
+		public function searchUserOrder(){
+			if($this->session->userdata('admin_objectId')){
+				$inputEmail = $this->input->post('searchUserEmail');
+
+				$userByEmail=$this->db->query("SELECT  * FROM users where email='".$inputEmail."'");
+				$user = $userByEmail->row();
+				
+				$userId = $row->objectId;
+				$query = $this->db->query("SELECT uo.objectId as orderObjectid, 
+					prod.objectId as productObjectId, 
+					uo.productAmount, 
+					uo.totalPrice, 
+					prod.product_name,
+					prod.product_price
+				 from vet_app.users_order uo 
+				 INNER JOIN  vet_app.products prod ON uo.productId = prod.objectId 
+				 WHERE uo.usersId='".$userId."' 
+				 LIMIT 0 , 2000;");
+
+				$ordersData['list_of_orders'] = $query->result_array();
+
+				$this->load->view('admin_order_table',$ordersData);
+
+			}else{
+				redirect("/");
+			}
+		}
+
 		public function manageReservation(){
 			if($this->session->userdata('admin_objectId')){
 				$data['stylesheets'] =array('jumbotron-narrow.css');
@@ -63,18 +107,42 @@
 		}
 
 		public function addReservation(){
-			// $query = $this->db->query("INSERT INTO `vet_app`.`users_reservation` VALUES (NULL,'".$serviceId."','".$userId."','".$reserveDate."','".$reserveTime."',0);");
+		
+		 	$reserveDate= $this->input->post("reserveDate");
+			$reserveTime= $this->input->post("reserveTime");
+			$serviceId =$this->input->post("serviceId");
+			
+	 		$inputEmail = $this->input->post("userEmailCheck");
+	 		
+			$userByEmail=$this->db->query("SELECT  * FROM users where email='".$inputEmail."'");
+			
+			$user = $userByEmail->row();
 
-			// 	if ($this->db->affected_rows() > 0)
-			// 	{
-			// 		set_status_header((int)200); 
-			// 	}else{
-			// 		set_status_header((int)500); 
-			// 	}
+			$query = $this->db->query("INSERT INTO `vet_app`.`users_reservation` 
+			VALUES (NULL,'".$serviceId."',
+			'".$user->objectId."',
+			'".$reserveDate."',
+			'".$reserveTime."',0);");
+
+			 	if ($this->db->affected_rows() > 0)
+			 	{
+			 	
+			 		set_status_header((int)200); 
+			 	}else{
+			 		set_status_header((int)400); 
+			 	}
 		}
 
 		public function checkEmailExist(){
-			$inputEmail = $this->input->post("inputEmail");
+			$inputEmail = $this->input->post("userEmailCheck");
+			$query=$this->db->query("SELECT  * FROM users where email='".$inputEmail."'");
+			
+			if($query->num_rows() > 0){
+			 //$datauser['userobject']=$query->result_array();
+			 set_status_header((int)200);
+			}else{
+			 set_status_header((int)400);
+			}
 
 		}		
 
