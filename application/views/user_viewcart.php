@@ -23,7 +23,7 @@
                 <th style="text-align:right;padding-right:15px;">Price</th>
                 <th style="text-align:right;padding-right:15px;">Amount</th>
                 <th style="text-align:right;padding-right:15px;">Total Price</th>
-                <th style="width:130px;"></th>
+                <th style="width:140px;"></th>
               </tr>
             </thead>
             <tbody>

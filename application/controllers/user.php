@@ -60,10 +60,17 @@
 			if($this->session->userdata('user_objectId')){
 			$reserveDate= $this->input->post("reserveDate");
 			$reserveTime= $this->input->post("reserveTime");
+			$reserveDateTime = date('Y-m-d H:i:s', strtotime(str_replace('-', '/', ''.$reserveDate.' '.$reserveTime.'')));
 			$serviceId =$this->input->post("serviceId");
 			$userId = $this->session->userdata('user_objectId');
 	
-				$query = $this->db->query("INSERT INTO `vet_app`.`users_reservation` VALUES (NULL,'".$serviceId."','".$userId."','".$reserveDate."','".$reserveTime."',0);");
+				$query = $this->db->query("INSERT INTO `vet_app`.`users_reservation` 
+					VALUES (NULL,'".$serviceId."',
+						'".$userId."',
+						'".$reserveDate."',
+						'".$reserveTime."',
+						'".$reserveDateTime."',
+						0);");
 
 				if ($this->db->affected_rows() > 0)
 				{
@@ -78,10 +85,15 @@
 			if($this->session->userdata('user_objectId')){
 			$reserveDate= $this->input->post("reserveDate");
 			$reserveTime= $this->input->post("reserveTime");
+			$reserveDateTime = date('Y-m-d H:i:s', strtotime(str_replace('-', '/', ''.$reserveDate.' '.$reserveTime.'')));
 			$serviceId =$this->input->post("serviceId");
 			$userId = $this->session->userdata('user_objectId');
 	
-				$query = $this->db->query("UPDATE  vet_app.users_reservation SET  reserveDate= '".$reserveDate."',reserveTime='".$reserveTime."' WHERE users_reservation.objectId =".$serviceId.";");
+				$query = $this->db->query("UPDATE  vet_app.users_reservation 
+					SET  reserveDate= '".$reserveDate."',
+					reserveTime='".$reserveTime."',
+					reserveDateTime='".$reserveDateTime."'  
+					WHERE users_reservation.objectId =".$serviceId.";");
 
 				if ($this->db->affected_rows() > 0)
 				{

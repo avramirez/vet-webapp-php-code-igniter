@@ -13,7 +13,8 @@
               <div class="panel-heading">
                 <h4 class="panel-title">
                   <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                    <span class="glyphicon glyphicon-hand-right"></span> Add a Reservation
+                    <span class="glyphicon glyphicon-hand-right"></span> 
+                    <span>Add a Reservation</span>
                   </a>
                 </h4>
               </div>
@@ -35,22 +36,17 @@
                                   <div class="panel-body">
                                     <select class="form-control reserveTimeSelect">
                                       <option value=0>Time</option>
-                                      <option value=1>6:00 AM</option>
-                                      <option value=2>7:00 AM</option>
-                                      <option value=3>8:00 AM</option>
-                                      <option value=4>9:00 AM</option>
-                                      <option value=5>10:00 AM</option>
-                                      <option value=6>11:00 AM</option>
-                                      <option value=7>12:00 PM</option>
-                                      <option value=8>2:00 PM</option>
-                                      <option value=9>3:00 PM</option>
-                                      <option value=10>4:00 PM</option>
-                                      <option value=11>5:00 PM</option>
-                                      <option value=12>6:00 PM</option>
-                                      <option value=13>7:00 PM</option>
-                                      <option value=14>8:00 PM</option>
-                                      <option value=15>9:00 PM</option>
-                                      <option value=16>10:00 PM</option>
+                                      <option value="10:00 AM">10:00 AM</option>
+                                      <option value="11:00 AM">11:00 AM</option>
+                                      <option value="12:00 AM">12:00 PM</option>
+                                      <option value="1:00 PM">1:00 PM</option>
+                                      <option value="2:00 PM">2:00 PM</option>
+                                      <option value="3:00 PM">3:00 PM</option>
+                                      <option value="4:00 PM">4:00 PM</option>
+                                      <option value="5:00 PM">5:00 PM</option>
+                                      <option value="6:00 PM">6:00 PM</option>
+                                      <option value="7:00 PM">7:00 PM</option>
+                                      <option value="8:00 PM">8:00 PM</option>
                                     </select>
                                   </div>
                                 </div>
@@ -74,7 +70,11 @@
                                     <h5>Time: <span class="reserveTime"></span></h5>
                                   </div>
                                 </div>
-                                <button type="submit" name="adminAddReservation" class="btn btn-success pull-right" style="margin-top:10px;">Add Reservation</button>
+                                <input type="hidden" name="reservationId" id="reservationId" value="" />
+                                <button type="submit" name="adminAddReservation" id="addReservationButton" class="btn btn-success pull-right" style="margin-top:10px;">Add Reservation</button>
+                                <button type="button" name="backToAddReservation" id="backToAddReservation" class="btn btn-success pull-right" id="saveChangesReservation" style="margin-top:10px; margin-right:10px; display:none; display:none;">Back Add Reservation</button>
+                                <button type="submit" name="editadminAddReservation" class="btn btn-primary pull-right" id="saveChangesReservation" style="margin-top:10px; margin-right:10px; display:none;">Save Changes</button>
+
                               </div>
 
             
@@ -110,17 +110,28 @@
               <?php 
 
               foreach ($reservations as $row){
-
-              echo "<tr>";
+              $date1 = date('Y-m-d H:i A', strtotime(str_replace('-', '/', ''.$row['reserveDate'].' '.$row['reserveTime'].'')));
+              $dateToday =date('Y-m-d H:i A');
+              if($date1 > $dateToday){
+                echo "<tr>";
+              }else{
+                echo "<tr style='color:#F53838;'>";
+              }
               echo "<td class='vert userEmail' style='word-wrap: break-word;word-break: break-all;'>".$row['email']."</td>";
-              echo "<td class='vert serviceTitle'>".$row['service_name']."</td>";
+              echo "<td class='vert serviceTitle' data-serviceId='".$row['serviceObjectId']."'>".$row['service_name']."</td>";
               echo "<td class='vert serviceDate'>".$row['reserveDate']."</td>";
               echo "<td class='vert serviceTime'>".$row['reserveTime']."</td>";
               echo "<td class='vert servicePrice rightalignPadding'>&#8369; ".$row['price']."</td>";
-
               echo "<td class='vert'>";
-              echo "<button type='button' data-objectId='".$row['reservationobjectId']."' class='btn btn-primary btn-sm adminEditReservation pull-left' style='margin-right: 5px;'>Edit</button>";
-              echo "<button type='button' data-objectId='".$row['reservationobjectId']."' class='btn btn-danger btn-sm adminDeleteReservation pull-right'>Delete</button>";
+              if($date1 > $dateToday && $row['confirmed'] == "0"){
+                echo "<button type='button' data-objectId='".$row['reservationobjectId']."' class='btn btn-primary btn-sm adminEditReservation pull-left' style='margin-right: 5px;'>Edit</button>";  
+                echo "<button type='button' data-objectId='".$row['reservationobjectId']."' class='btn btn-danger btn-sm adminDeleteReservation pull-right'>Delete</button>";
+              }else{
+                echo "<p style='font-size:10px;'>Reservation Expired!</p>";
+                echo "<button style='width:100%;' type='button' data-objectId='".$row['reservationobjectId']."' class='btn btn-danger btn-sm adminDeleteReservation pull-right'>Delete!</button>";
+              }
+              
+              
               echo "</td>";
               echo "<tr>";
 

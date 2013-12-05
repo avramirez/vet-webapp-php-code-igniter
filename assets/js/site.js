@@ -225,6 +225,7 @@ $(document).ready(function(){
 		})		
 
 	}else if ($("#adminManageReservation").length) {
+
 		$('body').on('change','#reservationUserEmail',function(event){
 		  $.ajax({
 		  method:"POST",
@@ -244,36 +245,39 @@ $(document).ready(function(){
 		});
 		$('.adminServicesReservation').select2();
 
+		 $('body').on('click','#backToAddReservation',function(event){
+			 	$('#saveChangesReservation').hide();
+				$('#backToAddReservation').hide();
+				$('#addReservationButton').show();
+				$('#addOrEditReservation .panel-title a span:last-child').text("Add Reservation");
+				$("#addReservationAdmin").attr("action","addReservation");
+				$("#reservationUserEmail").val("");
+				$(".adminServicesReservation").prop('selectedIndex',0).trigger("change");
+				$(".reserveTime").text("");
+				$(".reserveDate").text("");
+  			$('#datepicker').datepicker('setDate');
+  			$('.reserveTimeSelect').prop('selectedIndex',0);
+		 });
 
-		$("body").on("click","#confirmationModal .confirmAction",function(e){
-			var $this = $(this);
-			if($this.attr("data-confirm")=="confirmDelete"){
-							 $.ajax({
-			  method:"POST",
-			  data:{
-			  'reservationObjecId':$(this).attr("data-objectId")
-			  },
-			  url:"deleteAdminReservation",
-			  sucess:function(data,status,jQxr){
-			  	console.log("PUTANGINA!!!!!!!!!!!!!");
-			  					$("#confirmationModal").modal('hide');
-								$(".addReservationSuccess strong").text("Successfuly removed a reservation!");
-							  	$(".addReservationSuccess").show();
-							  	$.ajax({
-										url:document.URL,
-										success:function(data){
-											$("#adminReservationTable").html($(data).find("#adminReservationTable").html());
-										}
-								})
-				  },
-				  statusCode:{
-					  	400:function(){
-					  	}
-					  }
-			  });
-			}
+		$('body').on('click','.adminEditReservation',function(event){
+			$('#collapseOne').collapse('show');
+			$('#saveChangesReservation').show();
+			$('#backToAddReservation').show();
+			$('#addReservationButton').hide();
+			$('#addOrEditReservation .panel-title a span:last-child').text("Edit Reservation");
+			$("#addReservationAdmin").attr("action","editReservation");
+			$("#reservationId").val($(this).attr("data-objectId"));
+			var $row = $(this).closest("tr");
+			$("#reservationUserEmail").val($row.find(".userEmail").text());
+			$('.adminServicesReservation').select2('val',$row.find('.serviceTitle').attr("data-serviceid"));
 			
-		})
+			$('#datepicker').datepicker("setDate", new Date($row.find('.serviceDate').text()));
+			$('.reserveDate').text($row.find('.serviceDate').text());
+			$('.reserveTimeSelect').val($row.find('.serviceTime').text());
+			$('.reserveTime').text($row.find('.serviceTime').text());
+
+		});
+
 		$('body').on('click','.adminDeleteReservation',function(event){
 			$("#confirmationModal h5.message").text("Are you sure you want to delete "+$(this).parent().parent().children('.serviceTitle').text()+"?")
 			$("#confirmationModal .confirmAction").attr("data-confirm","confirmDelete");
@@ -281,6 +285,36 @@ $(document).ready(function(){
 			$("#confirmationModal").modal();
 		});
 
+		$("body").on("click","#confirmationModal .confirmAction",function(e){
+			var $this = $(this);
+			if($this.attr("data-confirm")=="confirmDelete"){
+				$.ajax({
+					async:true,
+				  method:"POST",
+				  data:{
+				  	'reservationObjecId':$(this).attr("data-objectId")
+				  },
+				  url: "deleteAdminReservation",
+				  success: function(data,status,jQxr){
+						$("#confirmationModal").modal('hide');
+						$(".addReservationSuccess strong").text("Successfuly removed a reservation!");
+						$(".addReservationSuccess").show();
+						$.ajax({
+							url:document.URL,
+							success:function(data){
+								$("#adminReservationTable").html($(data).find("#adminReservationTable").html());
+							}
+						})
+					},
+					statusCode:{
+						  400:function(){
+
+						  }
+					}
+				 });
+			}
+			
+		});
 
 
 		$("#addReservationAdmin").validate({
@@ -299,10 +333,33 @@ $(document).ready(function(){
 							  	'reserveDate':$(".reserveDate").text(),
 							  	'reserveTime':$(".reserveTime").text(),
 							  	'serviceId':$('select.adminServicesReservation').val(),
-							  	'reservationUserEmail':$('#reservationUserEmail').val()
+							  	'reservationUserEmail':$('#reservationUserEmail').val(),
+							  	'reservationId':$("#reservationId").val()
 							  },
 							  success: function(data,status,jqXHR) {  
-							  	$(".addReservationSuccess strong").text("Successfuly added a reservation!");
+							  	if($('#saveChangesReservation:visible').length){
+							  		$(".addReservationSuccess strong").text("Successfuly updated reservation!");
+							  		$('#saveChangesReservation').hide();
+										$('#backToAddReservation').hide();
+										$('#addReservationButton').show();
+										$('#addOrEditReservation .panel-title a span:last-child').text("Add Reservation");
+										$("#addReservationAdmin").attr("action","addReservation");
+										$("#reservationUserEmail").val("");
+										$(".adminServicesReservation").prop('selectedIndex',0).trigger("change");
+										$(".reserveTime").text("");
+										$(".reserveDate").text("");
+						  			$('#datepicker').datepicker('setDate');
+						  			$('.reserveTimeSelect').prop('selectedIndex',0);	
+							  	}else{
+							  		$(".addReservationSuccess strong").text("Successfuly added a reservation!");
+							  	}
+							  	$('#collapseOne').collapse('hide');
+							  	$(".adminServicesReservation").prop('selectedIndex',0).trigger("change");
+							  	$(".reserveTime").text("");
+									$(".reserveDate").text("");
+									$("#reservationUserEmail").val("");
+					  			$('#datepicker').datepicker('setDate');
+					  			$('.reserveTimeSelect').prop('selectedIndex',0);
 							  	$(".addReservationSuccess").show();
 							  	$.ajax({
 										url:document.URL,
@@ -316,7 +373,7 @@ $(document).ready(function(){
 							  },
 							  statusCode:{
 							  	400:function(){
-							  		console.log("nooo");
+							  		console.log("FAIL");
 							  	}
 							  }
 						}); 

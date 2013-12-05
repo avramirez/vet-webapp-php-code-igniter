@@ -111,7 +111,8 @@
 					svs.service_name,
 					ur.reserveDate,
 					ur.reserveTime,
-					svs.price 
+					svs.price,
+					ur.confirmed
 					FROM users_reservation ur 
 					INNER JOIN services svs ON ur.serviceId = svs.objectId 
 					INNER JOIN users u ON ur.userId = u.objectId;");
@@ -140,7 +141,7 @@
 				{
 					set_status_header((int)200); 
 				}else{
-					set_status_header((int)500); 
+					set_status_header((int)400); 
 				}
 			}
 		}
@@ -149,6 +150,7 @@
 		if($this->session->userdata('admin_objectId')){
 		 	$reserveDate= $this->input->post("reserveDate");
 			$reserveTime= $this->input->post("reserveTime");
+			$reserveDateTime = date('Y-m-d H:i:s', strtotime(str_replace('-', '/', ''.$reserveDate.' '.$reserveTime.'')));
 			$serviceId =$this->input->post("serviceId");
 			
 	 		$inputEmail = $this->input->post("reservationUserEmail");
@@ -161,7 +163,9 @@
 			VALUES (NULL,'".$serviceId."',
 			'".$user->objectId."',
 			'".$reserveDate."',
-			'".$reserveTime."',0);");
+			'".$reserveTime."',
+			'".$reserveDateTime."',
+			0);");
 
 			 	if ($this->db->affected_rows() > 0)
 			 	{
@@ -171,6 +175,39 @@
 			 	}
 			 }
 		}
+
+		public function editReservation(){
+		if($this->session->userdata('admin_objectId')){
+		 	$reserveDate= $this->input->post("reserveDate");
+			$reserveTime= $this->input->post("reserveTime");
+			$reserveDateTime = date('Y-m-d H:i:s', strtotime(str_replace('-', '/', ''.$reserveDate.' '.$reserveTime.'')));
+			$serviceId =$this->input->post("serviceId");
+			$reservationId =$this->input->post("reservationId");
+			
+	 		$inputEmail = $this->input->post("reservationUserEmail");
+	 		
+			$userByEmail=$this->db->query("SELECT * FROM users where email='".$inputEmail."'");
+			
+			$user = $userByEmail->row();
+
+			$query = $this->db->query("UPDATE `vet_app`.`users_reservation` 
+				SET serviceId='".$serviceId."',
+				userId='".$user->objectId."',
+				reserveDate='".$reserveDate."',
+				reserveTime='".$reserveTime."',
+				reserveDateTime='".$reserveDateTime."' 
+				where objectId ='".$reservationId."';");
+
+			 	if ($this->db->affected_rows() > 0)
+			 	{
+			 		set_status_header((int)200); 
+			 	}else{
+			 		set_status_header((int)200); 
+			 	}
+			 }
+		}
+
+
 
 		public function checkEmailExist(){
 			$inputEmail = $this->input->post("userEmailCheck");

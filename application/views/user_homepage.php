@@ -72,10 +72,6 @@
                     <div class="panel-body">
                       <select class="form-control reserveTimeSelect">
                         <option value=0>Time</option>
-                        <option value=1>6:00 AM</option>
-                        <option value=2>7:00 AM</option>
-                        <option value=3>8:00 AM</option>
-                        <option value=4>9:00 AM</option>
                         <option value=5>10:00 AM</option>
                         <option value=6>11:00 AM</option>
                         <option value=7>12:00 PM</option>
@@ -86,8 +82,6 @@
                         <option value=12>6:00 PM</option>
                         <option value=13>7:00 PM</option>
                         <option value=14>8:00 PM</option>
-                        <option value=15>9:00 PM</option>
-                        <option value=16>10:00 PM</option>
                       </select>
                     </div>
                   </div>
