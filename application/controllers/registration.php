@@ -25,7 +25,7 @@
 			$lastName = $this->input->post("lastName");
 
 			if($inputEmail){
-				$query = $this->db->query("INSERT INTO `vet_app`.`users` VALUES (NULL,'".$username."', '".$inputPassword."', '".$firstName."', '".$lastName."','".$inputEmail."',1);");
+				$query = $this->db->query("INSERT INTO `vet_app`.`users` VALUES (NULL,'".$username."', '".$inputPassword."', '".$firstName."', '".$lastName."','".$inputEmail."',1,NULL);");
 
 				if ($this->db->affected_rows() > 0)
 				{

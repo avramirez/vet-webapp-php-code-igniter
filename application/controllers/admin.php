@@ -237,7 +237,7 @@
 
 
 			if($inputEmail){
-				$query = $this->db->query("INSERT INTO `vet_app`.`users` VALUES (NULL,'".$username."', '".$inputPassword."', '".$firstName."', '".$lastName."','".$inputEmail."',".$userLevel.");");
+				$query = $this->db->query("INSERT INTO `vet_app`.`users` VALUES (NULL,'".$username."', '".$inputPassword."', '".$firstName."', '".$lastName."','".$inputEmail."',".$userLevel.",NULL);");
 
 				if ($this->db->affected_rows() > 0)
 				{
@@ -292,7 +292,7 @@
 			$userObjectId=$this->input->post("userObjectId");
 			$inputPassword = $this->input->post("inputPassword");
 			$inputPassword = $hash = $this->encrypt->sha1($inputPassword);
-			
+
 			$query = $this->db->query("UPDATE vet_app.users 
 				SET password = '".$inputPassword."' 
 				WHERE users.objectId = ".$userObjectId.";");
@@ -303,6 +303,33 @@
 				}else{
 					set_status_header((int)500); 
 				}
+		}
+
+		public function generateUserPDF(){
+			$this->load->helper(array('dompdf', 'file'));
+
+			$reportMonthFrom=$this->input->post("reportMonthFrom");
+			$reportYearFrom=$this->input->post("reportYearFrom");
+			$reportMonthTo=$this->input->post("reportMonthTo");
+			$reportYearTo=$this->input->post("reportYearTo");
+
+			$reportDateFrom = date('Y-m-d H:i:s', strtotime(str_replace('-', '/', ''.$reportMonthFrom.'/01/'.$reportYearFrom.'')));
+			$reportDateto = date('Y-m-d H:i:s', strtotime(str_replace('-', '/', ''.$reportMonthTo.'/01/'.$reportYearTo.'')));
+			$reportDateto = date_format(date_modify(new DateTime($reportDateto),'last day of  this month'), 'Y-m-d H:i:s');
+
+			$query = $this->db->query("SELECT * FROM users 
+				WHERE createdAt >= '".$reportDateFrom."' 
+				AND createdAt <='".$reportDateto."';");
+			$usersData['users'] = $query->result_array();
+			
+			
+			$usersData['reportDateFrom']=$reportDateFrom;
+			$usersData['reportDateto']=$reportDateto;
+			
+
+		    $html =$this->load->view('admin_user_report',$usersData,true);
+		    // $this->output->append_output($html);
+		    pdf_create($html, 'test');
 		}
 		
 	}

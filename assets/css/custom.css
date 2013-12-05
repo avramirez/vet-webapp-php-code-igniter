@@ -1,4 +1,6 @@
-
+.noPadding{
+	padding:0px;
+}
 
 
 .table > tbody > tr > td.vert{
@@ -20,3 +22,14 @@
 label.error{
 	color: red;
 }
+
+tbody{
+	font-weight: normal;
+	
+	
+}
+
+.panel-body{
+	font-weight: normal;
+}
+

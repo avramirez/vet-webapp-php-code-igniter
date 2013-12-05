@@ -99,10 +99,10 @@
             <thead>
               <tr>
                 <th style="width:225px;">Email</th>
-                <th style="width:170px;">Service Name</th>
+                <th style="width:260px;">Service Name</th>
                 <th style="">Date</th>
                 <th style="">Time</th>
-				 <th style="">Price</th>
+				        <th style="text-align:right;padding-right:20px;">Price</th>
                 <th style="width:130px;"></th>
               </tr>
             </thead>

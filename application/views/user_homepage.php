@@ -41,11 +41,6 @@
           </table>
         </div>
 
-      <div class="row marketing">
-        <div class="col-lg-12">
-          <h4>Reservations</h4>
-          <p>You can view your reservations in the manage reservations page.</p>
-      </div>
 
         <!-- Modal -->
         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

@@ -21,8 +21,8 @@
           <table class="table table-hover" id="adminUsersTable">
             <thead>
               <tr>
-			  <th style="width:160px">Product ID</th>
-                <th style="width:270px;">Product Name</th>
+			  <th style="width:110px">Product ID</th>
+                <th style="width:315px;">Product Name</th>
                 <th style="">Quantity</th>
                 <th style="">Price</th>
 				  <th style="">Product Type</th>
