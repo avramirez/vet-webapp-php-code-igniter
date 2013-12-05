@@ -126,7 +126,17 @@
 				
 				$userId = $this->session->userdata('user_objectId');
 
-				$query = $this->db->query("SELECT ur.objectId as reservationobjectId,svs.objectId as serviceObjectId,svs.service_name,ur.reserveDate,ur.reserveTime,svs.price FROM users_reservation ur INNER JOIN services svs ON ur.serviceId = svs.objectId  WHERE ur.userId='".$userId."';");	
+				$query = $this->db->query("SELECT ur.objectId as reservationobjectId,
+					svs.objectId as serviceObjectId,
+					svs.service_name,
+					ur.reserveDate,
+					ur.reserveTime,
+					svs.price 
+					FROM users_reservation ur 
+					INNER JOIN services svs 
+					ON ur.serviceId = svs.objectId  
+					WHERE ur.userId='".$userId."' 
+					ORDER BY ur.reserveDateTime DESC;");	
 	
 				$data['stylesheets'] =array('jumbotron-narrow.css');
 				$data['show_navbar'] ="true";
@@ -174,8 +184,15 @@
 				$productId=$this->input->post('productId');
 				$productAmount=$this->input->post('productAmount');
 				$totalPrice=$this->input->post('totalPrice');
+				$orderDate = $dateToday =date('Y-m-d H:i:s');
 
-				$query = $this->db->query("INSERT INTO `vet_app`.`users_order` VALUES (NULL,'".$productId."','".$userId."','".$productAmount."','".$totalPrice."');");
+				$query = $this->db->query("INSERT INTO `vet_app`.`users_order` 
+					VALUES (NULL,
+						'".$productId."',
+						'".$userId."',
+						'".$productAmount."',
+						'".$totalPrice."',
+						'".$orderDate."');");
 				$updateProduct = $this->db->simple_query("UPDATE vet_app.products set product_quantity = (CASE WHEN ((product_quantity - ".$productAmount.") < 0) THEN 0 ELSE (product_quantity - ".$productAmount.") END) WHERE objectId='".$productId."';");
 
 				if ($this->db->affected_rows() > 0 && updateProduct)
@@ -248,6 +265,7 @@
 				 from vet_app.users_order uo 
 				 INNER JOIN  vet_app.products prod ON uo.productId = prod.objectId 
 				 WHERE uo.usersId='".$userId."' 
+				 ORDER BY orderDate DESC 
 				 LIMIT 0 , 2000;");	
 	
 				$data['stylesheets'] =array('jumbotron-narrow.css');

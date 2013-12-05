@@ -398,6 +398,7 @@ $(document).ready(function(){
 	}else if ($("#adminAddUser").length) {
 
 		$(".adminNavbar .navAdminUserManage").addClass("active");
+
 		$('body').on('click','.editUserFromAdmin',function(e){
 			var $row = $(this).closest("tr");
 			$("#inputEmailUpdate").val($row.find(".userEmail").text());
@@ -419,8 +420,19 @@ $(document).ready(function(){
 
 		$('body').on('click','.removeUserFromAdmin',function(e){
 			$('#confirmationModal .confirmAction').attr("data-objectid",$(this).attr("data-objectid"));
+			$('#confirmationModal .confirmAction').attr("data-confirm","confirmDeleteAdmin");
+			$('#confirmationModal .modal-body').text(" Are you sure you want to delete this item?");
 			$('#confirmationModal').modal();
 		});
+
+		$('body').on('click','.generatenewPassword',function(e){
+			$('#confirmationModal .confirmAction').attr("data-objectid",$("#userObjectIdUpdate").val());
+			$('#confirmationModal .confirmAction').attr("data-confirm","confirmGenerateNewPassword");
+			$('#confirmationModal .modal-body').html("<p>Are you sure you want to generate new password for this user?</p><p>Your new password would be: <span id='newGeneratedPassword' style='color:red;font-weight:bold;'>"+Math.random().toString(36).substring(10)+"</span></p>");
+			
+			$('#confirmationModal').modal();
+		});
+
 		$('body').on('click','.confirmAction',function(){
 			if($(this).attr("data-confirm") == "confirmDeleteAdmin"){
 				$.ajax({
@@ -439,6 +451,21 @@ $(document).ready(function(){
 								$("#adminUsersTable").html($(data).find("#adminUsersTable").html());
 							}
 					})
+					}
+				})
+			}else if($(this).attr("data-confirm") == "confirmGenerateNewPassword"){
+				$.ajax({
+					method:"POST",
+					url:'admin/generateNewPassword',
+					data:{
+						'userObjectId':$(this).attr("data-objectid"),
+						'inputPassword':$('#newGeneratedPassword').text()
+					},
+					success:function(data,status,jqXHR){
+						$(".addUserSuccess strong").text("Successfuly reset password!");
+				  	$(".addUserSuccess").show();
+				  	$('#confirmationModal').modal('hide');
+				  	
 					}
 				})
 			}

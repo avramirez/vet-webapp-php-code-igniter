@@ -81,6 +81,7 @@
 					 from vet_app.users_order uo 
 					 INNER JOIN  vet_app.products prod ON uo.productId = prod.objectId 
 					 WHERE uo.usersId='".$user->objectId."' 
+					 ORDER BY uo.orderDate DESC 
 					 LIMIT 0 , 2000;");
 
 					$ordersData['list_of_orders'] = $query->result_array();
@@ -115,7 +116,8 @@
 					ur.confirmed
 					FROM users_reservation ur 
 					INNER JOIN services svs ON ur.serviceId = svs.objectId 
-					INNER JOIN users u ON ur.userId = u.objectId;");
+					INNER JOIN users u ON ur.userId = u.objectId 
+					ORDER BY ur.reserveDateTime DESC;");
 
 				$services = $this->db->query("SELECT * FROM services where active=1;");	
 
@@ -284,5 +286,24 @@
 					set_status_header((int)500); 
 				}
 		}
+
+		public function generateNewPassword(){
+			$this->load->library('encrypt');
+			$userObjectId=$this->input->post("userObjectId");
+			$inputPassword = $this->input->post("inputPassword");
+			$inputPassword = $hash = $this->encrypt->sha1($inputPassword);
+			
+			$query = $this->db->query("UPDATE vet_app.users 
+				SET password = '".$inputPassword."' 
+				WHERE users.objectId = ".$userObjectId.";");
+
+				if ($this->db->affected_rows() > 0)
+				{
+					set_status_header((int)200); 
+				}else{
+					set_status_header((int)500); 
+				}
+		}
+		
 	}
 ?>

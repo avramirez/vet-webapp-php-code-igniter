@@ -73,7 +73,9 @@
                           </tbody>
                         </table>
                          <button type="button" data-objectid="1" name="backtoadd" class="btn btn-success backToAddUser pull-right">Back to Add User</button>
+                         <button type="button" data-objectid="1" name="generatenewPassword" class="btn btn-info generatenewPassword pull-right" style="margin-right:10px;">Generate New Password</button>
                          <button type="submit" class="btn btn-primary pull-right" name="updateuserbtn" style="margin-right:10px;">Save Changes</button>
+
                       </form>
                     </div>
               </div>
@@ -143,12 +145,12 @@
               </div>
               
               <div class="modal-body clearfix">
-                Are you sure you want to delete this item?
+               
               </div>
 
               <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary confirmAction" data-confirm="confirmDeleteAdmin">Yes</button>
+                <button type="button" class="btn btn-primary confirmAction">Yes</button>
               </div>
             </div><!-- /.modal-content -->
           </div><!-- /.modal-dialog -->
