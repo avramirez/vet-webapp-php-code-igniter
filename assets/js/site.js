@@ -150,7 +150,24 @@ $(document).ready(function(){
 	}else if($('#userRegister').length){
 
 		$('.navMainLayout li#navUserRegister').addClass('active');
-
+		$('body').on('change','#inputEmail',function(event){
+		  $.ajax({
+		  method:"POST",
+		  data:{
+		  'userEmailCheck':$(this).val()
+		  },
+		  url:"admin/checkEmailExist",
+		  success:function(data,status,jQxr){
+		  	console.log("ee");
+		  	$("#inputEmail").val("Email already exist!");
+		  },
+		  statusCode:{
+			  	400:function(){
+			  		
+			  	}
+			  }
+		  });
+		});
 		$("#userRegister").validate({
 			submitHandler:function(form){
 				$.ajax({  
@@ -233,12 +250,12 @@ $(document).ready(function(){
 		  'userEmailCheck':$(this).val()
 		  },
 		  url:"checkEmailExist",
-		  sucess:function(data,status,jQxr){
+		  success:function(data,status,jQxr){
 		  
 		  },
 		  statusCode:{
 			  	400:function(){
-			  		$("#reservationUserEmail").val("");
+			  		$("#reservationUserEmail").val("Email doesnt exist!");
 			  	}
 			  }
 		  });
