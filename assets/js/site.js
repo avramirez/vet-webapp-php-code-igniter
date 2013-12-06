@@ -448,22 +448,27 @@ $('body').on('click','#generateReservationReport',function(e){
 		});
 	}else if ($("#adminProducts").length) {
 		$('body').on('click','#generateProductReport',function(e){
+			e.preventDefault();
 			if($('.reportYearTo').val() !=0 && $('.reportYearFrom').val() !=0 && ($('.reportYearFrom').val() <= $('.reportYearTo').val()) && ($('.reportMonthFrom').val() <= $('.reportMonthTo').val())){
-				$("#generateUserReportcollapse .alert-danger").hide();
-				$.ajax({
-					method:"POST",
-					async:true,
-					data:{
-						'reportMonthFrom':$('.reportMonthFrom').val(),
-						'reportYearFrom':$('.reportYearFrom').val(),
-						'reportMonthTo':$('.reportMonthTo').val(),
-						'reportYearTo':$('.reportYearTo').val()
-					},
-					url:'generateProductReport',
-					success:function(data,status,jqXHR){
 
-					}
-				});
+				$("#generatePDF").submit();
+				$("#generateUserReportcollapse .alert-danger").hide();
+
+				// $("#generateUserReportcollapse .alert-danger").hide();
+				// $.ajax({
+				// 	method:"POST",
+				// 	async:true,
+				// 	data:{
+				// 		'reportMonthFrom':$('.reportMonthFrom').val(),
+				// 		'reportYearFrom':$('.reportYearFrom').val(),
+				// 		'reportMonthTo':$('.reportMonthTo').val(),
+				// 		'reportYearTo':$('.reportYearTo').val()
+				// 	},
+				// 	url:'generateProductReport',
+				// 	success:function(data,status,jqXHR){
+
+				// 	}
+				// });
 			}else{
 				$("#generateUserReportcollapse .alert-danger").show();
 				$("#generateUserReportcollapse .alert-danger strong").text("Please choose a proper dates!")
@@ -475,22 +480,27 @@ $('body').on('click','#generateReservationReport',function(e){
 		$(".adminNavbar .navAdminUserManage").addClass("active");
 
 		$('body').on('click','#generateUserReport',function(e){
+			e.preventDefault();
 			if($('.reportYearTo').val() !=0 && $('.reportYearFrom').val() !=0 && ($('.reportYearFrom').val() <= $('.reportYearTo').val()) && ($('.reportMonthFrom').val() <= $('.reportMonthTo').val())){
-				$("#generateUserReportcollapse .alert-danger").hide();
-				$.ajax({
-					method:"POST",
-					async:true,
-					data:{
-						'reportMonthFrom':$('.reportMonthFrom').val(),
-						'reportYearFrom':$('.reportYearFrom').val(),
-						'reportMonthTo':$('.reportMonthTo').val(),
-						'reportYearTo':$('.reportYearTo').val()
-					},
-					url:'admin/generateUserPDF',
-					success:function(data,status,jqXHR){
 
-					}
-				});
+				$("#generatePDF").submit();
+				$("#generateUserReportcollapse .alert-danger").hide();
+
+				// $("#generateUserReportcollapse .alert-danger").hide();
+				// $.ajax({
+				// 	method:"POST",
+				// 	async:true,
+				// 	data:{
+				// 		'reportMonthFrom':$('.reportMonthFrom').val(),
+				// 		'reportYearFrom':$('.reportYearFrom').val(),
+				// 		'reportMonthTo':$('.reportMonthTo').val(),
+				// 		'reportYearTo':$('.reportYearTo').val()
+				// 	},
+				// 	url:'admin/generateUserPDF',
+				// 	success:function(data,status,jqXHR){
+
+				// 	}
+				// });
 			}else{
 				$("#generateUserReportcollapse .alert-danger").show();
 				$("#generateUserReportcollapse .alert-danger strong").text("Please choose a proper dates!")
@@ -499,6 +509,7 @@ $('body').on('click','#generateReservationReport',function(e){
 		
 
 		$('body').on('click','.editUserFromAdmin',function(e){
+			$('#addUsercollpase').collapse('show');
 			var $row = $(this).closest("tr");
 			$("#inputEmailUpdate").val($row.find(".userEmail").text());
 			$("#usernameUpdate").val($row.find(".userUsername").text());
