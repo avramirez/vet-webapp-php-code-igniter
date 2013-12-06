@@ -29,15 +29,25 @@
             </thead>
             <tbody>
               <?php foreach ($list_of_poducts as $row){
-
-                echo "<tr>";
+                $productquantity = intval($row['product_quantity']);
+                if($productquantity <=10){
+                  echo "<tr style='color:red'>";  
+                }else{
+                  echo "<tr>";
+                }
+                
                 echo "<td class='vert productName'>".$row['product_name']."</td>";
                 echo "<td class='vert productType'>".$row['product_type']."</td>";
                 echo "<td class='vert productQuantity rightalignPadding'>".$row['product_quantity']."</td>";
                 echo "<td class='vert productPrice rightalignPadding'>&#8369; <span>".$row['product_price']."</span></td>";
                 echo '<td class="vert orderQuantity"><input type="number" min="1" value="1" class="form-control" name="orederQuantity" style="text-align:right;"></td>';
                 echo "<td class='vert'>";
-                echo "<button type='button' data-objectId='".$row['objectId']."' class='btn btn-primary btn-sm addToCart pull-left'>Add to Cart</button>";
+                if($productquantity <=0){
+                  echo "OUT OF STOCK!";
+                }else{
+                  echo "<button type='button' data-objectId='".$row['objectId']."' class='btn btn-primary btn-sm addToCart pull-left'>Add to Cart</button>";  
+                }
+                
                 echo "</td>";
                 echo "</tr>";
                 }

@@ -197,8 +197,9 @@ $(document).ready(function(){
 		$('body').on('click','.addToCart',function(e){
 			$orderRow = $(this).parent().parent();
 			$orderQuantityInput = $orderRow.children(".orderQuantity").children("input");
-
-			if($orderQuantityInput.val() == ""){
+			var productQuantity = parseInt($orderRow.find(".productQuantity").text());
+			
+			if($orderQuantityInput.val() == "" || (parseInt($orderQuantityInput.val()) > productQuantity) || parseInt($orderQuantityInput.val()) < 0){
 				
 			}else{
 				$('.detailProductName').text($orderRow.children('.productName').text());
@@ -236,7 +237,12 @@ $(document).ready(function(){
 								$("#orderPage").html($(data).find("#orderPage").html());
 							}
 						})
-					}
+					},statusCode:{
+						  	500:function(){
+						  		console.log("ettt");
+						  		$('#confirmationModal .modal-footer').prepend(" <strong>Warning!</strong> Invalid Request, refresh the page to get the latest quantity count.");
+						  	}
+						  }
 				})
 			}	
 		})		

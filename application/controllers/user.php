@@ -193,7 +193,7 @@
 						'".$productAmount."',
 						'".$totalPrice."',
 						'".$orderDate."');");
-				$updateProduct = $this->db->simple_query("UPDATE vet_app.products set product_quantity = (CASE WHEN ((product_quantity - ".$productAmount.") < 0) THEN 0 ELSE (product_quantity - ".$productAmount.") END) WHERE objectId='".$productId."';");
+				$updateProduct = $this->db->simple_query("UPDATE vet_app.products set product_quantity = (CASE WHEN ((product_quantity - ".$productAmount.") < 0) THEN product_quantity ELSE (product_quantity - ".$productAmount.") END) WHERE objectId='".$productId."';");
 
 				if ($this->db->affected_rows() > 0 && updateProduct)
 				{
