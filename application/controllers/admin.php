@@ -437,14 +437,17 @@
 
 		    $html =$this->load->view('admin_reservation_report',$usersData,true);
 
-		    $this->output->set_header('Content-type: application/pdf');
-		    $this->output->set_header('Content-Disposition: attachment; filename="admin_reservation_report.pdf"');
+		    
 		    // $this->output->append_output($html);
-		    // pdf_create($html, 'userReport');
+		    
+		    pdf_create($html, 'admin_reservation_report');
+		    
 
-		    $data = pdf_create($html, '', false);
-     		// write_file('name', $data);
-     		$this->output->append_output($data);
+		    // $this->output->set_header('Content-type: application/pdf');
+		    // $this->output->set_header('Content-Disposition: attachment; filename="admin_reservation_report.pdf"');
+		    // $data = pdf_create($html, '', false);
+		    // 	$this->output->append_output($data);
+		
 		}
 		
 	}

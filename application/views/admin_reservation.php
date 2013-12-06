@@ -97,14 +97,18 @@
                       <div class="alert alert-danger" style="display:none;">
                                 <button type="button" class="close" data-hide="alert" aria-hidden="true">&times;</button>
                                 <strong></strong>
-                      </div>                      
+                      </div>
+                       <form action="generateReservationReport" method="POST" id="generatePDF">
+                                            
                     <div class="row">
+
+                      
                     <div class="col-md-6 noPadding">
                       <div class="col-md-12">
                       <label> From</label>
                       </div>
                       <div class="col-md-6">
-                        <select class="form-control reportMonthFrom">
+                        <select class="form-control reportMonthFrom" name="reportMonthFrom">
                           <option value="01">January</option>
                           <option value="02">February</option>
                           <option value="03">March</option>
@@ -120,7 +124,7 @@
                         </select>
                       </div>
                       <div class="col-md-6">
-                        <select class="form-control reportYearFrom">
+                        <select class="form-control reportYearFrom" name="reportYearFrom">
                           <option value="0">Year</option>
                           <option value="2013">2013</option>
                           <option value="2012">2012</option>
@@ -157,7 +161,7 @@
                       <label> To</label>
                       </div>
                       <div class="col-md-6">
-                        <select class="form-control reportMonthTo">
+                        <select class="form-control reportMonthTo" name="reportMonthTo">
                           <option value="01">January</option>
                           <option value="02">February</option>
                           <option value="03">March</option>
@@ -173,7 +177,7 @@
                         </select>
                       </div>
                       <div class="col-md-6">
-                        <select class="form-control reportYearTo">
+                        <select class="form-control reportYearTo" name="reportYearTo">
                           <option value="0">Year</option>
                           <option value="2013">2013</option>
                           <option value="2012">2012</option>
@@ -207,10 +211,10 @@
                   </div>
                     <div class="row">
                   <div class="col-md-12 clearfix">
-                    <button type="button" class="btn btn-sm btn-info" style="float:right;margin-top:10px;" id="generateReservationReport">Generate Report</button>
+                    <button type="submit" class="btn btn-sm btn-info" style="float:right;margin-top:10px;" id="generateReservationReport">Generate Report</button>
                   </div>
                     </div>
-
+                  </form>
 
                   </div>
               </div>
