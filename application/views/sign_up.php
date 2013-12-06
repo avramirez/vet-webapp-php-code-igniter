@@ -11,7 +11,7 @@
 		  </div>
 		  <div class="form-group">
 		    <label for="username">Username</label>
-		    <input type="text" class="form-control" name="username" id="username" placeholder="Username" required>
+		    <input type="text" class="form-control" name="username" id="username" placeholder="Username" minlength="5" required>
 		  </div>
 		  <div class="form-group">
 		    <label for="inputPassword">Password</label>
@@ -19,11 +19,11 @@
 		  </div>
 		  <div class="form-group">
 		    <label for="firstName">First Name</label>
-		    <input type="text" class="form-control" name="firstName" id="firstName" placeholder="First Name" required>
+		    <input type="text" class="form-control" name="firstName" id="firstName" placeholder="First Name" minlength="3" required>
 		  </div>
 			<div class="form-group">
 			    <label for="lastName">Last Name</label>
-			    <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Last Name" required>
+			    <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Last Name" minlength="3" required>
 		  	</div>
 		  <button type="submit" class="btn btn-default pull-right">Register</button>
 		</form>

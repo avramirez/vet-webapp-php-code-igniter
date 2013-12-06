@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 27, 2013 at 09:30 PM
+-- Generation Time: Dec 06, 2013 at 01:01 AM
 -- Server version: 5.5.22
 -- PHP Version: 5.4.19
 
@@ -42,8 +42,8 @@ CREATE TABLE IF NOT EXISTS `products` (
 --
 
 INSERT INTO `products` (`objectId`, `product_name`, `product_quantity`, `product_price`, `product_type`) VALUES
-(1, 'ALLOPURINOL tablet 300mg, 100/box. Sold per tab.', 4425, 10, 'Tablets and Capsules'),
-(2, 'ALUMINUM HYDROXIDE MAGNESIUM HYDROXIDE tablet 200mg/100mg, 100/box.Sold per tab.', 2998, 10, 'Tablets and Capsules');
+(1, 'ALLOPURINOL tablet 300mg, 100/box. Sold per tab.', 4424, 10, 'Tablets and Capsules'),
+(2, 'ALUMINUM HYDROXIDE MAGNESIUM HYDROXIDE tablet 200mg/100mg, 100/box.Sold per tab.', 2997, 10, 'Tablets and Capsules');
 
 -- --------------------------------------------------------
 
@@ -84,28 +84,19 @@ CREATE TABLE IF NOT EXISTS `users` (
   `last_name` varchar(40) NOT NULL,
   `email` varchar(40) NOT NULL,
   `user_level` int(11) DEFAULT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`objectId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=22 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=26 ;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`objectId`, `username`, `password`, `first_name`, `last_name`, `email`, `user_level`) VALUES
-(1, 'asd', 'ds', 'asd', 'ad', 'dsada@yahoo.com', 1),
-(6, 'aj_chichi', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'Andrew', 'Ramirez', 'aj_chichi@yahoo.com', 1),
-(10, 'avramirez', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'av', 'ramirez', 'avramirez@dynamicobjx.com', 1),
-(11, 'testing', 'dc724af18fbdd4e59189f5fe768a5f8311527050', 'test', 'tis', 'testing@yahoo.com', 1),
-(12, 'sad', 'a6c78cad8916fbc6e07cbcfd3c601d446798becd', 'sad', 'dsa', 'sda@yah.com', 1),
-(13, 'sdasda', 'f2f26783d8d487ef785cbe74ba35843a33affbbb', 'asdas', 'asdasd', 'dasdsa@yahoo.com', 1),
-(14, 'sadada', '00ea1da4192a2030f9ae023de3b3143ed647bbab', 'asdasd', 'asdasd', 'asdas@yahoo.com', 1),
-(15, 'asdasd', 'd5644e8105ad77c3c3324ba693e83d8fffd54950', 'asdasdsa', 'sadasd', 'dsadasd@yahoo.com', 1),
-(16, 'asdasd', 'b3be08ea24c5c3d983d1fbabfc694a8b7301c939', 'asdasd', 'asdasd', 'sdsad@yahoo.com', 1),
-(17, 'sadas', 'b263a7df8ed761390d22ac0864db693d109f9d1a', 'asdasd', 'sdasd', 'asdasd@yahoo.com', 1),
-(18, 'admin', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'admin', 'admin', 'admin1@admin.com', 2),
-(19, 'tresting', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'terst', 'ting', 'tresting@yahoo.com', 3),
-(20, 'eliboy', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'eli', 'zer', 'ellizer@yahoo.com', 2),
-(21, 'mariaozawa', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'maria', 'ozawaw', 'mariaozawa@yahoo.com', 1);
+INSERT INTO `users` (`objectId`, `username`, `password`, `first_name`, `last_name`, `email`, `user_level`, `createdAt`) VALUES
+(22, 'test', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'test', 'test', 'test@test.com', 1, '2013-12-05 17:11:09'),
+(23, 'superadmin', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'superadmin', 'superadmin', 'superadmin@admin.com', 2, '2013-12-05 17:14:09'),
+(24, 'adminuser', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'adminuser', 'adminuser', 'adminuser@admin.com', 3, '2013-12-05 17:16:10'),
+(25, 'adminreserve', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'adminreserve', 'adminreserve', 'adminreserve@yahoo.com', 4, '2013-12-05 19:17:16');
 
 -- --------------------------------------------------------
 
@@ -119,18 +110,11 @@ CREATE TABLE IF NOT EXISTS `users_order` (
   `usersId` int(11) NOT NULL,
   `productAmount` int(11) NOT NULL,
   `totalPrice` float NOT NULL,
+  `orderDate` datetime NOT NULL,
   PRIMARY KEY (`objectId`),
   KEY `productId` (`productId`),
   KEY `usersId` (`usersId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
-
---
--- Dumping data for table `users_order`
---
-
-INSERT INTO `users_order` (`objectId`, `productId`, `usersId`, `productAmount`, `totalPrice`) VALUES
-(1, 1, 10, 4, 40),
-(4, 2, 10, 2, 20);
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
 
 -- --------------------------------------------------------
 
@@ -144,22 +128,19 @@ CREATE TABLE IF NOT EXISTS `users_reservation` (
   `userId` int(10) NOT NULL,
   `reserveDate` varchar(15) NOT NULL,
   `reserveTime` varchar(15) NOT NULL,
+  `reserveDateTime` datetime NOT NULL,
   `confirmed` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`objectId`),
   KEY `serviceId` (`serviceId`),
   KEY `userId` (`userId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=25 ;
 
 --
 -- Dumping data for table `users_reservation`
 --
 
-INSERT INTO `users_reservation` (`objectId`, `serviceId`, `userId`, `reserveDate`, `reserveTime`, `confirmed`) VALUES
-(9, 1, 10, '11/07/2013', '7:00 AM', 0),
-(10, 3, 10, '11/08/2013', '8:00 PM', 0),
-(11, 2, 10, '11/30/2013', '2:00 PM', 0),
-(12, 4, 10, '11/10/2013', '8:00 AM', 0),
-(13, 1, 10, '12/01/2013', '3:00 PM', 0);
+INSERT INTO `users_reservation` (`objectId`, `serviceId`, `userId`, `reserveDate`, `reserveTime`, `reserveDateTime`, `confirmed`) VALUES
+(24, 1, 22, '12/18/2013', '2:00 PM', '2013-12-18 14:00:00', 0);
 
 --
 -- Constraints for dumped tables
