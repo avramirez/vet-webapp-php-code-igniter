@@ -436,6 +436,8 @@
 			
 
 		    $html =$this->load->view('admin_reservation_report',$usersData,true);
+		    $this->output->set_header('Content-type: application/pdf');
+		    $this->output->set_header('Content-Disposition: attachment; filename="admin_reservation_report.pdf"');
 		    // $this->output->append_output($html);
 		    pdf_create($html, 'userReport');
 		}
