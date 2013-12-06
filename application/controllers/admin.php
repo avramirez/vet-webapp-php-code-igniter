@@ -393,6 +393,52 @@
 		    // $this->output->append_output($html);
 		    pdf_create($html, 'productReport');
 		}
+
+
+		public function generateReservationReport(){
+			$this->load->helper(array('dompdf', 'file'));
+
+			$reportMonthFrom=$this->input->post("reportMonthFrom");
+			$reportYearFrom=$this->input->post("reportYearFrom");
+			$reportMonthTo=$this->input->post("reportMonthTo");
+			$reportYearTo=$this->input->post("reportYearTo");
+
+			$reportDateFrom = date('Y-m-d H:i:s', strtotime(str_replace('-', '/', ''.$reportMonthFrom.'/01/'.$reportYearFrom.'')));
+			$reportDateto = date('Y-m-d H:i:s', strtotime(str_replace('-', '/', ''.$reportMonthTo.'/01/'.$reportYearTo.'')));
+			$reportDateto = date_format(date_modify(new DateTime($reportDateto),'last day of  this month'), 'Y-m-d H:i:s');
+
+			$query = $this->db->query("SELECT 
+					ur.objectId as reservationobjectId,
+					svs.objectId as serviceObjectId,
+					u.objectId as usersObjectId,
+					u.username,
+					u.email,
+					u.first_name,
+					u.last_name,
+					svs.service_name,
+					ur.reserveDate,
+					ur.reserveTime,
+					svs.price,
+					ur.confirmed
+					FROM users_reservation ur 
+					INNER JOIN services svs ON ur.serviceId = svs.objectId 
+					INNER JOIN users u ON ur.userId = u.objectId 
+					WHERE ur.reserveDateTime >= '".$reportDateFrom."' 
+					AND ur.reserveDateTime <='".$reportDateto."' 
+					ORDER BY ur.reserveDateTime DESC;");
+
+			
+			$usersData['reservations'] = $query->result_array();
+			
+			
+			$usersData['reportDateFrom']=$reportDateFrom;
+			$usersData['reportDateto']=$reportDateto;
+			
+
+		    $html =$this->load->view('admin_reservation_report',$usersData,true);
+		    // $this->output->append_output($html);
+		    pdf_create($html, 'userReport');
+		}
 		
 	}
 ?>
