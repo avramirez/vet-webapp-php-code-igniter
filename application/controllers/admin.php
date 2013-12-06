@@ -329,7 +329,39 @@
 
 		    $html =$this->load->view('admin_user_report',$usersData,true);
 		    // $this->output->append_output($html);
-		    pdf_create($html, 'test');
+		    pdf_create($html, 'userReport');
+		}
+
+		public function generateProductReport(){
+			$this->load->helper(array('dompdf', 'file'));
+
+			$reportMonthFrom=$this->input->post("reportMonthFrom");
+			$reportYearFrom=$this->input->post("reportYearFrom");
+			$reportMonthTo=$this->input->post("reportMonthTo");
+			$reportYearTo=$this->input->post("reportYearTo");
+
+			$reportDateFrom = date('Y-m-d H:i:s', strtotime(str_replace('-', '/', ''.$reportMonthFrom.'/01/'.$reportYearFrom.'')));
+			$reportDateto = date('Y-m-d H:i:s', strtotime(str_replace('-', '/', ''.$reportMonthTo.'/01/'.$reportYearTo.'')));
+			$reportDateto = date_format(date_modify(new DateTime($reportDateto),'last day of  this month'), 'Y-m-d H:i:s');
+
+
+			// $query = $this->db->query("SELECT * FROM products 
+			// 	WHERE createdAt >= '".$reportDateFrom."' 
+			// 	AND createdAt <='".$reportDateto."';");
+
+			// NOTE CHANGE THIS
+			$query = $this->db->query("SELECT * FROM products;");
+
+			$usersData['products'] = $query->result_array();
+			
+			
+			$usersData['reportDateFrom']=$reportDateFrom;
+			$usersData['reportDateto']=$reportDateto;
+			
+
+		    $html =$this->load->view('admin_products_report',$usersData,true);
+		    // $this->output->append_output($html);
+		    pdf_create($html, 'productReport');
 		}
 		
 	}
