@@ -5,13 +5,27 @@
 		        parent::__construct();
 		        // Your own constructor code
 		        $this->load->library('session');
-
 		}
+
+		private function checkAllowed($notAllowedLevels){
+					$userLevel = $this->session->userdata('user_level');
+					if (in_array($userLevel, $notAllowedLevels)) {
+					    if($userLevel == 3){
+					    	redirect("admin");
+					    }else if ($userLevel == 4) {
+					    	redirect("admin/manageReservation"); 
+					    }
+					}
+				}
 		public function index(){
 			if($this->session->userdata('admin_objectId')){
+				$this->checkAllowed([4]);
+				
+				$navbarData['userLevel'] = $this->session->userdata('user_level');
+
 				$data['stylesheets'] =array('jumbotron-narrow.css');
 				$data['show_navbar'] ="true";
-				$data['content_navbar'] = $this->load->view('admin_navbar','',true);
+				$data['content_navbar'] = $this->load->view('admin_navbar',$navbarData,true);
 				$query = $this->db->query("SELECT * FROM users");
 				$usersData['users'] = $query->result_array();
 
@@ -24,12 +38,17 @@
 			}
 		}
 
+
 		public function manageProducts()
 		{
 			if($this->session->userdata('admin_objectId')){
+				$this->checkAllowed([3,4]);
+				
+				$navbarData['userLevel'] = $this->session->userdata('user_level');
+
 				$data['stylesheets'] =array('jumbotron-narrow.css');
 				$data['show_navbar'] ="true";
-				$data['content_navbar'] = $this->load->view('admin_navbar','',true);
+				$data['content_navbar'] = $this->load->view('admin_navbar',$navbarData,true);
 
 				$query = $this->db->query("SELECT * FROM products;");
 				
@@ -48,10 +67,16 @@
 		
 
 		public function userorder(){
+			
+
 			if($this->session->userdata('admin_objectId')){
+				$this->checkAllowed([4]);
+				
+				$navbarData['userLevel'] = $this->session->userdata('user_level');
+
 				$data['stylesheets'] =array('jumbotron-narrow.css');
 				$data['show_navbar'] ="true";
-				$data['content_navbar'] = $this->load->view('admin_navbar','',true);
+				$data['content_navbar'] = $this->load->view('admin_navbar',$navbarData,true);
 
 				$data['content_body'] = $this->load->view('admin_order','',true);
 				
@@ -97,9 +122,14 @@
 
 		public function manageReservation(){
 			if($this->session->userdata('admin_objectId')){
+
+				$this->checkAllowed([3]);
+				
+				$navbarData['userLevel'] = $this->session->userdata('user_level');
+
 				$data['stylesheets'] =array('jumbotron-narrow.css');
 				$data['show_navbar'] ="true";
-				$data['content_navbar'] = $this->load->view('admin_navbar','',true);
+				$data['content_navbar'] = $this->load->view('admin_navbar',$navbarData,true);
 
 				$query = $this->db->query("SELECT 
 					ur.objectId as reservationobjectId,

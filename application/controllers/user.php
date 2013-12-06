@@ -45,8 +45,9 @@
 
 				if($row->user_level == 1){
 					$this->session->set_userdata('user_objectId',''.$row->objectId.'');	
-				}else if($row->user_level == 2){
+				}else if($row->user_level == 2 || $row->user_level == 3 || $row->user_level == 4){
 					$this->session->set_userdata('admin_objectId',''.$row->objectId.'');	
+					$this->session->set_userdata('user_level',''.$row->user_level.'');
 				}
 				
 			  	
