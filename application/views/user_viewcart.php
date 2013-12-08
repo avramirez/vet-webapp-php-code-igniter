@@ -4,9 +4,16 @@
         </div>
         <div class="panel panel-default" id="viewCartPage">
           <!-- Default panel contents -->
-          <div class="panel-heading">List of Orders</div>
+          <div class="panel-heading">Cart Details</div>
           <div class="panel-body">
-            <p>Here are the current items in your cart. Press print button to print a receipt that you can present to our staff so your order can be processed.</p>
+            <p>Here are the current items in your cart. Press the checkout button to have a printabl receipt of this order.
+            You can present your receipt in our hospital so we can proccess your order quickly. But if you don't have a receipt, you 
+            could stil claim your order. But it would take a lot more time to process.</p>
+            <p>After you claim your order. This page would automatically resets and give you new order number.</p>
+            <p class="small">Notes:</p>
+            <p class="small">If you present us a receipt, the items that are in the receipt are <strong>the only things we would proccess.</strong>
+              In a case wherein you add a item in your order but not included in your receipt, <strong>we would not proccess that item.</strong>
+              So please make sure that all items are in your receipt.</p>
              <div class="input-group">
               <span class="input-group-btn">
                 <button class="btn btn-default" type="button">Search</button>
@@ -43,9 +50,33 @@
                 }
               ?>
             </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="3"></td>
+                <td>TOTAL:<span style="float:right;margin-right:10px;">&#8369;<?php 
+                if(count($list_of_orders) > 0){
+                echo $row['totalAll'];
+                }
+                ?></span></td>
+                <td></td>
+              </tr>
+            </tfoot>
           </table>
         </div>
+        <div class="clearfix">
+          <div style="float:right;margin-bottom:10px;">
+            <form action="generateOrderReceipt" method="POST">
+            <input type="hidden" value="" />
+            <?php
+              if(count($list_of_orders) > 0){
+                echo "<button type='submit' class='btn btn-warning btn-sm pull-left'>Checkout / Print Receipt</button>";
+              }
+            ?>
+            
+            </form>
 
+          </div>
+        </div>
    
         <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
           <div class="modal-dialog">

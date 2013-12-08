@@ -193,7 +193,8 @@
 						'".$userId."',
 						'".$productAmount."',
 						'".$totalPrice."',
-						'".$orderDate."');");
+						'".$orderDate."',
+						NULL,1);");
 				$updateProduct = $this->db->simple_query("UPDATE vet_app.products set product_quantity = (CASE WHEN ((product_quantity - ".$productAmount.") < 0) THEN product_quantity ELSE (product_quantity - ".$productAmount.") END) WHERE objectId='".$productId."';");
 
 				if ($this->db->affected_rows() > 0 && updateProduct)
@@ -262,7 +263,15 @@
 				
 				$userId = $this->session->userdata('user_objectId');
 
-				$query = $this->db->query("SELECT uo.objectId as orderObjectid, prod.objectId as productObjectId, uo.productAmount, uo.totalPrice, prod.product_name,prod.product_price
+				$query = $this->db->query("SELECT uo.objectId as orderObjectid, 
+					prod.objectId as productObjectId, 
+					uo.productAmount, 
+					uo.totalPrice, 
+					prod.product_name,
+					prod.product_price, 
+					(SELECT SUM(uo.totalPrice) from vet_app.users_order uo 
+				 INNER JOIN  vet_app.products prod ON uo.productId = prod.objectId 
+				 WHERE uo.usersId='".$userId."') as totalAll 
 				 from vet_app.users_order uo 
 				 INNER JOIN  vet_app.products prod ON uo.productId = prod.objectId 
 				 WHERE uo.usersId='".$userId."' 
@@ -288,6 +297,55 @@
 		public function logout(){
 			$this->session->sess_destroy();
 			redirect("/");
+		}
+
+		public function generateOrderReceipt(){
+			if($this->session->userdata('user_objectId')){
+				$this->load->helper(array('dompdf', 'file'));
+
+				$userId = $this->session->userdata('user_objectId');
+
+
+				$orderBatchNumber=rand(100000,999999);
+
+				$addBatchNumber=$this->db->query("UPDATE users_order SET batchOrderId =".$orderBatchNumber." 
+					WHERE usersId=".$userId." 
+					AND active=1;");
+
+				$query = $this->db->query("SELECT uo.objectId as orderObjectid, 
+					prod.objectId as productObjectId, 
+					uo.productAmount, 
+					uo.totalPrice, 
+					prod.product_name,
+					prod.product_price,
+					uo.batchOrderId, 
+					(SELECT SUM(uo.totalPrice) from vet_app.users_order uo 
+				 INNER JOIN  vet_app.products prod ON uo.productId = prod.objectId 
+				 WHERE uo.usersId='".$userId."') as totalAll 
+				 from vet_app.users_order uo 
+				 INNER JOIN  vet_app.products prod ON uo.productId = prod.objectId 
+				 WHERE uo.usersId='".$userId."' 
+				 ORDER BY orderDate DESC 
+				 LIMIT 0 , 2000;");	
+	
+				
+
+
+				$servicesData['list_of_orders'] = $query->result_array();
+
+
+				$html =$this->load->view('user_order_receipt_report',$servicesData,true);
+
+				 // $this->output->append_output($html);
+
+		    
+		    	pdf_create($html, 'admin_reservation_report');
+
+			}else{
+				redirect("/");
+			}
+
+
 		}
 }
 
