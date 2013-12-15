@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 08, 2013 at 10:56 PM
+-- Generation Time: Dec 15, 2013 at 10:26 PM
 -- Server version: 5.5.22
 -- PHP Version: 5.4.19
 
@@ -42,8 +42,8 @@ CREATE TABLE IF NOT EXISTS `products` (
 --
 
 INSERT INTO `products` (`objectId`, `product_name`, `product_quantity`, `product_price`, `product_type`) VALUES
-(1, 'ALLOPURINOL tablet 300mg, 100/box. Sold per tab.', 4996, 10, 'Tablets and Capsules'),
-(2, 'ALUMINUM HYDROXIDE MAGNESIUM HYDROXIDE tablet 200mg/100mg, 100/box.Sold per tab.', 2992, 10, 'Tablets and Capsules');
+(1, 'ALLOPURINOL tablet 300mg, 100/box. Sold per tab.', 4969, 10, 'Tablets and Capsules'),
+(2, 'ALUMINUM HYDROXIDE MAGNESIUM HYDROXIDE tablet 200mg/100mg, 100/box.Sold per tab.', 2975, 10, 'Tablets and Capsules');
 
 -- --------------------------------------------------------
 
@@ -117,14 +117,24 @@ CREATE TABLE IF NOT EXISTS `users_order` (
   PRIMARY KEY (`objectId`),
   KEY `productId` (`productId`),
   KEY `usersId` (`usersId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=33 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=47 ;
 
 --
 -- Dumping data for table `users_order`
 --
 
 INSERT INTO `users_order` (`objectId`, `productId`, `usersId`, `productAmount`, `totalPrice`, `orderDate`, `batchOrderId`, `active`) VALUES
-(32, 1, 22, 1, 10, '2013-12-08 22:55:58', NULL, 1);
+(32, 1, 22, 1, 10, '2013-12-08 22:55:58', 105877, 0),
+(37, 2, 22, 1, 10, '2013-12-15 21:29:47', 545358, 0),
+(38, 2, 22, 2, 20, '2013-12-15 21:32:06', 480923, 0),
+(39, 1, 22, 7, 70, '2013-12-15 21:34:21', 406463, 0),
+(40, 2, 22, 4, 40, '2013-12-15 21:35:53', 909225, 0),
+(41, 2, 22, 8, 80, '2013-12-15 21:38:23', 939410, 0),
+(42, 1, 22, 11, 110, '2013-12-15 21:48:30', 781674, 0),
+(43, 1, 22, 3, 30, '2013-12-15 21:50:56', 452853, 0),
+(44, 2, 22, 2, 20, '2013-12-15 21:51:02', 452853, 0),
+(45, 1, 22, 5, 50, '2013-12-15 21:55:06', 458703, 0),
+(46, 1, 22, 1, 10, '2013-12-15 21:57:10', NULL, 1);
 
 -- --------------------------------------------------------
 
