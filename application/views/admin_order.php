@@ -1,4 +1,4 @@
-        <div class="alert alert-success addUserSuccess" style="display:none;">
+        <div class="alert alert-success addOrderSuccess" style="display:none;">
                   <button type="button" class="close" data-hide="alert" aria-hidden="true">&times;</button>
                   <strong><strong>
         </div>
@@ -7,6 +7,7 @@
           <div class="panel-heading">View Order Of User</div>
           <div class="panel-body">
             <p>You can search the order of a user here. Just type his/her email to the search bar and press search.</p>
+            <p>Proccessed orders will be marked DONE.</p>
              <div class="input-group">
               <span class="input-group-btn">
                 <button class="btn btn-default searchOrderOfUser" type="button">Search</button>
@@ -31,16 +32,16 @@
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">Confirm Delete</h4>
+                <h4 class="modal-title" id="myModalLabel"></h4>
               </div>
               
               <div class="modal-body clearfix">
-                Are you sure you want to delete this item?
+               
               </div>
 
               <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary confirmAction" data-confirm="confirmDeleteAdmin">Yes</button>
+                <button type="button" class="btn btn-primary confirmAction" data-formSubmit="form">Yes</button>
               </div>
             </div><!-- /.modal-content -->
           </div><!-- /.modal-dialog -->

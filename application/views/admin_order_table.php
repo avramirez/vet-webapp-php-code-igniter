@@ -1,20 +1,30 @@
 
+
 <thead>
   <tr>
-    <th style="width:270px;">Product Name</th>
-    <th style="text-align:right;padding-right:15px;">Price</th>
-    <th style="text-align:right;padding-right:15px;">Amount</th>
-    <th style="text-align:right;padding-right:15px;">Total Price</th>
+    <th style="width:270px;">
+      Batch Order ID/Receipt #
+    </th>
+    <th style="text-align:right;padding-right:15px;"></th>
   </tr>
 </thead>
 <tbody>
   <?php foreach ($list_of_orders as $row){
 
     echo "<tr>";
-    echo "<td class='vert productName'>".$row['product_name']."</td>";
-    echo "<td class='vert productPrice rightalignPadding'>&#8369; <span>".$row['product_price']."</span></td>";
-    echo "<td class='vert orderAmount rightalignPadding'>".$row['productAmount']."</td>";
-    echo "<td class='vert productTotal rightalignPadding'>&#8369; <span>".$row['totalPrice']."</span></td>";
+     if($row['active'] == "1"){
+      echo "<td class='vert batchOrderId'>".$row['batchOrderId']."</td>";  
+     }else{
+      echo "<td class='vert batchOrderId'>".$row['batchOrderId']." (DONE)</td>";
+     }
+    
+    echo "<td class='vert usersId' style='text-align:right;'>
+            <input type='hidden' name='usersId' class='usersId' value='".$row['usersId']."' >";
+    if($row['active'] == "1"){
+    echo "<span class='btn btn-success processOrderAdmin' style='margin-right:10px;'>Process Order</span>";   
+    }
+    echo"<span class='btn btn-danger'>Delete</span>
+          </td>";
     echo "</tr>";
 
     }

@@ -97,17 +97,23 @@
 				if($userByEmail->num_rows() > 0){
 					$user = $userByEmail->row();
 				
-					$query = $this->db->query("SELECT uo.objectId as orderObjectid, 
-						prod.objectId as productObjectId, 
-						uo.productAmount, 
-						uo.totalPrice, 
-						prod.product_name,
-						prod.product_price
-					 from vet_app.users_order uo 
-					 INNER JOIN  vet_app.products prod ON uo.productId = prod.objectId 
-					 WHERE uo.usersId='".$user->objectId."' 
-					 ORDER BY uo.orderDate DESC 
-					 LIMIT 0 , 2000;");
+					// $query = $this->db->query("SELECT uo.objectId as orderObjectid, 
+					// 	prod.objectId as productObjectId, 
+					// 	uo.productAmount, 
+					// 	uo.totalPrice, 
+					// 	prod.product_name,
+					// 	prod.product_price
+					//  from vet_app.users_order uo 
+					//  INNER JOIN  vet_app.products prod ON uo.productId = prod.objectId 
+					//  WHERE uo.usersId='".$user->objectId."' 
+					//  ORDER BY uo.orderDate DESC 
+					//  LIMIT 0 , 2000;");
+
+					$query = $this->db->query("SELECT batchOrderId,usersId,active from users_order 
+						WHERE usersId='".$user->objectId."' 
+						AND batchOrderId IS NOT NULL
+						GROUP BY batchOrderId 
+						ORDER BY orderDate DESC;");
 
 					$ordersData['list_of_orders'] = $query->result_array();
 
@@ -120,6 +126,82 @@
 			}
 		}
 
+		public function processOrder(){
+			if($this->session->userdata('admin_objectId')){
+				$usersId = $this->input->post('usersId');
+				$batchOrderId = $this->input->post('batchOrderId');
+
+				$query = $this->db->query("SELECT uo.objectId as orderObjectid, 
+						prod.objectId as productObjectId,
+						uo.usersId as usersObjectId,
+						uo.batchOrderId, 
+						uo.productAmount, 
+						uo.totalPrice, 
+						prod.product_name,
+						prod.product_price
+					 from vet_app.users_order uo 
+					 INNER JOIN  vet_app.products prod ON uo.productId = prod.objectId 
+					 WHERE uo.usersId='".$usersId."' 
+					 AND uo.batchOrderId='".$batchOrderId."' 
+					 ORDER BY uo.orderDate DESC 
+					 LIMIT 0 , 2000;");
+
+				$ordersData['list_of_orders'] = $query->result_array();
+				$this->load->view('admin_process_order',$ordersData);
+
+			}else{
+				redirect("/");
+			}
+		}
+
+		public function generateOrderReceipt(){
+			if($this->session->userdata('admin_objectId')){
+
+			$this->load->helper(array('dompdf', 'file'));
+
+				$userId =$this->input->post('usersId');
+				$batchOrderId =$this->input->post('batchOrderId');
+
+
+				$query = $this->db->query("SELECT uo.objectId as orderObjectid, 
+					prod.objectId as productObjectId, 
+					ur.first_name,
+					ur.last_name,
+					uo.productAmount, 
+					uo.totalPrice,
+					prod.product_name,
+					prod.product_price,
+					uo.batchOrderId, 
+					(SELECT SUM(uo.totalPrice) from vet_app.users_order uo 
+				 WHERE uo.usersId='".$userId."' AND uo.batchOrderId IS NOT NULL) as totalAll 
+				 from vet_app.users_order uo 
+				 INNER JOIN  vet_app.products prod ON uo.productId = prod.objectId 
+				 INNER JOIN  vet_app.users ur ON uo.usersId = ur.objectId 
+				 WHERE uo.usersId='".$userId."' 
+				 AND uo.batchOrderId='".$batchOrderId."' 
+				 AND uo.batchOrderId IS NOT NULL 
+				 ORDER BY orderDate DESC 
+				 LIMIT 0 , 2000;");	
+	
+				$servicesData['list_of_orders'] = $query->result_array();
+
+				$updateActive=$this->db->query("UPDATE users_order SET active=0 
+					WHERE usersId=".$userId.";");				
+
+				$html =$this->load->view('user_order_receipt_report',$servicesData,true);
+
+				 // $this->output->append_output($html);
+
+		    	pdf_create($html, 'order_receipt');
+		    }else{
+				redirect("/");
+			}
+		}
+
+		public function confirmReservation(){
+
+		}
+		
 		public function manageReservation(){
 			if($this->session->userdata('admin_objectId')){
 

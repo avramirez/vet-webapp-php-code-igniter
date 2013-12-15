@@ -260,6 +260,7 @@
               if($date1 > $dateToday && $row['confirmed'] == "0"){
                 echo "<button type='button' data-objectId='".$row['reservationobjectId']."' class='btn btn-primary btn-sm adminEditReservation pull-left' style='margin-right: 5px;'>Edit</button>";  
                 echo "<button type='button' data-objectId='".$row['reservationobjectId']."' class='btn btn-danger btn-sm adminDeleteReservation pull-right'>Delete</button>";
+                echo "<button type='button' data-objectId='".$row['reservationobjectId']."' class='btn btn-warning btn-sm adminConfirmReservation pull-right' style='margin-top: 4px;width: 100%;'>Confirm</button>";
               }else{
                 echo "<p style='font-size:10px;'>Reservation Expired!</p>";
                 echo "<button style='width:100%;' type='button' data-objectId='".$row['reservationobjectId']."' class='btn btn-danger btn-sm adminDeleteReservation pull-right'>Delete!</button>";
@@ -301,6 +302,41 @@
           </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
 
+
+        <!-- Modal -->
+        <div class="modal fade" id="processReservationModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Confirm Reservation</h4>
+              </div>
+              
+              <div class="modal-body clearfix">
+             <!--    <div class="row">
+                  <div class="col-md-4"><label>Pet to be treated:</label></div>
+                  <div class="col-md-4"><input name='petAssigned 'type="text"></div>
+                </div>
+                <br />
+                <div class="row">
+                  <div class="col-md-4"><label>Assigned doctor:</label></div>
+                  <div class="col-md-4"><input name='doctorAssigned 'type="text"></div>
+                </div> -->
+
+
+              </div>
+
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <form action="confirmReservation" method="POST">
+                  <input type="hidden" name='registrationId' class='registrationId' value=''>
+                  <button type="submit" class="btn btn-primary confirmAction" id="processReservationBTN" data-confirm="processReservation">Process Reservation and Print Receipt</button>
+                </form>
+              </div>
+            </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+
+        </div><!-- /.modal -->
       <div class="footer">
         <p>&copy; Company 2013</p>
       </div>

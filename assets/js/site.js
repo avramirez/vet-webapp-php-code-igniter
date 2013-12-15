@@ -329,6 +329,10 @@ $('body').on('click','#generateReservationReport',function(e){
 
 		});
 
+		$('body').on('click','.adminConfirmReservation',function(event){
+			$("#processReservationModal").modal();
+		});
+
 		$('body').on('click','.adminDeleteReservation',function(event){
 			$("#confirmationModal h5.message").text("Are you sure you want to delete "+$(this).parent().parent().children('.serviceTitle').text()+"?")
 			$("#confirmationModal .confirmAction").attr("data-confirm","confirmDelete");
@@ -434,6 +438,41 @@ $('body').on('click','#generateReservationReport',function(e){
 		});
 
 	}else if ($("#adminUsersOrder").length){
+		
+		$('body').on('click','.processOrderAdmin',function(e){
+			console.log("sss");
+			var $row = $(this).closest('tr');
+			$.ajax({
+				method:"POST",
+				url:'processOrder',
+				data:{
+					batchOrderId:$row.find('.batchOrderId').text(),
+					usersId:$row.find('input.usersId').val()
+				},
+				success:function(data,status,jqXHR){
+					$('#confirmationModal .confirmAction').attr("data-formSubmit","generateOrderReceipt");
+					$('#confirmationModal .confirmAction').text("Process Order and Print Receipt");
+					$('#confirmationModal .modal-body').html(data);
+					$('#confirmationModal .modal-title').text('Process Order')
+					$('#confirmationModal').modal();
+				}
+			});
+
+		});
+
+		$('body').on('click','#confirmationModal .confirmAction',function(e){
+			$.ajax({
+				method:"POST",
+				url:document.URL,
+				success:function(data,status,jqXHR){
+					$("#adminOrderTable").html($(data).find("#adminOrderTable").html());
+				}
+			});
+			$('#'+ $(this).attr("data-formSubmit") +'').submit();
+			$('#confirmationModal').modal('hide');
+
+		});
+
 		$('body').on('click','#adminUsersOrder .searchOrderOfUser',function(e){
 			$.ajax({
 				method:"POST",
@@ -660,6 +699,25 @@ $('body').on('click','#generateReservationReport',function(e){
 			$("#confirmationModal input[name='detailTotalPrice']").val($("#confirmationModal .detailTotalPrice .value").text());
 		})
 		
+		$('body').on('click','#checkOut',function(e){
+			$.ajax({
+				method:"POST",
+				url:"checkoutOrder",
+				success:function(data,status,jqXHR){
+					location.reload();
+				}
+			});
+		});
+
+		$('body').on('click','#cancelOrder',function(e){
+			$.ajax({
+				method:"POST",
+				url:"cancelOrder",
+				success:function(data,status,jqXHR){
+					location.reload();
+				}
+			});
+		});
 
 		$('body').on('click','.removeFromCart',function(){
 			$orderRow = $(this).parent().parent();

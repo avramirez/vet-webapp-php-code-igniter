@@ -160,6 +160,18 @@
 				
 				$userId = $this->session->userdata('user_objectId');
 
+
+				$checkActiveorders = $this->db->query("SELECT * from vet_app.users_order 
+					WHERE usersId='".$userId."' 
+					AND batchOrderId IS NOT NULL 
+					AND active=1;");
+
+				$servicesData['activeOrder'] ="false";
+				if ($checkActiveorders->num_rows() > 0)
+				{
+					$servicesData['activeOrder'] ="true";
+				}
+
 				$query = $this->db->query("SELECT * from products LIMIT 0 , 2000;");	
 	
 				$data['stylesheets'] =array('jumbotron-narrow.css');
@@ -263,6 +275,18 @@
 				
 				$userId = $this->session->userdata('user_objectId');
 
+				$checkActiveorders = $this->db->query("SELECT * from vet_app.users_order 
+					WHERE usersId='".$userId."' 
+					AND batchOrderId IS NOT NULL 
+					AND active=1;");
+
+				$servicesData['activeOrder'] ="false";
+				if ($checkActiveorders->num_rows() > 0)
+				{
+					$servicesData['activeOrder'] ="true";
+				}
+
+
 				$query = $this->db->query("SELECT uo.objectId as orderObjectid, 
 					prod.objectId as productObjectId, 
 					uo.productAmount, 
@@ -275,6 +299,7 @@
 				 from vet_app.users_order uo 
 				 INNER JOIN  vet_app.products prod ON uo.productId = prod.objectId 
 				 WHERE uo.usersId='".$userId."' 
+				 AND uo.active=1 
 				 ORDER BY orderDate DESC 
 				 LIMIT 0 , 2000;");	
 	
@@ -299,10 +324,25 @@
 			redirect("/");
 		}
 
-		public function generateOrderReceipt(){
+		public function cancelOrder(){
 			if($this->session->userdata('user_objectId')){
-				$this->load->helper(array('dompdf', 'file'));
+				$userId = $this->session->userdata('user_objectId');
 
+				$addBatchNumber=$this->db->query("UPDATE users_order SET batchOrderId = NULL 
+					WHERE usersId=".$userId." 
+					AND active=1;");
+
+				if ($this->db->affected_rows() > 0)
+				{
+					set_status_header((int)200); 
+				}else{
+					set_status_header((int)200); 
+				}
+			}
+		}
+
+		public function checkoutOrder(){
+			if($this->session->userdata('user_objectId')){
 				$userId = $this->session->userdata('user_objectId');
 
 
@@ -312,34 +352,49 @@
 					WHERE usersId=".$userId." 
 					AND active=1;");
 
+				if ($this->db->affected_rows() > 0)
+				{
+					set_status_header((int)200); 
+				}else{
+					set_status_header((int)200); 
+				}
+			}
+		}
+
+		public function generateOrderReceipt(){
+			if($this->session->userdata('user_objectId')){
+				$this->load->helper(array('dompdf', 'file'));
+
+				$userId = $this->session->userdata('user_objectId');
+
+
 				$query = $this->db->query("SELECT uo.objectId as orderObjectid, 
 					prod.objectId as productObjectId, 
+					ur.first_name,
+					ur.last_name,
 					uo.productAmount, 
-					uo.totalPrice, 
+					uo.totalPrice,
 					prod.product_name,
 					prod.product_price,
 					uo.batchOrderId, 
 					(SELECT SUM(uo.totalPrice) from vet_app.users_order uo 
-				 INNER JOIN  vet_app.products prod ON uo.productId = prod.objectId 
-				 WHERE uo.usersId='".$userId."') as totalAll 
+				 WHERE uo.usersId='".$userId."' AND uo.batchOrderId IS NOT NULL) as totalAll 
 				 from vet_app.users_order uo 
 				 INNER JOIN  vet_app.products prod ON uo.productId = prod.objectId 
+				 INNER JOIN  vet_app.users ur ON uo.usersId = ur.objectId 
 				 WHERE uo.usersId='".$userId."' 
+				 AND uo.batchOrderId IS NOT NULL 
 				 ORDER BY orderDate DESC 
 				 LIMIT 0 , 2000;");	
 	
-				
-
-
 				$servicesData['list_of_orders'] = $query->result_array();
-
 
 				$html =$this->load->view('user_order_receipt_report',$servicesData,true);
 
 				 // $this->output->append_output($html);
 
 		    
-		    	pdf_create($html, 'admin_reservation_report');
+		    	pdf_create($html, 'order_receipt');
 
 			}else{
 				redirect("/");

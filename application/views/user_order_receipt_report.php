@@ -17,6 +17,16 @@
 </head>
 <body>
 <h1>Receipt # <?php echo $list_of_orders[0]['batchOrderId'] ?></h1>
+<p>Name: 
+  <?php echo $list_of_orders[0]['first_name'] ?>, 
+  <?php echo $list_of_orders[0]['last_name'] ?>
+</p>
+<p>
+  Date : 
+  <?php 
+    echo date('l jS \of F Y h:i:s A');
+  ?>
+</p>
 <table class="detail" style="width:100%;margin: 0px; border-top: none;">
 
 </tbody>
@@ -28,7 +38,7 @@
               <tr>
                 <th style="width:40%;">Product Name</th>
                 <th style="width:20%;text-align:right;padding-right:15px;">Price</th>
-                <th style="width:20%;text-align:right;padding-right:15px;">Amount</th>
+                <th style="width:20%;text-align:right;padding-right:15px;">Quantity</th>
                 <th style="width:20%;text-align:right;padding-right:15px;">Total Price</th>
               </tr>
             </thead>

@@ -7,6 +7,12 @@
           <div class="panel-heading">List of Products</div>
           <div class="panel-body">
             <p>Order products here. After adding your order, you can view it in view cart page.</p>
+            <p><strong>If there is an active batch order in your cart you cannot add orders anymore unless that batch order is completed or you cancel it.</strong></p>
+             <?php
+                if($activeOrder =="true"){
+                  echo'<p class="small" style="color:red;">You have an active order.</p>';
+                }
+            ?>
              <div class="input-group">
               <span class="input-group-btn">
                 <button class="btn btn-default" type="button">Search</button>
@@ -23,8 +29,13 @@
                 <th>Type</th>
                 <th style="text-align:right;padding-right:15px;">Quantity</th>
                 <th style="text-align:right;padding-right:15px;">Price</th>
-                <th style="text-align:right;padding-right:15px;">Order Quantity</th>
-                <th style="width:130px;"></th>
+                 <?php
+                if($activeOrder !="true"){
+                  echo'<th style="text-align:right;padding-right:15px;">Order Quantity</th>';
+                  echo'<th style="width:130px;"></th>';
+                }
+                ?>
+                
               </tr>
             </thead>
             <tbody>
@@ -40,6 +51,7 @@
                 echo "<td class='vert productType'>".$row['product_type']."</td>";
                 echo "<td class='vert productQuantity rightalignPadding'>".$row['product_quantity']."</td>";
                 echo "<td class='vert productPrice rightalignPadding'>&#8369; <span>".$row['product_price']."</span></td>";
+                 if($activeOrder !="true"){
                 echo '<td class="vert orderQuantity"><input type="number" min="1" value="1" class="form-control" name="orederQuantity" style="text-align:right;"></td>';
                 echo "<td class='vert'>";
                 if($productquantity <=0){
@@ -49,6 +61,7 @@
                 }
                 
                 echo "</td>";
+                }
                 echo "</tr>";
                 }
               ?>

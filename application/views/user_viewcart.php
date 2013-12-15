@@ -6,14 +6,16 @@
           <!-- Default panel contents -->
           <div class="panel-heading">Cart Details</div>
           <div class="panel-body">
-            <p>Here are the current items in your cart. Press the checkout button to have a printabl receipt of this order.
-            You can present your receipt in our hospital so we can proccess your order quickly. But if you don't have a receipt, you 
-            could stil claim your order. But it would take a lot more time to process.</p>
+            <p>Steps</p>
+            <p>1. Review your order and press the checkout button.</p>
+            <p>2. After you press checkout, you wont be able to add/edit/delete your order unless you press cancel order.</p>
+            <p>3. Press print receipt.(Optional) If you do this step, the process of claiming your order would be much faster.</p>
+
+
             <p>After you claim your order. This page would automatically resets and give you new order number.</p>
             <p class="small">Notes:</p>
             <p class="small">If you present us a receipt, the items that are in the receipt are <strong>the only things we would proccess.</strong>
-              In a case wherein you add a item in your order but not included in your receipt, <strong>we would not proccess that item.</strong>
-              So please make sure that all items are in your receipt.</p>
+             <strong>We ONLY ALLOW ONE BATCH ORDER AT A TIME.</strong></p>
              <div class="input-group">
               <span class="input-group-btn">
                 <button class="btn btn-default" type="button">Search</button>
@@ -28,9 +30,13 @@
               <tr>
                 <th style="width:270px;">Product Name</th>
                 <th style="text-align:right;padding-right:15px;">Price</th>
-                <th style="text-align:right;padding-right:15px;">Amount</th>
+                <th style="text-align:right;padding-right:15px;">Quantity</th>
                 <th style="text-align:right;padding-right:15px;">Total Price</th>
-                <th style="width:140px;"></th>
+                <?php
+                if($activeOrder !="true"){
+                echo'<th style="width:140px;"></th>';
+                }
+                ?>
               </tr>
             </thead>
             <tbody>
@@ -41,10 +47,12 @@
                 echo "<td class='vert productPrice rightalignPadding'>&#8369; <span>".$row['product_price']."</span></td>";
                 echo "<td class='vert orderAmount rightalignPadding'>".$row['productAmount']."</td>";
                 echo "<td class='vert productTotal rightalignPadding'>&#8369; <span>".$row['totalPrice']."</span></td>";
+                if($activeOrder !="true"){
                 echo "<td class='vert'>";
                 echo "<button type='button' data-productId='".$row['productObjectId']."' data-objectId='".$row['orderObjectid']."' class='btn btn-primary btn-sm editOrder pull-left' style='margin-right: 5px;'>Edit</button>";
                 echo "<button type='button' data-productId='".$row['productObjectId']."' data-objectId='".$row['orderObjectid']."' class='btn btn-danger btn-sm removeFromCart pull-left'>Remove</button>";
                 echo "</td>";
+                }
                 echo "</tr>";
 
                 }
@@ -52,7 +60,14 @@
             </tbody>
             <tfoot>
               <tr>
-                <td colspan="3"></td>
+                <?php
+                if($activeOrder !="true"){
+                  echo'<td colspan="3"></td>';
+                }else{
+                  echo'<td colspan="2"></td>';
+                }
+                ?>
+                
                 <td>TOTAL:<span style="float:right;margin-right:10px;">&#8369;<?php 
                 if(count($list_of_orders) > 0){
                 echo $row['totalAll'];
@@ -69,7 +84,13 @@
             <input type="hidden" value="" />
             <?php
               if(count($list_of_orders) > 0){
-                echo "<button type='submit' class='btn btn-warning btn-sm pull-left'>Checkout / Print Receipt</button>";
+                if($activeOrder =="true"){
+                  echo "<button type='submit' class='btn btn-warning btn-sm pull-left' style='margin-right:10px;'>Print Receipt</button>";
+                  echo "<button type='button' class='btn btn-info btn-sm pull-left' id='cancelOrder'>Cancel Order</button>";
+                }
+                else{
+                  echo "<button type='button' class='btn btn-info btn-sm pull-left' id='checkOut'>Checkout</button>";
+                }
               }
             ?>
             
