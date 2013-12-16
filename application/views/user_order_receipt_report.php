@@ -16,6 +16,7 @@
    </style>
 </head>
 <body>
+<h1>Vets In Practice</h1>
 <h1>Receipt # <?php echo $list_of_orders[0]['batchOrderId'] ?></h1>
 <p>Name: 
   <?php echo $list_of_orders[0]['first_name'] ?>, 
