@@ -197,6 +197,7 @@
 				$productId=$this->input->post('productId');
 				$productAmount=$this->input->post('productAmount');
 				$totalPrice=$this->input->post('totalPrice');
+				date_default_timezone_set('Asia/Manila');
 				$orderDate = $dateToday =date('Y-m-d H:i:s');
 
 				$query = $this->db->query("INSERT INTO `vet_app`.`users_order` 

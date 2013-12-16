@@ -63,8 +63,80 @@
 			}
 		}
 		
+		public function sales()
+		{
+			if($this->session->userdata('admin_objectId')){
+				$this->checkAllowed([3,4]);
+				
+				$navbarData['userLevel'] = $this->session->userdata('user_level');
+
+				$data['stylesheets'] =array('jumbotron-narrow.css');
+				$data['show_navbar'] ="true";
+				$data['content_navbar'] = $this->load->view('admin_navbar',$navbarData,true);
+
+				// $query = $this->db->query("SELECT * FROM products;");
+				
+				// $usersData['products'] = $query->result_array();
+
+				$data['content_body'] = $this->load->view('admin_sales','',true);
+				
+				$this->load->view("layout",$data);
+
+			}else{
+				redirect("/");
+			}
+		}
 		
-		
+		public function generateSalesReport(){
+			if($this->session->userdata('admin_objectId')){
+				$this->load->helper(array('dompdf', 'file'));
+
+				
+				$reportMonthFrom=$this->input->post("reportMonthFrom");
+				$reportYearFrom=$this->input->post("reportYearFrom");
+				$reportMonthTo=$this->input->post("reportMonthTo");
+				$reportYearTo=$this->input->post("reportYearTo");
+				$reportMode=$this->input->post("reportMode");
+
+				$reportDateFrom = date('Y-m-d H:i:s', strtotime(str_replace('-', '/', ''.$reportMonthFrom.'/01/'.$reportYearFrom.'')));
+				$reportDateto = date('Y-m-d H:i:s', strtotime(str_replace('-', '/', ''.$reportMonthTo.'/01/'.$reportYearTo.'')));
+				$reportDateto = date_format(date_modify(new DateTime($reportDateto),'last day of  this month'), 'Y-m-d H:i:s');
+
+				//NEED TO OPTIMIZE :P
+				if($reportMode =="Daily"){
+				$query = $this->db->query("SELECT SUM(allSales.gross) as saleGross,allSales.saleDate
+											from (
+											SELECT SUM(totalPrice)as gross,uo.orderDate as saleDate FROM users_order uo GROUP BY day(uo.orderDate)
+											UNION ALL
+											SELECT SUM(price) as gross, ur.reserveDateTime as saleDate from users_reservation ur INNER JOIN services serv ON serv.objectId = ur.serviceId GROUP BY day(ur.reserveDateTime)) as allSales 
+											WHERE allSales.saleDate >= '".$reportDateFrom."' AND allSales.saleDate <='".$reportDateto."' 
+											GROUP BY day(allSales.saleDate);");
+
+				}else if($reportMode =="Weekly"){
+				$query = $this->db->query("SELECT SUM(allSales.gross) as saleGross,week(allSales.saleDate) as saleDate 
+											from (
+											SELECT SUM(totalPrice)as gross,uo.orderDate as saleDate FROM users_order uo WHERE uo.orderDate >= '".$reportDateFrom."' AND uo.orderDate <='".$reportDateto."' GROUP BY week(uo.orderDate)
+											UNION ALL
+											SELECT SUM(price) as gross, ur.reserveDateTime as saleDate from users_reservation ur INNER JOIN services serv ON serv.objectId = ur.serviceId WHERE ur.reserveDateTime >= '".$reportDateFrom."' AND ur.reserveDateTime <='".$reportDateto."' GROUP BY week(ur.reserveDateTime)) as allSales 
+											GROUP BY week(allSales.saleDate);");
+
+				}
+
+				$salesReport['sales'] = $query->result_array();
+				$salesReport['reportMode']=$reportMode;
+				
+				$salesReport['reportDateFrom']=$reportDateFrom;
+				$salesReport['reportDateto']=$reportDateto;
+				
+
+			    $html =$this->load->view('admin_generated_sales_report',$salesReport,true);
+			    // $this->output->append_output($html);
+			    pdf_create($html, 'salesReport');
+
+			}else{
+				redirect("/");
+			}
+		}
 
 		public function userorder(){
 			
