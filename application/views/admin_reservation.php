@@ -261,6 +261,9 @@
                 echo "<button type='button' data-objectId='".$row['reservationobjectId']."' class='btn btn-primary btn-sm adminEditReservation pull-left' style='margin-right: 5px;'>Edit</button>";  
                 echo "<button type='button' data-objectId='".$row['reservationobjectId']."' class='btn btn-danger btn-sm adminDeleteReservation pull-right'>Delete</button>";
                 echo "<button type='button' data-objectId='".$row['reservationobjectId']."' class='btn btn-warning btn-sm adminConfirmReservation pull-right' style='margin-top: 4px;width: 100%;'>Confirm</button>";
+              }else if($row['confirmed'] == "1"){
+                echo "<p style='font-size:10px;'>Reservation Confirmed!</p>";
+                echo "<button style='width:100%;' type='button' data-objectId='".$row['reservationobjectId']."' class='btn btn-danger btn-sm adminDeleteReservation pull-right'>Delete!</button>";
               }else{
                 echo "<p style='font-size:10px;'>Reservation Expired!</p>";
                 echo "<button style='width:100%;' type='button' data-objectId='".$row['reservationobjectId']."' class='btn btn-danger btn-sm adminDeleteReservation pull-right'>Delete!</button>";
@@ -327,9 +330,10 @@
               </div>
 
               <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+               
                 <form action="confirmReservation" method="POST">
                   <input type="hidden" name='registrationId' class='registrationId' value=''>
+                   <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                   <button type="submit" class="btn btn-primary confirmAction" id="processReservationBTN" data-confirm="processReservation">Process Reservation and Print Receipt</button>
                 </form>
               </div>

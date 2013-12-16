@@ -199,7 +199,34 @@
 		}
 
 		public function confirmReservation(){
+			if($this->session->userdata('admin_objectId')){
 
+				$this->load->helper(array('dompdf', 'file'));
+
+				
+				$registrationId =$this->input->post('registrationId');
+
+
+				$query = $this->db->query("SELECT * from users_reservation ur 
+					INNER JOIN users us ON us.objectId = ur.userId 
+					INNER JOIN services serv ON ur.serviceId = serv.objectId 
+					WHERE ur.objectId='".$registrationId."';");	
+	
+				$servicesData['reservations'] = $query->result_array();
+
+				$updateActive=$this->db->query("UPDATE users_reservation SET confirmed=1 
+					WHERE  objectId='".$registrationId."';");				
+
+				$html =$this->load->view('admin_reservation_receipt',$servicesData,true);
+
+				 // $this->output->append_output($html);
+ 
+		    	pdf_create($html, 'reservation_receipt');
+
+
+			}else{
+				redirect("/");
+			}
 		}
 		
 		public function manageReservation(){

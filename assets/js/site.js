@@ -330,6 +330,7 @@ $('body').on('click','#generateReservationReport',function(e){
 		});
 
 		$('body').on('click','.adminConfirmReservation',function(event){
+			$("#processReservationModal .registrationId").val($(this).attr("data-objectid"));
 			$("#processReservationModal").modal();
 		});
 
