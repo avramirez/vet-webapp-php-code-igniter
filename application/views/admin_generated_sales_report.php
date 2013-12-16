@@ -4,6 +4,8 @@
    <link href="<?php echo base_url();?>assets/css/reportsLayout.css" rel="stylesheet">
 </head>
 <body>
+
+<h1>Vets In Practice</h1>
 <h1>Sales Report (<?php echo $reportMode; ?>)</h1>
 <p>
 	From :<?php echo $reportDateFrom; ?>
