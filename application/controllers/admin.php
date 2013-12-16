@@ -106,18 +106,18 @@
 				if($reportMode =="Daily"){
 				$query = $this->db->query("SELECT SUM(allSales.gross) as saleGross,allSales.saleDate
 											from (
-											SELECT SUM(totalPrice)as gross,uo.orderDate as saleDate FROM users_order uo GROUP BY day(uo.orderDate)
+											SELECT SUM(totalPrice)as gross,uo.orderDate as saleDate FROM users_order uo WHERE uo.active=0 GROUP BY day(uo.orderDate)
 											UNION ALL
-											SELECT SUM(price) as gross, ur.reserveDateTime as saleDate from users_reservation ur INNER JOIN services serv ON serv.objectId = ur.serviceId GROUP BY day(ur.reserveDateTime)) as allSales 
+											SELECT SUM(price) as gross, ur.reserveDateTime as saleDate from users_reservation ur INNER JOIN services serv ON serv.objectId = ur.serviceId WHERE ur.confirmed=1 GROUP BY day(ur.reserveDateTime)) as allSales 
 											WHERE allSales.saleDate >= '".$reportDateFrom."' AND allSales.saleDate <='".$reportDateto."' 
 											GROUP BY day(allSales.saleDate);");
 
 				}else if($reportMode =="Weekly"){
 				$query = $this->db->query("SELECT SUM(allSales.gross) as saleGross,week(allSales.saleDate) as saleDate 
 											from (
-											SELECT SUM(totalPrice)as gross,uo.orderDate as saleDate FROM users_order uo WHERE uo.orderDate >= '".$reportDateFrom."' AND uo.orderDate <='".$reportDateto."' GROUP BY week(uo.orderDate)
+											SELECT SUM(totalPrice)as gross,uo.orderDate as saleDate FROM users_order uo WHERE uo.orderDate >= '".$reportDateFrom."' AND uo.orderDate <='".$reportDateto."' AND uo.active=0 GROUP BY week(uo.orderDate)
 											UNION ALL
-											SELECT SUM(price) as gross, ur.reserveDateTime as saleDate from users_reservation ur INNER JOIN services serv ON serv.objectId = ur.serviceId WHERE ur.reserveDateTime >= '".$reportDateFrom."' AND ur.reserveDateTime <='".$reportDateto."' GROUP BY week(ur.reserveDateTime)) as allSales 
+											SELECT SUM(price) as gross, ur.reserveDateTime as saleDate from users_reservation ur INNER JOIN services serv ON serv.objectId = ur.serviceId WHERE ur.reserveDateTime >= '".$reportDateFrom."' AND ur.reserveDateTime <='".$reportDateto."' AND ur.confirmed=1 GROUP BY week(ur.reserveDateTime)) as allSales 
 											GROUP BY week(allSales.saleDate);");
 
 				}
