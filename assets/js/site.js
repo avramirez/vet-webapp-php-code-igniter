@@ -98,21 +98,43 @@ $(document).ready(function(){
 
 			$("body").on("click",".submitReservation",function(e){
 				if($(".reserveDate").text()!="" && $(".reserveTime").text() !=""){
+					var serviceId = $(this).attr("data-objectId");
 					$.ajax({
 						method:"POST",
-						async:true,
+						async:false,
 						data:{
 							'reserveDate':$(".reserveDate").text(),
 							'reserveTime':$(".reserveTime").text(),
-							'serviceId':$(this).attr("data-objectId")
+							'serviceId':serviceId
 						},
-						url:"user/addReservation",
+						url:"user/checkReservationAvailable",
 						success:function(data,status,jqXHR){
-							$('#myModal').modal('hide');
-							$('.addSuccess').show();
-						}
+							$.ajax({
+								method:"POST",
+								async:false,
+								data:{
+									'reserveDate':$(".reserveDate").text(),
+									'reserveTime':$(".reserveTime").text(),
+									'serviceId':serviceId
+								},
+								url:"user/addReservation",
+								success:function(data,status,jqXHR){
+									$('#myModal').modal('hide');
+									$('.addSuccess').show();
+								}
+
+							})
+						},
+						  statusCode:{
+						  	500:function(){
+						  		alert("Date and Time is already taken for this service. Please choose another date and time.");
+						  	}
+						  }
 
 					})
+
+					
+
 					$('#myModal .alert').hide();
 				}else{
 					$('#myModal .alert').show();
