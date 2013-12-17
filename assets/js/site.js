@@ -221,8 +221,12 @@ $(document).ready(function(){
 			$orderQuantityInput = $orderRow.children(".orderQuantity").children("input");
 			var productQuantity = parseInt($orderRow.find(".productQuantity").text());
 
-			if($orderQuantityInput.val() == "" || (parseInt($orderQuantityInput.val()) > productQuantity) || parseInt($orderQuantityInput.val()) < 0){
 				
+			if($orderQuantityInput.val() == "" || (parseInt($orderQuantityInput.val()) > productQuantity)){
+				alert("Stock isnt Enough!");
+
+			}else if($orderQuantityInput.val() == "" || (parseInt($orderQuantityInput.val()) > productQuantity) || parseInt($orderQuantityInput.val()) < 0){
+			
 			}else{
 				$('.detailProductName').text($orderRow.children('.productName').text());
 				$('.detailProductType span').text($orderRow.children('.productType').text());
