@@ -58,7 +58,7 @@
 		}
 
 		public function checkReservationAvailable(){
-			if($this->session->userdata('user_objectId')){
+			
 				$reserveDate= $this->input->post("reserveDate");
 				$reserveTime= $this->input->post("reserveTime");
 				$reserveDateTime = date('Y-m-d H:i:s', strtotime(str_replace('-', '/', ''.$reserveDate.' '.$reserveTime.'')));
@@ -75,7 +75,7 @@
 					set_status_header((int)200); 
 				}
 
-			}
+			
 		}
 
 		public function addReservation(){
