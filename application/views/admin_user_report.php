@@ -4,6 +4,8 @@
    <link href="<?php echo base_url();?>assets/css/reportsLayout.css" rel="stylesheet">
 </head>
 <body>
+
+<h1>Vets In Practice</h1>
 <h1>User Report</h1>
 <table class="detail" style="width:100%;margin: 0px; border-top: none;">
 <tr>

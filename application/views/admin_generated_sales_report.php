@@ -4,7 +4,9 @@
    <link href="<?php echo base_url();?>assets/css/reportsLayout.css" rel="stylesheet">
 </head>
 <body>
-<h1>Sales Report (<?php echo $reportMode; ?>)</h1>
+
+<center><h1>Vets In Practice</h1>
+<h1>Sales Report (<?php echo $reportMode; ?>)</h1></center>
 <p>
 	From :<?php echo $reportDateFrom; ?>
 </p>
@@ -47,13 +49,15 @@
 <?php
 $allTotal=0;
 $counter =0;
- foreach ($sales as $row){
+foreach ($sales as $row){
  	$allTotal =$allTotal + $row['saleGross'];
 echo'<tr class="list_row">';
 if($reportMode=='Daily'){
-			echo'<td class="center">'.$row['saleDate'].'</td>';
+$rest = substr($row['saleDate'], 0, -8);
+			echo'<td class="center">'.$rest.'</td>';
 }else if($reportMode=='Weekly'){
-			echo'<td class="center">'.$row['saleDate'].'</td>';
+$rest = substr($row['saleDate'], 0, -8);
+			echo'<td class="center">'.$rest.'</td>';
 }
 
 echo'<td style="text-align:right;padding-right:20px;">P '.$row['saleGross'].'</td>';

@@ -57,6 +57,27 @@
 			}
 		}
 
+		public function checkReservationAvailable(){
+			
+				$reserveDate= $this->input->post("reserveDate");
+				$reserveTime= $this->input->post("reserveTime");
+				$reserveDateTime = date('Y-m-d H:i:s', strtotime(str_replace('-', '/', ''.$reserveDate.' '.$reserveTime.'')));
+				$serviceId =$this->input->post("serviceId");
+
+				$query = $this->db->query("SELECT * from users_reservation 
+					where reserveDateTime='".$reserveDateTime."' 
+					AND serviceId='".$serviceId."';");
+
+				if ($this->db->affected_rows() > 0)
+				{
+					set_status_header((int)500); 
+				}else{
+					set_status_header((int)200); 
+				}
+
+			
+		}
+
 		public function addReservation(){
 			if($this->session->userdata('user_objectId')){
 			$reserveDate= $this->input->post("reserveDate");

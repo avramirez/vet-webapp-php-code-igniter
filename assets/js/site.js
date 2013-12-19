@@ -98,21 +98,43 @@ $(document).ready(function(){
 
 			$("body").on("click",".submitReservation",function(e){
 				if($(".reserveDate").text()!="" && $(".reserveTime").text() !=""){
+					var serviceId = $(this).attr("data-objectId");
 					$.ajax({
 						method:"POST",
-						async:true,
+						async:false,
 						data:{
 							'reserveDate':$(".reserveDate").text(),
 							'reserveTime':$(".reserveTime").text(),
-							'serviceId':$(this).attr("data-objectId")
+							'serviceId':serviceId
 						},
-						url:"user/addReservation",
+						url:"user/checkReservationAvailable",
 						success:function(data,status,jqXHR){
-							$('#myModal').modal('hide');
-							$('.addSuccess').show();
-						}
+							$.ajax({
+								method:"POST",
+								async:false,
+								data:{
+									'reserveDate':$(".reserveDate").text(),
+									'reserveTime':$(".reserveTime").text(),
+									'serviceId':serviceId
+								},
+								url:"user/addReservation",
+								success:function(data,status,jqXHR){
+									$('#myModal').modal('hide');
+									$('.addSuccess').show();
+								}
+
+							})
+						},
+						  statusCode:{
+						  	500:function(){
+						  		alert("Date and Time is already taken for this service. Please choose another date and time.");
+						  	}
+						  }
 
 					})
+
+					
+
 					$('#myModal .alert').hide();
 				}else{
 					$('#myModal .alert').show();
@@ -199,8 +221,12 @@ $(document).ready(function(){
 			$orderQuantityInput = $orderRow.children(".orderQuantity").children("input");
 			var productQuantity = parseInt($orderRow.find(".productQuantity").text());
 
-			if($orderQuantityInput.val() == "" || (parseInt($orderQuantityInput.val()) > productQuantity) || parseInt($orderQuantityInput.val()) < 0){
 				
+			if($orderQuantityInput.val() == "" || (parseInt($orderQuantityInput.val()) > productQuantity)){
+				alert("Stock isnt Enough!");
+
+			}else if($orderQuantityInput.val() == "" || (parseInt($orderQuantityInput.val()) > productQuantity) || parseInt($orderQuantityInput.val()) < 0){
+			
 			}else{
 				$('.detailProductName').text($orderRow.children('.productName').text());
 				$('.detailProductType span').text($orderRow.children('.productType').text());
@@ -382,57 +408,77 @@ $('body').on('click','#generateReservationReport',function(e){
 					$(".reserveTime").html('<label for="reservationUserEmail" class="error">This field is required.</label>');
 				}
 				if($(".reserveDate label").length ==0 && $(".reserveTime label").length ==0){
-							$.ajax({  
-							  type: "POST",  
-							  url: $("#addReservationAdmin").attr("action"),
-							  data: {
-							  	'reserveDate':$(".reserveDate").text(),
-							  	'reserveTime':$(".reserveTime").text(),
-							  	'serviceId':$('select.adminServicesReservation').val(),
-							  	'reservationUserEmail':$('#reservationUserEmail').val(),
-							  	'reservationId':$("#reservationId").val()
-							  },
-							  success: function(data,status,jqXHR) {  
-							  	if($('#saveChangesReservation:visible').length){
-							  		$(".addReservationSuccess strong").text("Successfuly updated reservation!");
-							  		$('#saveChangesReservation').hide();
-										$('#backToAddReservation').hide();
-										$('#addReservationButton').show();
-										$('#addOrEditReservation .panel-title a span:last-child').text("Add Reservation");
-										$("#addReservationAdmin").attr("action","addReservation");
-										$("#reservationUserEmail").val("");
-										$(".adminServicesReservation").prop('selectedIndex',0).trigger("change");
-										$(".reserveTime").text("");
-										$(".reserveDate").text("");
-						  			$('#datepicker').datepicker('setDate');
-						  			$('.reserveTimeSelect').prop('selectedIndex',0);	
-							  	}else{
-							  		$(".addReservationSuccess strong").text("Successfuly added a reservation!");
-							  	}
-							  	$('#collapseOne').collapse('hide');
-							  	$(".adminServicesReservation").prop('selectedIndex',0).trigger("change");
-							  	$(".reserveTime").text("");
-									$(".reserveDate").text("");
-									$("#reservationUserEmail").val("");
-					  			$('#datepicker').datepicker('setDate');
-					  			$('.reserveTimeSelect').prop('selectedIndex',0);
-							  	$(".addReservationSuccess").show();
-							  	$.ajax({
-										url:document.URL,
-										success:function(data){
-											$("#adminReservationTable").html($(data).find("#adminReservationTable").html());
-										}
-								})
-							  },
-							  error:function(data,status,jqXHR){
-							  	
-							  },
-							  statusCode:{
-							  	400:function(){
-							  		console.log("FAIL");
-							  	}
-							  }
-						}); 
+					var serviceId =$('select.adminServicesReservation').val();
+							$.ajax({
+								method:"POST",
+								async:false,
+								data:{
+									'reserveDate':$(".reserveDate").text(),
+								  	'reserveTime':$(".reserveTime").text(),
+								  	'serviceId':serviceId
+								},
+								url:"/vet-webapp-php-code-igniter/user/checkReservationAvailable",
+								success:function(data,status,jqXHR){
+														$.ajax({  
+														  type: "POST",  
+														  url: $("#addReservationAdmin").attr("action"),
+														  data: {
+														  	'reserveDate':$(".reserveDate").text(),
+														  	'reserveTime':$(".reserveTime").text(),
+														  	'serviceId':serviceId,
+														  	'reservationUserEmail':$('#reservationUserEmail').val(),
+														  	'reservationId':$("#reservationId").val()
+														  },
+														  success: function(data,status,jqXHR) {  
+														  	if($('#saveChangesReservation:visible').length){
+														  		$(".addReservationSuccess strong").text("Successfuly updated reservation!");
+														  		$('#saveChangesReservation').hide();
+																	$('#backToAddReservation').hide();
+																	$('#addReservationButton').show();
+																	$('#addOrEditReservation .panel-title a span:last-child').text("Add Reservation");
+																	$("#addReservationAdmin").attr("action","addReservation");
+																	$("#reservationUserEmail").val("");
+																	$(".adminServicesReservation").prop('selectedIndex',0).trigger("change");
+																	$(".reserveTime").text("");
+																	$(".reserveDate").text("");
+													  			$('#datepicker').datepicker('setDate');
+													  			$('.reserveTimeSelect').prop('selectedIndex',0);	
+														  	}else{
+														  		$(".addReservationSuccess strong").text("Successfuly added a reservation!");
+														  	}
+														  	$('#collapseOne').collapse('hide');
+														  	$(".adminServicesReservation").prop('selectedIndex',0).trigger("change");
+														  	$(".reserveTime").text("");
+																$(".reserveDate").text("");
+																$("#reservationUserEmail").val("");
+												  			$('#datepicker').datepicker('setDate');
+												  			$('.reserveTimeSelect').prop('selectedIndex',0);
+														  	$(".addReservationSuccess").show();
+														  	$.ajax({
+																	url:document.URL,
+																	success:function(data){
+																		$("#adminReservationTable").html($(data).find("#adminReservationTable").html());
+																	}
+															})
+														  },
+														  error:function(data,status,jqXHR){
+														  	
+														  },
+														  statusCode:{
+														  	400:function(){
+														  		console.log("FAIL");
+														  	}
+														  }
+													});
+
+								},
+								  statusCode:{
+								  	500:function(){
+								  		alert("Date and Time is already taken for this service. Please choose another date and time.");
+								  	}
+								  }
+							})
+		 
 
 				}
 			}
