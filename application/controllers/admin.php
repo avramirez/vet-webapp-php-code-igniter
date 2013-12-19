@@ -63,6 +63,88 @@
 			}
 		}
 		
+		public function billing()
+		{
+			if($this->session->userdata('admin_objectId')){
+				$this->checkAllowed([3,4]);
+				
+				$navbarData['userLevel'] = $this->session->userdata('user_level');
+
+				$data['stylesheets'] =array('jumbotron-narrow.css');
+				$data['show_navbar'] ="true";
+				$data['content_navbar'] = $this->load->view('admin_navbar',$navbarData,true);
+
+				$customer = $this->db->query("SELECT * FROM users WHERE user_level=1;");
+				$billingData['customers'] = $customer->result_array();
+
+				$doc = $this->db->query("SELECT * FROM doctors");
+				$billingData['docs'] = $doc->result_array();
+
+				$surgery = $this->db->query("SELECT * FROM services WHERE active=3;");
+				$billingData['surgerys'] = $surgery->result_array();
+
+				$data['content_body'] = $this->load->view('admin_billing',$billingData,true);
+				
+				$this->load->view("layout",$data);
+
+			}else{
+				redirect("/");
+			}
+		}
+
+		public function generateBilling(){
+			if($this->session->userdata('admin_objectId')){
+				$this->load->helper(array('dompdf', 'file'));
+
+				
+				$reportMonthFrom=$this->input->post("reportMonthFrom");
+				$reportYearFrom=$this->input->post("reportYearFrom");
+				$reportDayFrom=$this->input->post("reportDayFrom");
+				$reportMonthTo=$this->input->post("reportMonthTo");
+				$reportYearTo=$this->input->post("reportYearTo");
+				$reportDayTo=$this->input->post("reportDayTo");
+
+				$customerId=$this->input->post("customer");
+				$petName=$this->input->post("petName");
+				$surgeryId=$this->input->post("surgery");
+				$doctorId=$this->input->post("doctor");
+				
+
+				$reportDateFrom = date('Y-m-d', strtotime(str_replace('-', '/', ''.$reportMonthFrom.'/'.$reportDayFrom.'/'.$reportYearFrom.'')));
+				$reportDateto = date('Y-m-d', strtotime(str_replace('-', '/', ''.$reportMonthTo.'/'.$reportDayTo.'/'.$reportYearTo.'')));
+				
+				$timeDiff = abs(strtotime(str_replace('-', '/', ''.$reportMonthTo.'/'.$reportDayTo.'/'.$reportYearTo.'')) -strtotime(str_replace('-', '/', ''.$reportMonthFrom.'/'.$reportDayFrom.'/'.$reportYearFrom.'')));
+
+				$numDays = ($timeDiff/86400) + 1; 
+
+				
+
+     			$billingData['daysNumber']=$numDays;
+     			$billingData['petName']=$petName;
+
+				$customer = $this->db->query("SELECT * FROM users WHERE objectId='".$customerId."';");
+				$billingData['customers'] = $customer->result_array();
+
+				$doc = $this->db->query("SELECT * FROM doctors WHERE objectId='".$doctorId."';");
+				$billingData['docs'] = $doc->result_array();
+
+				$surgery = $this->db->query("SELECT * FROM services WHERE objectId='".$surgeryId."';");
+				$billingData['surgerys'] = $surgery->result_array();
+
+				
+				$billingData['reportDateFrom']=$reportDateFrom;
+				$billingData['reportDateto']=$reportDateto;
+				
+
+			    $html =$this->load->view('admin_generated_billing',$billingData,true);
+			    // $this->output->append_output($html);
+			    pdf_create($html, 'salesReport');
+
+			}else{
+				redirect("/");
+			}
+		}
+
 		public function sales()
 		{
 			if($this->session->userdata('admin_objectId')){
