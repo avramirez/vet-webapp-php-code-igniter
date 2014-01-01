@@ -46,7 +46,8 @@
                         <!-- NOTE CHANGE THIS! -->
                         <select class="form-control reportYearFrom" name="reportYearFrom">
                           <option value="0">Year</option>
-                          <option value="2013" selected>2013</option>
+                          <option value="2014" selected >2014</option>
+                          <option value="2013">2013</option>
                           <option value="2012">2012</option>
                           <option value="2011">2011</option>
                           <option value="2010">2010</option>
@@ -100,7 +101,8 @@
                         <!-- NOTE CHANGE THIS NOT FULLY USED -->
                         <select class="form-control reportYearTo" name="reportYearTo">
                           <option value="0">Year</option>
-                          <option value="2013" selected>2013</option>
+                          <option value="2014" selected >2014</option>
+                          <option value="2013">2013</option>
                           <option value="2012">2012</option>
                           <option value="2011">2011</option>
                           <option value="2010">2010</option>

@@ -195,23 +195,55 @@
 											GROUP BY day(allSales.saleDate);");
 
 				}else if($reportMode =="Weekly"){
-				$query = $this->db->query("SELECT SUM(allSales.gross) as saleGross,week(allSales.saleDate) as saleDate 
+				$query = $this->db->query("SELECT SUM(allSales.gross) as saleGross,week(allSales.saleDate) as saleDate, allSales.saleDate as rawSaleDate 
 											from (
-											SELECT SUM(totalPrice)as gross,uo.orderDate as saleDate FROM users_order uo WHERE uo.orderDate >= '".$reportDateFrom."' AND uo.orderDate <='".$reportDateto."' AND uo.active=0 GROUP BY week(uo.orderDate)
+											SELECT SUM(totalPrice)as gross,uo.orderDate as saleDate FROM users_order uo 
+											WHERE uo.orderDate >= '".$reportDateFrom."' AND uo.orderDate <='".$reportDateto."' 
+											AND uo.active=0 GROUP BY week(uo.orderDate)
 											UNION ALL
-											SELECT SUM(price) as gross, ur.reserveDateTime as saleDate from users_reservation ur INNER JOIN services serv ON serv.objectId = ur.serviceId WHERE ur.reserveDateTime >= '".$reportDateFrom."' AND ur.reserveDateTime <='".$reportDateto."' AND ur.confirmed=1 GROUP BY week(ur.reserveDateTime)) as allSales 
+											SELECT SUM(price) as gross, ur.reserveDateTime as saleDate from users_reservation ur INNER JOIN services serv ON serv.objectId = ur.serviceId 
+											WHERE ur.reserveDateTime >= '".$reportDateFrom."' AND ur.reserveDateTime <='".$reportDateto."' 
+											AND ur.confirmed=1 GROUP BY week(ur.reserveDateTime)) as allSales 
 											GROUP BY week(allSales.saleDate);");
+
+				$allItems= $this->db->query("SELECT * from (SELECT uo.orderDate as saleDate, 
+											prod.product_name as itemName,
+											uo.productAmount as itemQuantity,
+											prod.product_price as itemPrice,
+											uo.totalPrice as itemTotalPrice,
+											WEEK(uo.orderDate) as itemWeek,
+											YEAR(uo.orderDate) as itemYear
+											FROM users_order uo 
+											INNER JOIN products as prod ON uo.productId = prod.objectId
+											WHERE uo.orderDate >= '".$reportDateFrom."' AND uo.orderDate <='".$reportDateto."'
+											AND uo.active=0 
+												UNION ALL 
+													SELECT ur.reserveDateTime as saleDate, 
+													serv.service_name as itemName,
+													1 as itemQuantity,
+													serv.price as itemPrice, 
+													serv.price as itemTotalPrice,
+													WEEK(ur.reserveDateTime) as itemWeek,
+													YEAR(ur.reserveDateTime) as itemYear
+													from users_reservation ur 
+													INNER JOIN services serv ON serv.objectId = ur.serviceId 
+													WHERE ur.reserveDateTime >= '".$reportDateFrom."' AND ur.reserveDateTime <='".$reportDateto."' 
+													AND ur.confirmed=1) allItems
+										ORDER by allItems.saleDate ASC;");
+				$salesReport['allItems'] = $allItems->result_array();
 
 				}
 
 				$salesReport['sales'] = $query->result_array();
 				$salesReport['reportMode']=$reportMode;
 				
+				
+
 				$salesReport['reportDateFrom']=$reportDateFrom;
 				$salesReport['reportDateto']=$reportDateto;
 				
 
-			    $html =$this->load->view('admin_generated_sales_report',$salesReport,true);
+			     $html =$this->load->view('admin_generated_sales_report',$salesReport,true);
 			    // $this->output->append_output($html);
 			    pdf_create($html, 'salesReport');
 

@@ -126,6 +126,7 @@
                       <div class="col-md-6">
                         <select class="form-control reportYearFrom" name="reportYearFrom">
                           <option value="0">Year</option>
+                          <option value="2014">2014</option>
                           <option value="2013">2013</option>
                           <option value="2012">2012</option>
                           <option value="2011">2011</option>
@@ -179,6 +180,7 @@
                       <div class="col-md-6">
                         <select class="form-control reportYearTo" name="reportYearTo">
                           <option value="0">Year</option>
+                          <option value="2014">2014</option>
                           <option value="2013">2013</option>
                           <option value="2012">2012</option>
                           <option value="2011">2011</option>
