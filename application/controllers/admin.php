@@ -206,6 +206,8 @@
 											AND ur.confirmed=1 GROUP BY week(ur.reserveDateTime)) as allSales 
 											GROUP BY week(allSales.saleDate);");
 
+				}
+
 				$allItems= $this->db->query("SELECT * from (SELECT uo.orderDate as saleDate, 
 											prod.product_name as itemName,
 											uo.productAmount as itemQuantity,
@@ -231,8 +233,6 @@
 													AND ur.confirmed=1) allItems
 										ORDER by allItems.saleDate ASC;");
 				$salesReport['allItems'] = $allItems->result_array();
-
-				}
 
 				$salesReport['sales'] = $query->result_array();
 				$salesReport['reportMode']=$reportMode;
