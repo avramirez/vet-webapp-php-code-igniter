@@ -18,6 +18,32 @@ USE `vet_app`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `audit_trail`
+--
+
+DROP TABLE IF EXISTS `audit_trail`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `audit_trail` (
+  `objectId` int(11) NOT NULL AUTO_INCREMENT,
+  `description` longtext NOT NULL,
+  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `type` varchar(45) NOT NULL,
+  PRIMARY KEY (`objectId`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `audit_trail`
+--
+
+LOCK TABLES `audit_trail` WRITE;
+/*!40000 ALTER TABLE `audit_trail` DISABLE KEYS */;
+INSERT INTO `audit_trail` VALUES (3,'User 23 logged in.','2014-01-05 04:23:33','LOG IN'),(4,'User 22 logged in.','2014-01-05 06:16:53','LOG IN'),(5,'User 22 added reservation. Reservation ID: 30','2014-01-05 06:17:10','ADD RESERVATION'),(9,'User 22 deleted a reservation. Reservation ID: 30','2014-01-05 06:27:48','DELETE RESERVATION'),(12,'User 22 added a order to cart. Order ID: 53','2014-01-05 06:43:21','ADD ORDER TO CART'),(13,'User 22 updated a order. Order ID: 53','2014-01-05 06:45:06','UPDATED ORDER'),(14,'User 22 deleted a order. Order ID: 53','2014-01-05 06:49:35','DELETED ORDER'),(15,'User 22 checkout cart. Cart ID/Receipt #: 305059','2014-01-05 06:53:33','CHECKOUT CART');
+/*!40000 ALTER TABLE `audit_trail` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `doctors`
 --
 
@@ -65,7 +91,7 @@ CREATE TABLE `products` (
 
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES (1,'ALLOPURINOL tablet 300mg, 100/box. Sold per tab.',4967,10,'Tablets and Capsules'),(2,'ALUMINUM HYDROXIDE MAGNESIUM HYDROXIDE tablet 200mg/100mg, 100/box.Sold per tab.',2973,10,'Tablets and Capsules');
+INSERT INTO `products` VALUES (1,'ALLOPURINOL tablet 300mg, 100/box. Sold per tab.',4965,10,'Tablets and Capsules'),(2,'ALUMINUM HYDROXIDE MAGNESIUM HYDROXIDE tablet 200mg/100mg, 100/box.Sold per tab.',2973,10,'Tablets and Capsules');
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -147,7 +173,7 @@ CREATE TABLE `users_order` (
   KEY `usersId` (`usersId`),
   CONSTRAINT `users_order_ibfk_1` FOREIGN KEY (`productId`) REFERENCES `products` (`objectId`),
   CONSTRAINT `users_order_ibfk_2` FOREIGN KEY (`usersId`) REFERENCES `users` (`objectId`)
-) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -156,7 +182,7 @@ CREATE TABLE `users_order` (
 
 LOCK TABLES `users_order` WRITE;
 /*!40000 ALTER TABLE `users_order` DISABLE KEYS */;
-INSERT INTO `users_order` VALUES (32,1,22,1,10,'2013-12-08 22:55:58',105877,0),(37,2,22,1,10,'2013-12-15 21:29:47',545358,0),(38,2,22,2,20,'2013-12-15 21:32:06',480923,0),(39,1,22,7,70,'2013-12-15 21:34:21',406463,0),(40,2,22,4,40,'2013-12-15 21:35:53',909225,0),(41,2,22,8,80,'2013-12-15 21:38:23',939410,0),(42,1,22,11,110,'2013-12-15 21:48:30',781674,0),(43,1,22,3,30,'2013-12-15 21:50:56',452853,0),(44,2,22,2,20,'2013-12-15 21:51:02',452853,0),(45,1,22,5,50,'2013-12-15 21:55:06',458703,0),(46,1,22,1,10,'2013-12-15 21:57:10',773599,0),(47,2,22,1,10,'2013-12-16 20:23:03',773599,0),(48,1,22,2,20,'2013-12-16 21:57:29',985717,0),(49,2,22,1,10,'2013-12-17 05:24:26',891070,0);
+INSERT INTO `users_order` VALUES (32,1,22,1,10,'2014-12-08 22:55:58',105877,0),(37,2,22,1,10,'2013-12-15 21:29:47',545358,0),(38,2,22,2,20,'2013-12-15 21:32:06',480923,0),(39,1,22,7,70,'2013-12-15 21:34:21',406463,0),(40,2,22,4,40,'2013-12-15 21:35:53',909225,0),(41,2,22,8,80,'2013-12-15 21:38:23',939410,0),(42,1,22,11,110,'2013-12-15 21:48:30',781674,0),(43,1,22,3,30,'2013-12-15 21:50:56',452853,0),(44,2,22,2,20,'2013-12-15 21:51:02',452853,0),(45,1,22,5,50,'2013-12-15 21:55:06',458703,0),(46,1,22,1,10,'2013-12-15 21:57:10',773599,0),(47,2,22,1,10,'2013-12-16 20:23:03',773599,0),(48,1,22,2,20,'2013-12-16 21:57:29',985717,0),(49,2,22,1,10,'2013-12-17 05:24:26',891070,0),(51,1,22,1,10,'2014-01-05 14:39:41',NULL,1),(52,1,22,1,10,'2014-01-05 14:42:02',NULL,1);
 /*!40000 ALTER TABLE `users_order` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -180,7 +206,7 @@ CREATE TABLE `users_reservation` (
   KEY `userId` (`userId`),
   CONSTRAINT `users_reservation_ibfk_1` FOREIGN KEY (`serviceId`) REFERENCES `services` (`objectId`),
   CONSTRAINT `users_reservation_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `users` (`objectId`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -189,7 +215,7 @@ CREATE TABLE `users_reservation` (
 
 LOCK TABLES `users_reservation` WRITE;
 /*!40000 ALTER TABLE `users_reservation` DISABLE KEYS */;
-INSERT INTO `users_reservation` VALUES (24,1,22,'12/18/2013','2:00 PM','2013-12-18 14:00:00',0),(25,1,26,'12/19/2013','12:00 PM','2013-12-19 12:00:00',1),(26,1,22,'12/18/2013','12:00 PM','2013-12-18 12:00:00',0),(27,3,26,'12/30/2013','1:00 PM','2013-12-30 13:00:00',1),(28,1,22,'12/17/2013','11:00 AM','2013-12-17 11:00:00',0);
+INSERT INTO `users_reservation` VALUES (24,1,22,'12/18/2013','2:00 PM','2013-12-18 14:00:00',0),(25,1,26,'12/19/2013','12:00 PM','2013-12-19 12:00:00',1),(26,1,22,'12/18/2013','12:00 PM','2013-12-18 12:00:00',0),(27,3,26,'12/30/2013','1:00 PM','2013-12-30 13:00:00',1),(28,1,22,'12/17/2013','11:00 AM','2013-12-17 11:00:00',0),(29,1,22,'01/09/2014','12:00 PM','2014-01-09 12:00:00',1);
 /*!40000 ALTER TABLE `users_reservation` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -202,4 +228,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-12-20  7:30:44
+-- Dump completed on 2014-01-05 14:55:03
