@@ -38,6 +38,28 @@
 			}
 		}
 
+		public function audit(){
+			if($this->session->userdata('admin_objectId')){
+				$this->checkAllowed([3,4]);
+				
+				$navbarData['userLevel'] = $this->session->userdata('user_level');
+
+				$data['stylesheets'] =array('jumbotron-narrow.css');
+				$data['show_navbar'] ="true";
+				$data['content_navbar'] = $this->load->view('admin_navbar',$navbarData,true);
+				$query = $this->db->query("SELECT * FROM audit_trail 
+					ORDER BY time DESC;");
+				$usersData['audits'] = $query->result_array();
+
+				$data['content_body'] = $this->load->view('admin_audit',$usersData,true);
+				
+				$this->load->view("layout",$data);
+
+			}else{
+				redirect("/");
+			}
+		}
+
 
 		public function manageProducts()
 		{

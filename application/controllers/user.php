@@ -50,7 +50,19 @@
 					$this->session->set_userdata('user_level',''.$row->user_level.'');
 				}
 				
-			  	
+			  	$auditLog=$this->db->query("INSERT INTO `vet_app`.`audit_trail`
+										(`objectId`,
+										`description`,
+										`time`,
+										`type`)
+										VALUES
+										(NULL,
+										'User ".$row->objectId." logged in.',
+										NULL,
+										'LOG IN'
+										);
+										");
+
 			  	set_status_header((int)200);
 			}else{
 				set_status_header((int)401);
@@ -96,6 +108,18 @@
 
 				if ($this->db->affected_rows() > 0)
 				{
+					$auditLog=$this->db->query("INSERT INTO `vet_app`.`audit_trail`
+										(`objectId`,
+										`description`,
+										`time`,
+										`type`)
+										VALUES
+										(NULL,
+										'User ".$this->session->userdata('user_objectId')." added reservation. Reservation ID: ".$this->db->insert_id()."',
+										NULL,
+										'ADD RESERVATION'
+										);
+										");
 					set_status_header((int)200); 
 				}else{
 					set_status_header((int)500); 
@@ -119,6 +143,18 @@
 
 				if ($this->db->affected_rows() > 0)
 				{
+					$auditLog=$this->db->query("INSERT INTO `vet_app`.`audit_trail`
+										(`objectId`,
+										`description`,
+										`time`,
+										`type`)
+										VALUES
+										(NULL,
+										'User ".$this->session->userdata('user_objectId')." updated a reservation. Reservation ID: ".$serviceId."',
+										NULL,
+										'UPDATE RESERVATION'
+										);
+										");
 					set_status_header((int)200); 
 				}else{
 					set_status_header((int)500); 
@@ -135,6 +171,18 @@
 
 				if ($this->db->affected_rows() > 0)
 				{
+					$auditLog=$this->db->query("INSERT INTO `vet_app`.`audit_trail`
+										(`objectId`,
+										`description`,
+										`time`,
+										`type`)
+										VALUES
+										(NULL,
+										'User ".$this->session->userdata('user_objectId')." deleted a reservation. Reservation ID: ".$serviceId."',
+										NULL,
+										'DELETE RESERVATION'
+										);
+										");
 					set_status_header((int)200); 
 				}else{
 					set_status_header((int)500); 
@@ -229,10 +277,25 @@
 						'".$totalPrice."',
 						'".$orderDate."',
 						NULL,1);");
+
+				$newOrderID=$this->db->insert_id();
+
 				$updateProduct = $this->db->simple_query("UPDATE vet_app.products set product_quantity = (CASE WHEN ((product_quantity - ".$productAmount.") < 0) THEN product_quantity ELSE (product_quantity - ".$productAmount.") END) WHERE objectId='".$productId."';");
 
 				if ($this->db->affected_rows() > 0 && updateProduct)
 				{
+					$auditLog=$this->db->query("INSERT INTO `vet_app`.`audit_trail`
+										(`objectId`,
+										`description`,
+										`time`,
+										`type`)
+										VALUES
+										(NULL,
+										'User ".$this->session->userdata('user_objectId')." added a order to cart. Order ID: ".$newOrderID."',
+										NULL,
+										'ADD ORDER TO CART'
+										);
+										");
 					set_status_header((int)200); 
 				}else{
 					set_status_header((int)500); 
@@ -262,6 +325,18 @@
 
 				if ($this->db->affected_rows() > 0)
 				{
+					$auditLog=$this->db->query("INSERT INTO `vet_app`.`audit_trail`
+										(`objectId`,
+										`description`,
+										`time`,
+										`type`)
+										VALUES
+										(NULL,
+										'User ".$this->session->userdata('user_objectId')." updated a order. Order ID: ".$orderObjectId."',
+										NULL,
+										'UPDATED ORDER'
+										);
+										");
 					set_status_header((int)200); 
 				}else{
 					set_status_header((int)500); 
@@ -284,6 +359,18 @@
 
 				if ($this->db->affected_rows() > 0)
 				{
+					$auditLog=$this->db->query("INSERT INTO `vet_app`.`audit_trail`
+										(`objectId`,
+										`description`,
+										`time`,
+										`type`)
+										VALUES
+										(NULL,
+										'User ".$this->session->userdata('user_objectId')." deleted a order. Order ID: ".$orderObjectid."',
+										NULL,
+										'DELETED ORDER'
+										);
+										");
 					set_status_header((int)200); 
 				}else{
 					set_status_header((int)500); 
@@ -317,7 +404,7 @@
 					prod.product_price, 
 					(SELECT SUM(uo.totalPrice) from vet_app.users_order uo 
 				 INNER JOIN  vet_app.products prod ON uo.productId = prod.objectId 
-				 WHERE uo.usersId='".$userId."') as totalAll 
+				 WHERE uo.usersId='".$userId."' AND uo.active =1) as totalAll 
 				 from vet_app.users_order uo 
 				 INNER JOIN  vet_app.products prod ON uo.productId = prod.objectId 
 				 WHERE uo.usersId='".$userId."' 
@@ -376,6 +463,18 @@
 
 				if ($this->db->affected_rows() > 0)
 				{
+					$auditLog=$this->db->query("INSERT INTO `vet_app`.`audit_trail`
+										(`objectId`,
+										`description`,
+										`time`,
+										`type`)
+										VALUES
+										(NULL,
+										'User ".$this->session->userdata('user_objectId')." checkout cart. Cart ID/Receipt #: ".$orderBatchNumber."',
+										NULL,
+										'CHECKOUT CART'
+										);
+										");
 					set_status_header((int)200); 
 				}else{
 					set_status_header((int)200); 
@@ -400,12 +499,13 @@
 					prod.product_price,
 					uo.batchOrderId, 
 					(SELECT SUM(uo.totalPrice) from vet_app.users_order uo 
-				 WHERE uo.usersId='".$userId."' AND uo.batchOrderId IS NOT NULL) as totalAll 
+				 WHERE uo.usersId='".$userId."' AND uo.batchOrderId IS NOT NULL AND uo.active =1) as totalAll 
 				 from vet_app.users_order uo 
 				 INNER JOIN  vet_app.products prod ON uo.productId = prod.objectId 
 				 INNER JOIN  vet_app.users ur ON uo.usersId = ur.objectId 
 				 WHERE uo.usersId='".$userId."' 
 				 AND uo.batchOrderId IS NOT NULL 
+				 AND uo.active =1 
 				 ORDER BY orderDate DESC 
 				 LIMIT 0 , 2000;");	
 	

@@ -16,10 +16,11 @@
          	echo'<li class="navReserveManage"><a href="'.base_url().'admin/manageReservation">Reservations</a></li>';
                 echo'<li class="navSalesReport"><a href="'.base_url().'admin/sales">Sales</a></li>';
                 echo'<li class="navBilling"><a href="'.base_url().'admin/billing">Billing</a></li>';
+                echo'<li class="navBilling"><a href="'.base_url().'admin/audit">Audit Trail</a></li>';
          	echo'<li><a href="'.base_url().'user/logout">Log-Out</a></li>';
  	}
  ?>
  
  </ul>
-        <h3 class="text-muted">Vets in Practice (Admin)</h3>
+        <h3 class="text-muted">Admin</h3>
 </div>
