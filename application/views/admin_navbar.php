@@ -17,6 +17,7 @@
                 echo'<li class="navSalesReport"><a href="'.base_url().'admin/sales">Sales</a></li>';
                 echo'<li class="navBilling"><a href="'.base_url().'admin/billing">Billing</a></li>';
                 echo'<li class="navBilling"><a href="'.base_url().'admin/audit">Audit Trail</a></li>';
+                echo'<li class="navBilling"><a href="'.base_url().'admin/backup">Backup DB</a></li>';
          	echo'<li><a href="'.base_url().'user/logout">Log-Out</a></li>';
  	}
  ?>

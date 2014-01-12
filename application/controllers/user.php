@@ -37,7 +37,7 @@
 			$password = $this->input->post("userPassword");
 			$password =  $hash = $this->encrypt->sha1($password);
 
-			$query = $this->db->query("SELECT objectId,user_level from users where password='".$password."' AND email='".$email."';");
+			$query = $this->db->query("SELECT objectId,user_level,email from users where password='".$password."' AND email='".$email."';");
 			if ($query->num_rows() > 0)
 			{
 				$row = $query->row();
@@ -50,18 +50,18 @@
 					$this->session->set_userdata('user_level',''.$row->user_level.'');
 				}
 				
-			  	$auditLog=$this->db->query("INSERT INTO `vet_app`.`audit_trail`
-										(`objectId`,
-										`description`,
-										`time`,
-										`type`)
-										VALUES
-										(NULL,
-										'User ".$row->objectId." logged in.',
-										NULL,
-										'LOG IN'
-										);
-										");
+				  	$auditLog=$this->db->query("INSERT INTO `vet_app`.`audit_trail`
+											(`objectId`,
+											`description`,
+											`time`,
+											`type`)
+											VALUES
+											(NULL,
+											'".$_SERVER['REMOTE_ADDR']." logged in. <br/> Email :".$row->email."',
+											NULL,
+											'LOG IN'
+											);
+											");
 
 			  	set_status_header((int)200);
 			}else{
