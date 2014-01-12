@@ -1,27 +1,24 @@
    <div class="jumbotron" id="homepage">
-        <h1>Marketing stuff!</h1>
-        <p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet.</p>
-        <p><a class="btn btn-lg btn-success" href="#" role="button">Get started today</a></p>
+        <h1>Vets In Practice</h1>
+ <p>The Vets in Practice Pet Hotel and Wellness Center, run by the hotshot veterinarians behind the renowned, high-tech pet hospital Vets in Practice (VIP), where your canine companions can get the ideal non-invasive post-surgery rehabilitation they need. Other than that, pets with no serious health problems can also come here for a little extra something, from playtime with other dogs, think Cavaletti hurdles, ramps, even supervised runs on a treadmill for slightly, grooming and massages by a real physical therapist. </p>
       </div>
 
       <!-- Example row of columns -->
       <div class="row">
         <div class="col-lg-4">
-          <h2>Heading</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn btn-primary" href="#" role="button">View details &raquo;</a></p>
+          <center><h2>Hospital</h2></center>
+            <img  style=" width:330px; height:200px;" src="<?php echo base_url();?>assets/images/picture1.JPG">
+         
         </div>
         <div class="col-lg-4">
-          <h2>Heading</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn btn-primary" href="#" role="button">View details &raquo;</a></p>
+         <center><h2>Products</h2></center>
+            <img  style=" width:330px; height:200px;" src="<?php echo base_url();?>assets/images/picture3.JPG">
        </div>
         <div class="col-lg-4">
-          <h2>Heading</h2>
-          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa.</p>
-          <p><a class="btn btn-primary" href="#" role="button">View details &raquo;</a></p>
+          <center><h2>Laboratory</h2></center>
+            <img  style=" width:330px; height:200px;" src="<?php echo base_url();?>assets/images/picture4.JPG">
         </div>
       </div>
       <div class="footer" style="text-align:center;">
-        <p>&copy; Company 2013</p>
+        <p>&copy; Vets In Practice 2013</p>
       </div>
