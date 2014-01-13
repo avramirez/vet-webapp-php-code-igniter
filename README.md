@@ -2,6 +2,7 @@ vet-webapp-php-code-igniter
 ===========================
 
 Veterinary Web App (Exploring Code Igniter) 
+- A simple project that I made to explore Codeigniter Framework. 
 
 XAMPP/xamppfiles/apache2/conf/httpd.conf
 
