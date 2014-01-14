@@ -162,7 +162,32 @@
 			}
 			 
 		}
+		public function printForUser(){
+		
 
+				$this->load->helper(array('dompdf', 'file'));
+
+				
+				$registrationId =$this->input->post('registrationId');
+
+
+				$query = $this->db->query("SELECT * from users_reservation ur 
+					INNER JOIN users us ON us.objectId = ur.userId 
+					INNER JOIN services serv ON ur.serviceId = serv.objectId 
+					WHERE ur.objectId='".$registrationId."';");	
+	
+				$servicesData['reservations'] = $query->result_array();
+
+							
+				$html =$this->load->view('admin_reservation_receipt',$servicesData,true);
+
+				 // $this->output->append_output($html);
+ 
+		    	pdf_create($html, 'reservation_receipt');
+
+
+			
+		}
 		public function deleteReservation(){
 			if($this->session->userdata('user_objectId')){
 				$serviceId =$this->input->post("serviceId");
@@ -201,6 +226,7 @@
 					svs.service_name,
 					ur.reserveDate,
 					ur.reserveTime,
+					ur.confirmed,
 					svs.price 
 					FROM users_reservation ur 
 					INNER JOIN services svs 

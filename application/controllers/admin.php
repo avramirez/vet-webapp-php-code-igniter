@@ -448,12 +448,37 @@
 				 // $this->output->append_output($html);
  
 		    	pdf_create($html, 'reservation_receipt');
+		    	
+
+			}else{
+				redirect("/");
+			}
+		}
+
+	
+
+
+		public function approveReservation(){
+			if($this->session->userdata('admin_objectId')){
+
+				
+				
+				$registrationId =$this->input->post('registrationId');
+
+
+
+
+				$updateActive=$this->db->query("UPDATE users_reservation SET confirmed=2 
+					WHERE  objectId='".$registrationId."';");				
+
+				redirect("/admin/manageReservation");
 
 
 			}else{
 				redirect("/");
 			}
 		}
+		
 		
 		public function manageReservation(){
 			if($this->session->userdata('admin_objectId')){

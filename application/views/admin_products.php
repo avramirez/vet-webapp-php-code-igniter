@@ -165,7 +165,12 @@
             <tbody>
               <?php 
               foreach ($products as $row){
-                echo "<tr>";
+                $productquantity = intval($row['product_quantity']);
+               if($productquantity <=10){
+                  echo "<tr style='color:red'>";  
+                }else{
+                  echo "<tr>";
+                }
                 echo "<td class='vert productObjectId'>".$row['objectId']."</td>";
                 echo "<td class='vert productName'>".$row['product_name']."</td>";
                 echo "<td class='vert productQuanitty'>".$row['product_quantity']."</td>";

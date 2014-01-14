@@ -34,8 +34,16 @@
                 echo "<td class='vert servicePrice rightalignPadding'>&#8369; ".$row['price']."</td>";
                 echo "<td class='vert serviceDate'>".$row['reserveDate']."</td>";
                 echo "<td class='vert serviceTime'>".$row['reserveTime']."</td>";
+
                 echo "<td class='vert'><button type='button' data-objectId='".$row['reservationobjectId']."' class='btn btn-primary btn-sm editReservation pull-left'>Edit</button>";
-                echo "<button type='button' data-objectId='".$row['reservationobjectId']."' class='btn btn-danger btn-sm deleteReservation pull-right'>Delete</button></td>";
+                echo "<button type='button' data-objectId='".$row['reservationobjectId']."' class='btn btn-danger btn-sm deleteReservation pull-right'>Delete</button>";
+                if($row['confirmed'] == "1"){
+                   echo "<form action='printForUser' method='POST'>";
+                  echo "<input type='hidden' name='registrationId' class='registrationId' value='".$row['reservationobjectId']."'>";
+                  echo "<button type='submit' data-objectId='".$row['reservationobjectId']."' class='btn btn-info btn-sm pull-right' style='width:100%;margin-top:10px;'>Print</button></td>";
+                  echo "</form>";
+                }
+                echo "</td>";
                 echo "</tr>";
                 }
               ?>

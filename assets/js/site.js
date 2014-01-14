@@ -360,6 +360,13 @@ $('body').on('click','#generateReservationReport',function(e){
 			$("#processReservationModal").modal();
 		});
 
+		$('body').on('click','.adminApproveReservation',function(event){
+			$("#approveReservationModal .registrationId").val($(this).attr("data-objectid"));
+			$("#approveReservationModal").modal();
+		});
+
+		
+
 		$('body').on('click','.adminDeleteReservation',function(event){
 			$("#confirmationModal h5.message").text("Are you sure you want to delete "+$(this).parent().parent().children('.serviceTitle').text()+"?")
 			$("#confirmationModal .confirmAction").attr("data-confirm","confirmDelete");
