@@ -315,7 +315,16 @@
 				$data['show_navbar'] ="true";
 				$data['content_navbar'] = $this->load->view('admin_navbar',$navbarData,true);
 
-				$data['content_body'] = $this->load->view('admin_order','',true);
+				$query = $this->db->query("SELECT batchOrderId,usersId,active from users_order 
+						WHERE batchOrderId IS NOT NULL
+						GROUP BY batchOrderId 
+						ORDER BY orderDate DESC;");
+
+				$ordersData['list_of_orders'] = $query->result_array();
+				$tableOrder['order_table'] = $this->load->view('admin_order_table',$ordersData,true);
+
+
+				$data['content_body'] = $this->load->view('admin_order',$tableOrder,true);
 				
 				$this->load->view("layout",$data);
 

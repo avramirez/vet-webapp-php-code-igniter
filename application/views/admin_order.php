@@ -19,7 +19,7 @@
           <div style="height:300px; overflow:auto;border: 1px solid rgba(51, 51, 51, 0.17);margin: 5px;">
           <!-- Table -->
           <table class="table table-hover" id="adminOrderTable">
-            
+            <?=$order_table?>
           </table>
 
         </div>
