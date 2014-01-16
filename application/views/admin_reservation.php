@@ -234,9 +234,9 @@
           <table class="table table-hover" id="adminReservationTable">
             <thead>
               <tr>
-                <th style="width:225px;">Email</th>
+                <th style="width:200px;">Email</th>
                 <th style="width:260px;">Service Name</th>
-                <th style="">Date</th>
+                <th style="width:135px">Date</th>
                 <th style="">Time</th>
 				        <th style="text-align:right;padding-right:20px;">Price</th>
                 <th style="width:130px;"></th>
@@ -260,7 +260,7 @@
               }
               echo "<td class='vert userEmail' style='word-wrap: break-word;word-break: break-all;'>".$row['email']."</td>";
               echo "<td class='vert serviceTitle' data-serviceId='".$row['serviceObjectId']."'>".$row['service_name']."</td>";
-              echo "<td class='vert serviceDate'>".$row['reserveDate']."</td>";
+              echo "<td class='vert serviceDate'>SERVICE DATE : <br/>".$row['reserveDate']." <br />DATE MADE: <br/> ". date('m/d/Y', strtotime($row['timestamp']))."</td>";
               echo "<td class='vert serviceTime'>".$row['reserveTime']."</td>";
               echo "<td class='vert servicePrice rightalignPadding'>&#8369; ".$row['price']."</td>";
               echo "<td class='vert'>";

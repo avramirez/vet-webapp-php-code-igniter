@@ -104,7 +104,7 @@
 						'".$reserveDate."',
 						'".$reserveTime."',
 						'".$reserveDateTime."',
-						0);");
+						0,NULL);");
 
 				if ($this->db->affected_rows() > 0)
 				{

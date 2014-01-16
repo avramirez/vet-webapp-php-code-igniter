@@ -503,7 +503,8 @@
 					ur.reserveDate,
 					ur.reserveTime,
 					svs.price,
-					ur.confirmed
+					ur.confirmed,
+					ur.timestamp
 					FROM users_reservation ur 
 					INNER JOIN services svs ON ur.serviceId = svs.objectId 
 					INNER JOIN users u ON ur.userId = u.objectId 
@@ -557,7 +558,7 @@
 			'".$reserveDate."',
 			'".$reserveTime."',
 			'".$reserveDateTime."',
-			0);");
+			0,NULL);");
 
 			 	if ($this->db->affected_rows() > 0)
 			 	{
