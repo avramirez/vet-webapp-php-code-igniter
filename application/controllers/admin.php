@@ -246,6 +246,17 @@
 											AND ur.confirmed=1 GROUP BY week(ur.reserveDateTime)) as allSales 
 											GROUP BY week(allSales.saleDate);");
 
+				}else if($reportMode =="Monthly"){
+					$query = $this->db->query("SELECT SUM(allSales.gross) as saleGross,month(allSales.saleDate) as saleDate, allSales.saleDate as rawSaleDate 
+											from (
+											SELECT SUM(totalPrice)as gross,uo.orderDate as saleDate FROM users_order uo 
+											WHERE uo.orderDate >= '".$reportDateFrom."' AND uo.orderDate <='".$reportDateto."' 
+											AND uo.active=0 GROUP BY month(uo.orderDate)
+											UNION ALL
+											SELECT SUM(price) as gross, ur.reserveDateTime as saleDate from users_reservation ur INNER JOIN services serv ON serv.objectId = ur.serviceId 
+											WHERE ur.reserveDateTime >= '".$reportDateFrom."' AND ur.reserveDateTime <='".$reportDateto."' 
+											AND ur.confirmed=1 GROUP BY month(ur.reserveDateTime)) as allSales 
+											GROUP BY month(allSales.saleDate);");
 				}
 
 				$allItems= $this->db->query("SELECT * from (SELECT uo.orderDate as saleDate, 

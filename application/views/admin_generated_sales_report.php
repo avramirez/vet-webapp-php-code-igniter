@@ -42,6 +42,8 @@
 			echo 'Date';		
 		}else if($reportMode=='Weekly'){
 			echo 'Week';
+		}else if($reportMode=='Monthly'){
+			echo 'Monthly';
 		}
 	?>
 	
@@ -107,6 +109,35 @@ foreach ($sales as $row){
 			echo'<td colspan=4 style="text-align:right;">WEEK TOTAL:</td>';
 			echo'<td style="padding:10px 0px;;text-align:right;padding-right:20px;">P '.number_format($row['saleGross'],2).'</td>';
 			echo'</tr>';
+		}else if($reportMode=='Monthly'){
+			echo'<tr class="list_row">';
+				$year = date('Y', strtotime($row['rawSaleDate']));
+				$month = date('m', strtotime($row['rawSaleDate']));
+				// $rest = date("Y-m-d", strtotime("1.1.".$year." + ".$row['saleDate']." weeks"));
+				// $date1=date('Y-m-d', strtotime(''.$year.'W'.$row['saleDate'].'1'));
+
+				echo'<td colspan="4">';
+				echo'Month '.$month.' Year '.$year.'';	
+				echo'</td>';
+
+				echo'<td style="text-align:right;padding-right:20px;"></td>';
+				echo'</tr>';
+
+				foreach ($allItems as $item){
+						$itemMonth=date('m', strtotime($item['saleDate']));
+							if($month == $itemMonth && $year == $item['itemYear']){
+								echo'<tr>';
+								echo'<td style="vertical-align:top;">&nbsp;&nbsp;&nbsp;'.date('Y-m-d', strtotime($item['saleDate'])).'</td>';	
+								echo'<td colspan="3" style="vertical-align:top;">Item: '.$item['itemName'].' <br/>Quantity: '.$item['itemQuantity'].'</td>';
+								echo'<td style="text-align:right;padding-right:20px;vertical-align:bottom;">P'.number_format($item['itemTotalPrice'],2).'</td>';
+								echo'</tr>';
+							}
+				}
+
+				echo'<tr>';
+				echo'<td colspan=4 style="text-align:right;">WEEK TOTAL:</td>';
+				echo'<td style="padding:10px 0px;;text-align:right;padding-right:20px;">P '.number_format($row['saleGross'],2).'</td>';
+				echo'</tr>';
 		}
 }
 ?>
