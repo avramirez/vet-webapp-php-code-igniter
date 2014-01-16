@@ -406,8 +406,14 @@
 			$this->load->helper(array('dompdf', 'file'));
 
 				$userId =$this->input->post('usersId');
-				$batchOrderId =$this->input->post('batchOrderId');
+				
 
+				$batchId = $this->db->query("SELECT * from users_order 
+					WHERE usersId='".$userId."' 
+					GROUP BY batchOrderId");
+
+				
+				$batchOrderId =$batchId->num_rows();
 
 				$query = $this->db->query("SELECT uo.objectId as orderObjectid, 
 					prod.objectId as productObjectId, 

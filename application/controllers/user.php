@@ -481,7 +481,14 @@
 				$userId = $this->session->userdata('user_objectId');
 
 
-				$orderBatchNumber=rand(100000,999999);
+			
+
+				$batchId = $this->db->query("SELECT * from users_order 
+					WHERE usersId='".$userId."' 
+					GROUP BY batchOrderId");
+
+				
+				$orderBatchNumber =$batchId->num_rows();
 
 				$addBatchNumber=$this->db->query("UPDATE users_order SET batchOrderId =".$orderBatchNumber." 
 					WHERE usersId=".$userId." 
