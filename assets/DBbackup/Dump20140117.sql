@@ -30,7 +30,7 @@ CREATE TABLE `audit_trail` (
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `type` varchar(45) NOT NULL,
   PRIMARY KEY (`objectId`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,7 +39,7 @@ CREATE TABLE `audit_trail` (
 
 LOCK TABLES `audit_trail` WRITE;
 /*!40000 ALTER TABLE `audit_trail` DISABLE KEYS */;
-INSERT INTO `audit_trail` VALUES (3,'User 23 logged in.','2014-01-05 04:23:33','LOG IN'),(4,'User 22 logged in.','2014-01-05 06:16:53','LOG IN'),(5,'User 22 added reservation. Reservation ID: 30','2014-01-05 06:17:10','ADD RESERVATION'),(9,'User 22 deleted a reservation. Reservation ID: 30','2014-01-05 06:27:48','DELETE RESERVATION'),(12,'User 22 added a order to cart. Order ID: 53','2014-01-05 06:43:21','ADD ORDER TO CART'),(13,'User 22 updated a order. Order ID: 53','2014-01-05 06:45:06','UPDATED ORDER'),(14,'User 22 deleted a order. Order ID: 53','2014-01-05 06:49:35','DELETED ORDER'),(15,'User 22 checkout cart. Cart ID/Receipt #: 305059','2014-01-05 06:53:33','CHECKOUT CART');
+INSERT INTO `audit_trail` VALUES (21,'127.0.0.1 logged in. <br/> Email :superadmin@admin.com','2014-01-12 05:23:06','LOG IN'),(22,'testing2@test.com logged in. <br/> IP ADDRESS :127.0.0.1','2014-01-12 10:34:58','LOG IN'),(23,'127.0.0.1 logged in. <br/> Email :test@test.com','2014-01-16 22:25:56','LOG IN'),(24,'127.0.0.1 logged in. <br/> Email :superadmin@admin.com','2014-01-16 22:30:38','LOG IN');
 /*!40000 ALTER TABLE `audit_trail` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -173,7 +173,7 @@ CREATE TABLE `users_order` (
   KEY `usersId` (`usersId`),
   CONSTRAINT `users_order_ibfk_1` FOREIGN KEY (`productId`) REFERENCES `products` (`objectId`),
   CONSTRAINT `users_order_ibfk_2` FOREIGN KEY (`usersId`) REFERENCES `users` (`objectId`)
-) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -201,6 +201,7 @@ CREATE TABLE `users_reservation` (
   `reserveTime` varchar(15) NOT NULL,
   `reserveDateTime` datetime NOT NULL,
   `confirmed` tinyint(4) NOT NULL DEFAULT '0',
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`objectId`),
   KEY `serviceId` (`serviceId`),
   KEY `userId` (`userId`),
@@ -215,7 +216,6 @@ CREATE TABLE `users_reservation` (
 
 LOCK TABLES `users_reservation` WRITE;
 /*!40000 ALTER TABLE `users_reservation` DISABLE KEYS */;
-INSERT INTO `users_reservation` VALUES (24,1,22,'12/18/2013','2:00 PM','2013-12-18 14:00:00',0),(25,1,26,'12/19/2013','12:00 PM','2013-12-19 12:00:00',1),(26,1,22,'12/18/2013','12:00 PM','2013-12-18 12:00:00',0),(27,3,26,'12/30/2013','1:00 PM','2013-12-30 13:00:00',1),(28,1,22,'12/17/2013','11:00 AM','2013-12-17 11:00:00',0),(29,1,22,'01/09/2014','12:00 PM','2014-01-09 12:00:00',1);
 /*!40000 ALTER TABLE `users_reservation` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -228,4 +228,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-01-05 14:55:03
+-- Dump completed on 2014-01-17  6:49:54
