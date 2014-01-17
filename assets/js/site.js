@@ -935,4 +935,28 @@ $('body').on('click','#generateReservationReport',function(e){
 			});
 		});
 
+		$('body').on('click','.editProductAdmin',function(e){
+			
+			$parentRow=$(this).closest("tr");
+			// 
+
+			
+			
+			
+			
+			$("#productIdToEdit").val($(this).attr("data-objectId"));
+			$("#productNameEdit").val($parentRow.find(".productName").text());
+			$("#productQtyEdit").val($parentRow.find(".productQuanitty").text());
+			$("#productPriceEdit").val($parentRow.find(".productPrice").text().substring(2));
+			$("#productTypeEdit").val($parentRow.find(".productType").text());
+			
+			
+			
+			
+
+			
+			$("#productEditModal").modal();
+		});
+	
+
 })

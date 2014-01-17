@@ -211,8 +211,8 @@
                 echo "<td class='vert productPrice'>&#8369; ".$row['product_price']."</td>";
                 echo "<td class='vert productType'>".$row['product_type']."</td>";
                 echo "<td class='vert'>";
-                echo "<button type='button' data-objectId='".$row['objectId']."' class='btn btn-primary btn-sm editUserFromAdmin pull-left' style='margin-right: 5px;'>Edit</button>";
-                echo "<button type='button' data-objectId='".$row['objectId']."' class='btn btn-danger btn-sm removeUserFromAdmin pull-right'>Delete</button>";
+                echo "<button type='button' data-objectId='".$row['objectId']."' class='btn btn-primary btn-sm editProductAdmin pull-left' style='margin-right: 5px;'>Edit</button>";
+                echo "<button type='button' data-objectId='".$row['objectId']."' class='btn btn-danger btn-sm removeProductAdmin pull-right'>Delete</button>";
                 echo "</td>";
                 echo "</td>";
                 echo "</tr>";
@@ -259,6 +259,41 @@
               
               <div class="modal-body clearfix">
                
+              </div>
+
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+              </div>
+            </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+                <!-- Modal -->
+
+        <div class="modal fade" id="productEditModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Edit Product</h4>
+              </div>
+              
+              <div class="modal-body clearfix">
+               <div class="panel-body clearfix">
+                      <form action="editProduct" method="POST" id="editProduct">
+                        <label>Product Name</label>
+                      <input type="text" style="width:250px;" class="form-control" name="productNameEdit" id="productNameEdit" placeholder="Product Name" required>
+                      <label>Quantity</label>
+                      <input type="number" style="width:250px;" class="form-control" name="productQtyEdit" id="productQtyEdit" placeholder="Quantity" min="1" required>
+                      <label>Price</label>
+                      <input type="number" style="width:250px;" class="form-control" name="productPriceEdit" id="productPriceEdit" placeholder="Price" min="1" required>
+                      <label>Type</label>
+                      <input type="text" style="width:250px;" class="form-control" name="productTypeEdit" id="productTypeEdit" placeholder="Type" required>
+                      <input type="hidden" name="productIdToEdit" id="productIdToEdit" value="">
+                       <button type="submit" class="btn btn-sm btn-info" style="float:right;margin-top:10px;" id="addproduct">Save Product</button>
+                      </form>
+
+              </div>
               </div>
 
               <div class="modal-footer">

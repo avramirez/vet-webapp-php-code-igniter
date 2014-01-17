@@ -70,6 +70,24 @@
 
 		}
 
+		public function editProduct(){
+			$pname = $this->input->post('productNameEdit');
+			$pqty = $this->input->post('productQtyEdit');
+			$pprice = $this->input->post('productPriceEdit');
+			$ptype = $this->input->post('productTypeEdit');
+			$pid = $this->input->post('productIdToEdit');
+
+			$updateActive=$this->db->query("UPDATE `vet_app`.`products`
+											SET
+											`product_name` = '".$pname."',
+											`product_quantity` = ".$pqty.",
+											`product_price` = ".$pprice.",
+											`product_type` = '".$ptype."' 
+											WHERE objectId='".$pid."';");	
+
+			redirect("/admin/manageproducts");
+		}
+
 		public function searchUsers(){
 			$inputEmail = $this->input->post('userEmailSearch');
 
