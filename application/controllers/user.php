@@ -26,6 +26,32 @@
 			}
 
 		}
+
+		public function searchUserServices(){
+			
+
+				
+			if($this->session->userdata('user_objectId')){
+				$inputEmail = $this->input->post('userEmailSearch');
+
+				$query = $this->db->query("SELECT * FROM services WHERE service_name LIKE '%".$inputEmail."%';");	
+				$data['stylesheets'] =array('jumbotron-narrow.css');
+				$data['show_navbar'] ="true";
+				$data['content_navbar'] = $this->load->view('user_navbar','',true);
+
+				$servicesData['services'] = $query->result_array();
+
+				$data['content_body'] = $this->load->view('user_homepage',$servicesData,true);
+				
+
+				$this->load->view("layout",$data);
+			}else{
+				redirect("/");
+			}
+
+
+		}
+
 		public function signIn(){
 
 		}

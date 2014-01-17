@@ -10,9 +10,9 @@
             <p><small class="text-muted">Note: Items that are in red are currently not available.</small></p>
              <div class="input-group">
               <span class="input-group-btn">
-                <button class="btn btn-default" type="button">Search</button>
+                <button class="btn btn-default searchUserServices" type="button">Search</button>
               </span>
-              <input type="text" class="form-control" placeholder="Enter keywords">
+              <input type="text" class="form-control searchUserServicesText" placeholder="Enter keywords">
             </div>
           </div>
 

@@ -143,15 +143,15 @@
               </div>
              <div class="input-group">
               <span class="input-group-btn">
-                <button class="btn btn-default" type="button">Search</button>
+                <button class="btn btn-default searchManageProductsAdmin" type="button">Search</button>
               </span>
-              <input type="text" class="form-control" placeholder="Enter keywords">
+              <input type="text" class="form-control searchManageProductsTextAdmin" placeholder="Enter keywords product name">
             </div>
           </div>
 
           <div style="height:300px; overflow:auto;border: 1px solid rgba(51, 51, 51, 0.17);margin: 5px;">
           <!-- Table -->
-          <table class="table table-hover" id="adminUsersTable">
+          <table class="table table-hover" id="adminManageProducts">
             <thead>
               <tr>
 			  <th style="width:110px">Product ID</th>

@@ -16,12 +16,7 @@
             <p class="small">Notes:</p>
             <p class="small">If you present us a receipt, the items that are in the receipt are <strong>the only things we would proccess.</strong>
              <strong>We ONLY ALLOW ONE BATCH ORDER AT A TIME.</strong></p>
-             <div class="input-group">
-              <span class="input-group-btn">
-                <button class="btn btn-default" type="button">Search</button>
-              </span>
-              <input type="text" class="form-control" placeholder="Enter keywords">
-            </div>
+             
           </div>
 
           <!-- Table -->

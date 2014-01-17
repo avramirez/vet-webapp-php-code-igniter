@@ -867,4 +867,59 @@ $('body').on('click','#generateReservationReport',function(e){
 		$(this).closest("." + $(this).attr("data-hide")).hide();	
 	})
 	
+	
+	$('body').on('click','.searchManageUser',function(e){
+			$.ajax({
+				method:"POST",
+				url:'admin/searchUsers',
+				data:{
+					'userEmailSearch':$(".searchManageUserText").val()
+				},
+				success:function(data,status,jqXHR){
+					$("#adminUsersTable").html($(data).find("#adminUsersTable").html());
+				}
+			});
+		});
+
+	$('body').on('click','.searchManageProductsAdmin',function(e){
+			$.ajax({
+				method:"POST",
+				url:'searchAdminProducts',
+				data:{
+					'userEmailSearch':$(".searchManageProductsTextAdmin").val()
+				},
+				success:function(data,status,jqXHR){
+					$("#adminManageProducts").html($(data).find("#adminManageProducts").html());
+				}
+			});
+		});
+
+
+	$('body').on('click','.adminSearchReservation',function(e){
+			$.ajax({
+				method:"POST",
+				url:'searchAdminReservation',
+				data:{
+					'userEmailSearch':$(".adminSearchReservationText").val()
+				},
+				success:function(data,status,jqXHR){
+					$("#adminReservationTable").html($(data).find("#adminReservationTable").html());
+				}
+			});
+		});
+
+
+	$('body').on('click','.searchUserServices',function(e){
+			$.ajax({
+				method:"POST",
+				url:'user/searchUserServices',
+				data:{
+					'userEmailSearch':$(".searchUserServicesText").val()
+				},
+				success:function(data,status,jqXHR){
+					$("#userReserve table").html($(data).find("#userReserve table").html());
+				}
+			});
+		});
+	
 })

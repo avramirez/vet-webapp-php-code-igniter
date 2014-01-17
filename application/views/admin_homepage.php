@@ -226,9 +226,9 @@
 
              <div class="input-group">
               <span class="input-group-btn">
-                <button class="btn btn-default" type="button">Search</button>
+                <button class="btn btn-default searchManageUser" type="button">Search</button>
               </span>
-              <input type="text" class="form-control" placeholder="Enter keywords">
+              <input type="text" class="form-control searchManageUserText" placeholder="Enter user EMAIL">
             </div>
           </div>
 

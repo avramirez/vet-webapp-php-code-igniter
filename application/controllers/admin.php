@@ -38,6 +38,27 @@
 			}
 		}
 
+		public function searchUsers(){
+			$inputEmail = $this->input->post('userEmailSearch');
+
+				
+				$inputEmail = $this->input->post('userEmailSearch');
+
+				$navbarData['userLevel'] = $this->session->userdata('user_level');
+
+				$data['stylesheets'] =array('jumbotron-narrow.css');
+				$data['show_navbar'] ="true";
+				$data['content_navbar'] = $this->load->view('admin_navbar',$navbarData,true);
+				$query = $this->db->query("SELECT * FROM users where email LIKE '%".$inputEmail."%'");
+				$usersData['users'] = $query->result_array();
+
+				$data['content_body'] = $this->load->view('admin_homepage',$usersData,true);
+				
+				$this->load->view("layout",$data);
+
+
+		}
+
 		public function backup(){
 
 			// Load the DB utility class
@@ -91,6 +112,30 @@
 				$data['content_navbar'] = $this->load->view('admin_navbar',$navbarData,true);
 
 				$query = $this->db->query("SELECT * FROM products;");
+				
+				$usersData['products'] = $query->result_array();
+
+				$data['content_body'] = $this->load->view('admin_products',$usersData,true);
+				
+				$this->load->view("layout",$data);
+
+			}else{
+				redirect("/");
+			}
+		}
+
+		public function searchAdminProducts(){
+			if($this->session->userdata('admin_objectId')){
+				$this->checkAllowed([3,4]);
+				$inputEmail = $this->input->post('userEmailSearch');
+
+				$navbarData['userLevel'] = $this->session->userdata('user_level');
+
+				$data['stylesheets'] =array('jumbotron-narrow.css');
+				$data['show_navbar'] ="true";
+				$data['content_navbar'] = $this->load->view('admin_navbar',$navbarData,true);
+
+				$query = $this->db->query("SELECT * FROM products where product_name LIKE '%".$inputEmail."%';");
 				
 				$usersData['products'] = $query->result_array();
 
@@ -549,6 +594,53 @@
 				redirect("/");
 			}
 		}
+
+		public function searchAdminReservation(){
+			if($this->session->userdata('admin_objectId')){
+
+				$this->checkAllowed([3]);
+				$inputEmail = $this->input->post('userEmailSearch');
+				
+				$navbarData['userLevel'] = $this->session->userdata('user_level');
+
+				$data['stylesheets'] =array('jumbotron-narrow.css');
+				$data['show_navbar'] ="true";
+				$data['content_navbar'] = $this->load->view('admin_navbar',$navbarData,true);
+
+				$query = $this->db->query("SELECT 
+					ur.objectId as reservationobjectId,
+					svs.objectId as serviceObjectId,
+					u.objectId as usersObjectId,
+					u.username,
+					u.email,
+					u.first_name,
+					u.last_name,
+					svs.service_name,
+					ur.reserveDate,
+					ur.reserveTime,
+					svs.price,
+					ur.confirmed,
+					ur.timestamp
+					FROM users_reservation ur 
+					INNER JOIN services svs ON ur.serviceId = svs.objectId 
+					INNER JOIN users u ON ur.userId = u.objectId 
+					WHERE u.email LIKE '%".$inputEmail."%' 
+					ORDER BY ur.reserveDateTime DESC;");
+
+				$services = $this->db->query("SELECT * FROM services where active=1;");	
+
+				$usersData['reservations'] = $query->result_array();
+				$usersData['serviceslist'] = $services->result_array();
+
+				$data['content_body'] = $this->load->view('admin_reservation',$usersData,true);
+				
+				$this->load->view("layout",$data);
+
+			}else{
+				redirect("/");
+			}
+		}
+
 
 		public function deleteAdminReservation(){
 			if($this->session->userdata('admin_objectId')){
