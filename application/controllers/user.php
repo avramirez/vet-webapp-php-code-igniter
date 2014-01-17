@@ -311,6 +311,42 @@
 
 		}
 
+		public function searchorder(){
+			if($this->session->userdata('user_objectId')){
+				
+				$userId = $this->session->userdata('user_objectId');
+
+
+				$checkActiveorders = $this->db->query("SELECT * from vet_app.users_order 
+					WHERE usersId='".$userId."' 
+					AND batchOrderId IS NOT NULL 
+					AND active=1;");
+
+				$servicesData['activeOrder'] ="false";
+				if ($checkActiveorders->num_rows() > 0)
+				{
+					$servicesData['activeOrder'] ="true";
+				}
+				$inputEmail = $this->input->post('userEmailSearch');
+
+				$query = $this->db->query("SELECT * from products WHERE product_name LIKE '%".$inputEmail."%' LIMIT 0 , 2000;");	
+	
+				$data['stylesheets'] =array('jumbotron-narrow.css');
+				$data['show_navbar'] ="true";
+				$data['content_navbar'] = $this->load->view('user_navbar','',true);
+
+				$servicesData['list_of_poducts'] = $query->result_array();
+
+				$data['content_body'] = $this->load->view('user_order',$servicesData,true);
+				
+
+				$this->load->view("layout",$data);
+			}else{
+				redirect("/");
+			}
+
+		}
+
 		public function addOrder(){
 			if($this->session->userdata('user_objectId')){
 				

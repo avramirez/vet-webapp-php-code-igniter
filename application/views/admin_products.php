@@ -8,6 +8,40 @@
           <div class="panel-body">
 
            <div class="panel panel-default">
+
+<div class="panel-group" id="accordion" style="margin-bottom:10px;">
+<div class="panel panel-default" id="addOrEditReservation">
+<div class="panel-heading">
+<h4 class="panel-title">
+<a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+<span class="glyphicon glyphicon-hand-right"></span> 
+<span>Add a Product</span>
+</a>
+</h4>
+</div>
+<div id="collapseOne" class="panel-collapse collapse">
+<div class="alert alert-info alert-dismissable" style="display:none;">
+<button type="button" class="close" data-hide="alert" aria-hidden="true">&times;</button>
+<strong>Warning!</strong> Fill up all the fields.
+</div>
+<div class="panel-body clearfix">
+        <form action="addProduct" method="POST" id="addProduct">
+
+        <input type="text" style="width:250px;" class="form-control" name="productName" id="productName" placeholder="Product Name" required>
+        <input type="number" style="width:250px;" class="form-control" name="productQty" id="productQty" placeholder="Quantity" min="1" required>
+        <input type="number" style="width:250px;" class="form-control" name="productPrice" id="productPrice" placeholder="Price" min="1" required>
+        <input type="text" style="width:250px;" class="form-control" name="productType" id="productType" placeholder="Type" required>
+        
+         <button type="submit" class="btn btn-sm btn-info" style="float:right;margin-top:10px;" id="addproduct">Add Product</button>
+        </form>
+
+</div>
+</div>
+</div>
+</div>
+
+
+
                     <div class="panel-heading clearfix">
                       <a style="color:#000000;" data-toggle="collapse" data-parent="#accordion" href="#generateUserReportcollapse">
                       <span class="glyphicon glyphicon-hand-right"></span> 

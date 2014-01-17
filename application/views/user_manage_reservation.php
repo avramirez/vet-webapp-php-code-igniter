@@ -7,12 +7,7 @@
           <div class="panel-heading">List of Reservations</div>
           <div class="panel-body">
             <p>Here you can manage your reservation. You could either delete or edit.</p>
-             <div class="input-group">
-              <span class="input-group-btn">
-                <button class="btn btn-default" type="button">Search</button>
-              </span>
-              <input type="text" class="form-control" placeholder="Enter keywords">
-            </div>
+             
           </div>
 
           <!-- Table -->

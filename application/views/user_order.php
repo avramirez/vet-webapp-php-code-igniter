@@ -15,9 +15,9 @@
             ?>
              <div class="input-group">
               <span class="input-group-btn">
-                <button class="btn btn-default" type="button">Search</button>
+                <button class="btn btn-default searchProductUser" type="button">Search</button>
               </span>
-              <input type="text" class="form-control" placeholder="Enter keywords">
+              <input type="text" class="form-control searchProductUserText" placeholder="Enter keywords">
             </div>
           </div>
 

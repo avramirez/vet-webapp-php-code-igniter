@@ -38,6 +38,38 @@
 			}
 		}
 
+		public function addProduct(){
+			
+				$pname = $this->input->post('productName');
+				$pqty = $this->input->post('productQty');
+				$pprice = $this->input->post('productPrice');
+				$ptype = $this->input->post('productType');
+
+				$query = $this->db->query("INSERT INTO `vet_app`.`products`
+											(`objectId`,
+											`product_name`,
+											`product_quantity`,
+											`product_price`,
+											`product_type`)
+											VALUES
+											(
+											NULL,
+											'".$pname."',
+											".$pqty.",
+											".$pprice.",
+											'".$ptype."'
+											);");
+
+			 	if ($this->db->affected_rows() > 0)
+			 	{
+			 		set_status_header((int)200); 
+			 		redirect('/admin/manageproducts');
+			 	}else{
+			 		set_status_header((int)400); 
+			 	}
+
+		}
+
 		public function searchUsers(){
 			$inputEmail = $this->input->post('userEmailSearch');
 

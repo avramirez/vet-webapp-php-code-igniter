@@ -922,4 +922,17 @@ $('body').on('click','#generateReservationReport',function(e){
 			});
 		});
 	
+	$('body').on('click','.searchProductUser',function(e){
+			$.ajax({
+				method:"POST",
+				url:'searchorder',
+				data:{
+					'userEmailSearch':$(".searchProductUserText").val()
+				},
+				success:function(data,status,jqXHR){
+					$("#orderPage table").html($(data).find("#orderPage table").html());
+				}
+			});
+		});
+
 })
