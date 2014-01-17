@@ -958,5 +958,24 @@ $('body').on('click','#generateReservationReport',function(e){
 			$("#productEditModal").modal();
 		});
 	
+		$('body').on('click','.removeProductAdmin',function(e){
+			console.log("delll");
+			$.ajax({
+				url:'deleteProductAdmin',
+				method:"POST",
+				data:{
+					'objectId':$(this).attr("data-objectId")
+				},
+				success:function(data,status,jqXHR){
+					$.ajax({
+							url:document.URL,
+							success:function(data){
+								$("#adminManageProducts").html($(data).find("#adminManageProducts").html());
+							}
+						})
+				}
+			})
+		});
+	
 
 })

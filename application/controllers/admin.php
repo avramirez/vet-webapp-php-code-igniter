@@ -87,6 +87,20 @@
 
 			redirect("/admin/manageproducts");
 		}
+		public function deleteProductAdmin(){
+				$pid = $this->input->post('objectId');
+
+				$query = $this->db->query("DELETE FROM vet_app.products WHERE objectId = ".$pid.";");
+
+				if ($this->db->affected_rows() > 0)
+				{
+					set_status_header((int)200); 
+					redirect("/admin/manageproducts");
+				}else{
+					set_status_header((int)400); 
+				}
+
+		}
 
 		public function searchUsers(){
 			$inputEmail = $this->input->post('userEmailSearch');
