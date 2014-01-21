@@ -41,9 +41,11 @@
                               <td><input type="text" class="form-control" name="lastName" id="lastName" placeholder="Last Name" required></td>
                               <td>
                                 <select class="form-control" name="userLevel">
-                                  <option value=1>User</option>
+                                  <option value=1>Customer</option>
                                   <option value=3>Admin - User</option>
                                   <option value=4>Admin - Resertvation</option>
+								    <option value=5>Admin - Accounting</option>
+									 <option value=6>Admin -Product Manager</option>
                                   <option value=2>Super Admin</option>
                                 </select>
                               </td>
@@ -72,16 +74,18 @@
                               <td><input type="text" class="form-control" name="lastNameUpdate" id="lastNameUpdate" placeholder="Last Name" required></td>
                               <td>
                                 <select class="form-control" name="userLevelUpdate" id="userLevelUpdate">
-                                  <option value=1>User</option>
+                                  <option value=1>Customer</option>
                                   <option value=3>Admin - User</option>
                                   <option value=4>Admin - Resertvation</option>
+								      <option value=5>Admin - Accounting</option>
+									   <option value=6>Admin -Product Manager</option>
                                   <option value=2>Super Admin</option>
                                 </select>
                               </td>
                             </tr>
                           </tbody>
                         </table>
-                         <button type="button" data-objectid="1" name="backtoadd" class="btn btn-success backToAddUser pull-right">Back to Add User</button>
+                         <button type="button" data-objectid="1" name="backtoadd" class="btn btn-success backToAddUser pull-right">Back to Add Customer</button>
                          <button type="button" data-objectid="1" name="generatenewPassword" class="btn btn-info generatenewPassword pull-right" style="margin-right:10px;">Generate New Password</button>
                          <button type="submit" class="btn btn-primary pull-right" name="updateuserbtn" style="margin-right:10px;">Save Changes</button>
 
@@ -257,7 +261,7 @@
                 echo "<td class='vert userLastName'>".$row['last_name']."</td>";
                 echo "<td class='vert userUserLevel'>";
                   if($row['user_level'] == 1){
-                    echo "<span data-userlevel=".$row['user_level'].">User</span>";
+                    echo "<span data-userlevel=".$row['user_level'].">Customer</span>";
                   }else if($row['user_level'] == 2){
                     echo "<span data-userlevel=".$row['user_level'].">Super Admin</span>";
                   }else if($row['user_level'] == 3){
@@ -265,6 +269,14 @@
                   }else if($row['user_level'] == 4){
                     echo "<span data-userlevel=".$row['user_level'].">Admin Reservation</span>";
                   }
+				  else if($row['user_level'] == 5){
+                    echo "<span data-userlevel=".$row['user_level'].">Admin Accounting</span>";
+                  }
+				    else if($row['user_level'] == 6){
+                    echo "<span data-userlevel=".$row['user_level'].">Product Manager</span>";
+                  }
+				
+				  
                 echo "</td>";
                 echo "<td class='vert'>";
                 echo "<button type='button' data-objectId='".$row['objectId']."' class='btn btn-primary btn-sm editUserFromAdmin pull-left' style='margin-right: 5px;'>Edit</button>";

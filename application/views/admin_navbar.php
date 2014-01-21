@@ -9,7 +9,18 @@
  			echo'<li class="navAdminUserManage"><a href="'.base_url().'admin">Manage Users</a></li>';
          	echo'<li class="navProducts"><a href="'.base_url().'admin/userorder">Order</a></li>';
          	echo'<li><a href="'.base_url().'user/logout">Log-Out</a></li>';
- 	}elseif ($userLevel ==2) {
+ 	}
+	else if ($userLevel ==5) {
+ 	 echo'<li class="navBilling"><a href="'.base_url().'admin/billing">Billing</a></li>';
+         	echo'<li><a href="'.base_url().'user/logout">Log-Out</a></li>';
+ 	}
+	else if ($userLevel ==6) {
+echo'<li class="navProducts"><a href="'.base_url().'admin/manageproducts">Products</a></li>';
+         	echo'<li class="navProducts"><a href="'.base_url().'admin/userorder">Order</a></li>';
+			  echo'<li class="navSalesReport"><a href="'.base_url().'admin/sales">Sales</a></li>';
+         	echo'<li><a href="'.base_url().'user/logout">Log-Out</a></li>';
+ 	}
+	elseif ($userLevel ==2) {
  			echo'<li class="navAdminUserManage"><a href="'.base_url().'admin">Manage Users</a></li>';
          	echo'<li class="navProducts"><a href="'.base_url().'admin/manageproducts">Products</a></li>';
          	echo'<li class="navProducts"><a href="'.base_url().'admin/userorder">Order</a></li>';

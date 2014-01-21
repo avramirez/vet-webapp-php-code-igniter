@@ -8,7 +8,7 @@
  <tr>
  <td><h3>Telephone: </h3></td> <td><h3>531 - 2354</h3></td>
  </tr>
- <tr> <td> <h3>Address: </h3></td> <td><h3>vetsinpractice@gmail.com</h3></td></tr>
+ <tr> <td> <h3>Address: </h3></td> <td><h4><p>	63 Maysilo Circle cor. Boni Ave. Mandaluyong, Philippines phone 531-1581</p></h4></td></tr>
  </table>
 
       </div>

@@ -51,7 +51,7 @@ echo'<td class="center">'.$row['first_name'].'</td>';
 echo'<td style="text-align: left">'.$row['last_name'].'</td>';
 echo'<td>';
 if($row['user_level'] == 1){
-          echo "<span>User</span>";
+          echo "<span>Customer</span>";
         }else if($row['user_level'] == 2){
           echo "<span>Super Admin</span>";
         }else if($row['user_level'] == 3){

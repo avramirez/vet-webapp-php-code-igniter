@@ -16,7 +16,16 @@
    </style>
 </head>
 <body>
-<h1>Vets In Practice</h1>
+<table>
+		<tbody>
+			<tr>
+				<td><img style="width:100px;" src="<?php echo base_url();?>assets/images/logo.jpg"></td>
+				<td style="vertical-align:top;"><h1 style="margin:10px 0px;">Vets In Practice</h1>
+					63 Maysilo Circle cor. Boni Ave. Mandaluyong, Philippines phone 531-1581
+				</td>
+			</tr>
+		</tbody>
+	</table>
 <h1>Receipt # <?php echo $list_of_orders[0]['batchOrderId'] ?></h1>
 <p>Name: 
   <?php echo $list_of_orders[0]['first_name'] ?>, 
