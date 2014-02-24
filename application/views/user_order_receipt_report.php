@@ -26,7 +26,7 @@
 			</tr>
 		</tbody>
 	</table>
-<h1>Receipt # <?php echo $list_of_orders[0]['batchOrderId'] ?></h1>
+<h1>Order Slip # <?php echo $list_of_orders[0]['batchOrderId'] ?></h1>
 <p>Name: 
   <?php echo $list_of_orders[0]['first_name'] ?>, 
   <?php echo $list_of_orders[0]['last_name'] ?>

@@ -191,6 +191,14 @@ $(document).ready(function(){
 		  });
 		});
 		$("#userRegister").validate({
+			rules: {
+				inputPassword: "required",
+				confirm_inputPassword: {
+					equalTo: "#inputPassword"
+				}
+			}
+		});
+		$("#userRegister").validate({
 			submitHandler:function(form){
 				$.ajax({  
 				  type: "POST",  
@@ -225,7 +233,11 @@ $(document).ready(function(){
 			if($orderQuantityInput.val() == "" || (parseInt($orderQuantityInput.val()) > productQuantity)){
 				alert("Stock isnt Enough!");
 
-			}else if($orderQuantityInput.val() == "" || (parseInt($orderQuantityInput.val()) > productQuantity) || parseInt($orderQuantityInput.val()) < 0){
+			}else if($orderQuantityInput.val() > 50){
+				alert("The Maximum order limit is 50");
+				$orderQuantityInput.val("50")
+			}
+			else if($orderQuantityInput.val() == "" || (parseInt($orderQuantityInput.val()) > productQuantity) || parseInt($orderQuantityInput.val()) < 0){
 			
 			}else{
 				$('.detailProductName').text($orderRow.children('.productName').text());

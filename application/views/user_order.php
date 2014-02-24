@@ -27,7 +27,8 @@
               <tr>
                 <th style="width:270px;">Product Name</th>
                 <th>Type</th>
-                <th style="text-align:right;padding-right:15px;">Quantity</th>
+                <th style="text-align:right;padding-right:15px; display:none;">Quantity</th>
+                <th style="text-align:right;padding-right:15px;">Availability</th>
                 <th style="text-align:right;padding-right:15px;">Price</th>
                  <?php
                 if($activeOrder !="true"){
@@ -38,18 +39,27 @@
                 
               </tr>
             </thead>
-            <tbody>
+            <tbody style="visible:hidden;">
               <?php foreach ($list_of_poducts as $row){
                 $productquantity = intval($row['product_quantity']);
-                if($productquantity <=10){
+                if($productquantity <=20){
                   echo "<tr style='color:red'>";  
                 }else{
                   echo "<tr>";
                 }
+
+                if($productquantity > 0){
+                  $availability="available";
+                }else{
+                   $availability="Out of Stock";
+                }
+
+
                 
                 echo "<td class='vert productName'>".$row['product_name']."</td>";
                 echo "<td class='vert productType'>".$row['product_type']."</td>";
-                echo "<td class='vert productQuantity rightalignPadding'>".$row['product_quantity']."</td>";
+                echo "<td class='vert productQuantity rightalignPadding' style='display:none;'>".$row['product_quantity']."</td>";
+                echo "<td class='vert productQuantity rightalignPadding' >".$availability."</td>";
                 echo "<td class='vert productPrice rightalignPadding'>&#8369; <span>".$row['product_price']."</span></td>";
                  if($activeOrder !="true"){
                 echo '<td class="vert orderQuantity"><input type="number" min="1" value="1" class="form-control" name="orederQuantity" style="text-align:right;"></td>';
