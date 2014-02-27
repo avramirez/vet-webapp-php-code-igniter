@@ -14,6 +14,7 @@
 			</tr>
 		</tbody>
 	</table>
+<h2>Reservation Slip</h2>
 <table class="detail" style="width:100%;margin: 0px; border-top: none;">
 <tr>
 <td class="label">Date:</td>

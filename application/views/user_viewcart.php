@@ -80,7 +80,8 @@
             <?php
               if(count($list_of_orders) > 0){
                 if($activeOrder =="true"){
-                  echo "<button type='submit' class='btn btn-warning btn-sm pull-left' style='margin-right:10px;'>Print Receipt</button>";
+                  echo "<button type='button' class='btn btn-success btn-sm pull-left' style='margin-right:10px;'>Pay Order</button>";
+                  echo "<button type='submit' class='btn btn-warning btn-sm pull-left' style='margin-right:10px;'>Print Order Slip</button>";
                   echo "<button type='button' class='btn btn-info btn-sm pull-left' id='cancelOrder'>Cancel Order</button>";
                 }
                 else{

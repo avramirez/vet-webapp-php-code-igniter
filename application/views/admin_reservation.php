@@ -234,6 +234,7 @@
           <table class="table table-hover" id="adminReservationTable">
             <thead>
               <tr>
+                <th style="width:200px;">Reservation ID</th>
                 <th style="width:200px;">Email</th>
                 <th style="width:260px;">Service Name</th>
                 <th style="width:135px">Date SERVICE</th>
@@ -259,6 +260,7 @@
               }else{
                 echo "<tr style='color:#F53838;'>";
               }
+              echo "<td class='vert objectId' >".$row['reservationobjectId']."</td>";
               echo "<td class='vert userEmail' style='word-wrap: break-word;word-break: break-all;'>".$row['email']."</td>";
               echo "<td class='vert serviceTitle' data-serviceId='".$row['serviceObjectId']."'>".$row['service_name']."</td>";
               echo "<td class='vert serviceDate'>".$row['reserveDate']." <br/> "."</td>";

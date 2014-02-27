@@ -8,11 +8,25 @@
           <div class="panel-body">
             <p>Choose from our variety of services. And press reserve button to make a reservation.</p>
             <p><small class="text-muted">Note: Items that are in red are currently not available.</small></p>
+            <?php
+                if($activeReservation =="true"){
+                  echo"<p class='small' style='color:red;'>You've reach the maximum reservation..</p>";
+                }
+            ?>
+
+             <div class="input-group">
+              <span class="input-group-btn">
+                   <label>Sort:</label> 
+                <input type="radio" style="width:10px; height:10px; vertical-align:baseline;" class="form-control searchUserServices" name = "sortService1" value = "" checked = "true"> All
+                <input type="radio" style="width:10px; height:10px; vertical-align:baseline;" class="form-control searchUserServices" name = "sortService1" value = "S" > Surgery
+                <input type="radio" style="width:10px; height:10px; vertical-align:baseline;" class="form-control searchUserServices" name = "sortService1" value = "O" > Others
+              </span>
+            </div>
              <div class="input-group">
               <span class="input-group-btn">
                 <button class="btn btn-default searchUserServices" type="button">Search</button>
               </span>
-              <input type="text" class="form-control searchUserServicesText" placeholder="Enter keywords">
+              <input type="text" class="form-control searchUserServicesText" placeholder="Enter keywords">               
             </div>
           </div>
 
@@ -23,7 +37,11 @@
                 <th>Service Name</th>
                 <th>Group</th>
                 <th style="text-align:right;padding-right:15px;">Price (Incl Tax)</th>
-                <th style="width:130px;"></th>
+                <?php
+                if($activeReservation =="false"){
+                  echo'<th style="width:130px;"></th>';
+                }
+                ?>
               </tr>
             </thead>
             <tbody>
@@ -33,7 +51,9 @@
                 echo "<td class='vert serviceTitle'>".$row['service_name']."</td>";
                 echo "<td class='vert serviceGroup'>".$row['group']."</td>";
                 echo "<td class='vert servicePrice rightalignPadding'>&#8369; ".$row['price']."</td>";
+                if($activeReservation =="false"){
                 echo "<td class='vert'><button type='button' data-objectId='".$row['objectId']."' class='btn btn-primary btn-sm addReservation'>Add reservation</button></td>";
+                }
                 echo "</tr>";
                 }
               ?>
@@ -56,6 +76,23 @@
                   <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                   <strong>Warning!</strong> Fill up all the fields.
                 </div>
+            <div class="col-md-12">
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h3 class="panel-title">Doctor</h3>
+                    </div>
+                    <div class="panel-body">
+            <select class="form-control reserveDoctorSelect">
+                <option>Choose Doctor</option>
+                <?php foreach ($list_of_doctors as $row){
+                  echo "<option value='".$row['objectId']."'>".$row['doctor_name']."</option>";
+                }             
+                ?>
+                </select>
+                    </div>
+                  </div>
+                </div>
+
                 <div class="col-md-6">
                   <div id="datepicker"></div>
                 </div>

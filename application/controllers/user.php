@@ -9,16 +9,30 @@
 		}
 		public function index(){
 			if($this->session->userdata('user_objectId')){
-				
+
+				$userId = $this->session->userdata('user_objectId');
+				$checkActiveReservation = $this->db->query("SELECT * from vet_app.users_reservation
+					WHERE userId='".$userId."' 
+					AND confirmed = 2;");
+				$num = $checkActiveReservation->num_rows(); 
+				if ($num > 1)
+				{
+					$servicesData['activeReservation'] ="true";
+				}
+				else{
+					$servicesData['activeReservation'] ="false";	
+				}
+
 				$query = $this->db->query("SELECT * FROM services;");	
 				$data['stylesheets'] =array('jumbotron-narrow.css');
 				$data['show_navbar'] ="true";
 				$data['content_navbar'] = $this->load->view('user_navbar','',true);
-
+				
+				$doctorsData['list_of_doctors'] = $this->getAllDoctors();
 				$servicesData['services'] = $query->result_array();
 
 				$data['content_body'] = $this->load->view('user_homepage',$servicesData,true);
-				
+				$data['content_body'] = $this->load->view('user_homepage',$doctorsData,true);
 
 				$this->load->view("layout",$data);
 			}else{
@@ -27,14 +41,35 @@
 
 		}
 
-		public function searchUserServices(){
-			
-
-				
+		public function getAllDoctors()
+		{
 			if($this->session->userdata('user_objectId')){
-				$inputEmail = $this->input->post('userEmailSearch');
 
-				$query = $this->db->query("SELECT * FROM services WHERE service_name LIKE '%".$inputEmail."%';");	
+				$query = $this->db->query("SELECT * FROM doctors;");
+			return $query->result_array();
+			}
+		}
+
+		public function searchUserServices(){
+			if($this->session->userdata('user_objectId')){
+
+				$userId = $this->session->userdata('user_objectId');
+				$checkActiveReservation = $this->db->query("SELECT * from vet_app.users_reservation
+					WHERE userId='".$userId."' 
+					AND confirmed = 2;");
+				$num = $checkActiveReservation->num_rows(); 
+				if ($num > 1)
+				{
+					$servicesData['activeReservation'] ="true";
+				}
+				else{
+					$servicesData['activeReservation'] ="false";	
+				}
+
+				$inputEmail = $this->input->post('userEmailSearch');
+				$servicesort = $this->input->post('serviceSort');
+
+				$query = $this->db->query("SELECT * FROM services WHERE service_name LIKE '%".$inputEmail."%' AND `group` LIKE '%".$servicesort."%';");	
 				$data['stylesheets'] =array('jumbotron-narrow.css');
 				$data['show_navbar'] ="true";
 				$data['content_navbar'] = $this->load->view('user_navbar','',true);
@@ -71,6 +106,7 @@
 
 				if($row->user_level == 1){
 					$this->session->set_userdata('user_objectId',''.$row->objectId.'');	
+					$this->session->set_userdata('user_level',''.$row->user_level.'');
 				}else if($row->user_level == 2 || $row->user_level == 3 || $row->user_level == 4 ||$row->user_level == 5  || $row->user_level == 6){
 					$this->session->set_userdata('admin_objectId',''.$row->objectId.'');	
 					$this->session->set_userdata('user_level',''.$row->user_level.'');
@@ -101,10 +137,11 @@
 				$reserveTime= $this->input->post("reserveTime");
 				$reserveDateTime = date('Y-m-d H:i:s', strtotime(str_replace('-', '/', ''.$reserveDate.' '.$reserveTime.'')));
 				$serviceId =$this->input->post("serviceId");
+				$doctorsId = $this->input->post("doctorsId");
 
 				$query = $this->db->query("SELECT * from users_reservation 
 					where reserveDateTime='".$reserveDateTime."' 
-					AND serviceId='".$serviceId."';");
+					AND serviceId='".$serviceId."' and doctorsId=".$doctorsId.";");
 
 				if ($this->db->affected_rows() > 0)
 				{
@@ -118,19 +155,43 @@
 
 		public function addReservation(){
 			if($this->session->userdata('user_objectId')){
+			
+			$userId = $this->session->userdata('user_objectId');
+				$checkActiveReservation = $this->db->query("SELECT * from vet_app.users_reservation
+					WHERE userId='".$userId."' 
+					AND confirmed = 2;");
+				$num = $checkActiveReservation->num_rows(); 
+				if ($num > 1)
+				{
+					$servicesData['activeReservation'] ="true";
+				}
+				else{
+					$servicesData['activeReservation'] ="false";	
+				}
+
 			$reserveDate= $this->input->post("reserveDate");
 			$reserveTime= $this->input->post("reserveTime");
 			$reserveDateTime = date('Y-m-d H:i:s', strtotime(str_replace('-', '/', ''.$reserveDate.' '.$reserveTime.'')));
 			$serviceId =$this->input->post("serviceId");
 			$userId = $this->session->userdata('user_objectId');
-	
-				$query = $this->db->query("INSERT INTO `vet_app`.`users_reservation` 
+			$doctorsId = $this->input->post("doctorsId");
+
+				$query = $this->db->query("INSERT INTO 
+					`vet_app`.`users_reservation`(objectId,
+						serviceId,
+						userId,
+						reserveDate,
+						reserveTime,
+						reserveDateTime,
+						confirmed,
+						doctorsId,
+						timestamp)
 					VALUES (NULL,'".$serviceId."',
 						'".$userId."',
 						'".$reserveDate."',
 						'".$reserveTime."',
-						'".$reserveDateTime."',
-						0,NULL);");
+						'".$reserveDateTime."',2,".$doctorsId.",
+						NULL);");
 
 				if ($this->db->affected_rows() > 0)
 				{
@@ -160,11 +221,12 @@
 			$reserveDateTime = date('Y-m-d H:i:s', strtotime(str_replace('-', '/', ''.$reserveDate.' '.$reserveTime.'')));
 			$serviceId =$this->input->post("serviceId");
 			$userId = $this->session->userdata('user_objectId');
+			$doctorsId = $this->input->post("doctorsId");
 	
 				$query = $this->db->query("UPDATE  vet_app.users_reservation 
 					SET  reserveDate= '".$reserveDate."',
 					reserveTime='".$reserveTime."',
-					reserveDateTime='".$reserveDateTime."'  
+					reserveDateTime='".$reserveDateTime."', doctorsId=".$doctorsId."   
 					WHERE users_reservation.objectId =".$serviceId.";");
 
 				if ($this->db->affected_rows() > 0)
@@ -253,7 +315,7 @@
 					ur.reserveDate,
 					ur.reserveTime,
 					ur.confirmed,
-					svs.price 
+					svs.price, ur.doctorsId 
 					FROM users_reservation ur 
 					INNER JOIN services svs 
 					ON ur.serviceId = svs.objectId  
@@ -265,7 +327,8 @@
 				$data['content_navbar'] = $this->load->view('user_navbar','',true);
 
 				$servicesData['list_of_reservations'] = $query->result_array();
-
+				$doctorsData['list_of_doctors'] = $this->getAllDoctors();
+				$data['content_body'] = $this->load->view('user_manage_reservation',$doctorsData,true);
 				$data['content_body'] = $this->load->view('user_manage_reservation',$servicesData,true);
 				
 
@@ -275,6 +338,43 @@
 			}
 
 		}
+
+
+		// public function sortProduct(){
+		// 	if($this->session->userdata('user_objectId')){
+				
+		// 		$userId = $this->session->userdata('user_objectId');
+		// 		$sortType = $this->input->post('productType');
+
+
+		// 		$checkActiveorders = $this->db->query("SELECT * from vet_app.users_order 
+		// 			WHERE usersId='".$userId."' 
+		// 			AND batchOrderId IS NOT NULL 
+		// 			AND active=1;");
+
+		// 		$servicesData['activeOrder'] ="false";
+		// 		if ($checkActiveorders->num_rows() > 0)
+		// 		{
+		// 			$servicesData['activeOrder'] ="true";
+		// 		}
+
+		// 		$query = $this->db->query("SELECT * from products where product_type like '%".$sortType."' LIMIT 0 , 2000;");	
+	
+		// 		$data['stylesheets'] =array('jumbotron-narrow.css');
+		// 		$data['show_navbar'] ="true";
+		// 		$data['content_navbar'] = $this->load->view('user_navbar','',true);
+
+		// 		$servicesData['list_of_poducts'] = $query->result_array();
+
+		// 		$data['content_body'] = $this->load->view('user_order',$servicesData,true);
+				
+
+		// 		$this->load->view("layout",$data);
+		// 	}else{
+		// 		redirect("/");
+		// 	}
+
+		// }
 
 		public function order(){
 			if($this->session->userdata('user_objectId')){
@@ -328,8 +428,9 @@
 					$servicesData['activeOrder'] ="true";
 				}
 				$inputEmail = $this->input->post('userEmailSearch');
-
-				$query = $this->db->query("SELECT * from products WHERE product_name LIKE '%".$inputEmail."%' LIMIT 0 , 2000;");	
+				$categorysort = $this->input->post('userSort');
+/////// gojo
+				$query = $this->db->query("SELECT * from products WHERE product_name LIKE '%".$inputEmail."%' AND product_type LIKE '%".$categorysort."%' LIMIT 0 , 2000;");	
 	
 				$data['stylesheets'] =array('jumbotron-narrow.css');
 				$data['show_navbar'] ="true";
@@ -364,7 +465,7 @@
 						'".$productAmount."',
 						'".$totalPrice."',
 						'".$orderDate."',
-						NULL,1);");
+						NULL,1,NULL);");
 
 				$newOrderID=$this->db->insert_id();
 
@@ -482,7 +583,12 @@
 				{
 					$servicesData['activeOrder'] ="true";
 				}
+				// $updater = $this->db->query("UPDATE vet_app.users_order SET active =0 
+				// 	WHERE usersId=".$userId." 
+				// 	AND orderDate <=  DATE_SUB(NOW(), INTERVAL 1 DAY);");
 
+				$deleter = $this->db->query("DELETE FROM  vet_app.users_order WHERE usersId=".$userId." 
+					AND orderDate <=  DATE_SUB(NOW(), INTERVAL 1 DAY) AND active = 1; ");
 
 				$query = $this->db->query("SELECT uo.objectId as orderObjectid, 
 					prod.objectId as productObjectId, 
@@ -492,13 +598,14 @@
 					prod.product_price, 
 					(SELECT SUM(uo.totalPrice) from vet_app.users_order uo 
 				 INNER JOIN  vet_app.products prod ON uo.productId = prod.objectId 
-				 WHERE uo.usersId='".$userId."' AND uo.active =1) as totalAll 
+				 WHERE uo.usersId='".$userId."' AND uo.active =3
+				 AND uo.orderDate >=  DATE_SUB(NOW(), INTERVAL 1 DAY)) as totalAll 
 				 from vet_app.users_order uo 
 				 INNER JOIN  vet_app.products prod ON uo.productId = prod.objectId 
 				 WHERE uo.usersId='".$userId."' 
-				 AND uo.active=1 
+				 AND uo.active=1 AND uo.orderDate >=  DATE_SUB(NOW(), INTERVAL 1 DAY)
 				 ORDER BY orderDate DESC 
-				 LIMIT 0 , 2000;");	
+				 LIMIT 0 , 2000;");		
 	
 				$data['stylesheets'] =array('jumbotron-narrow.css');
 				$data['show_navbar'] ="true";
@@ -604,7 +711,13 @@
 				 ORDER BY orderDate DESC 
 				 LIMIT 0 , 2000;");	
 	
-				$servicesData['list_of_orders'] = $query->result_array();
+				$servicesData['list_of_orders'] = $query->result_array();				
+				$userlevel = $this->session->userdata('user_level');
+				$servicesData['reportTitle'] = 	"Receipt No.";
+				if($userlevel == "1"){
+					$servicesData['reportTitle'] = 	"Order Slip";
+				}
+				
 
 				$html =$this->load->view('user_order_receipt_report',$servicesData,true);
 

@@ -232,6 +232,52 @@
           <button type="submit" class="btn btn-sm btn-info" style="float:right;margin-top:10px;" id="generateReservationReport">Generate Billing</button>
           </form>
         </div>
+        <div style="height:300px; overflow:auto;border: 1px solid rgba(51, 51, 51, 0.17);margin: 5px;">
+          <!-- Table -->
+          <table class="table table-hover" id="adminServiceTables">
+           
+           <thead>
+              <tr>
+                <th style="width:270px;">
+                  Batch Order ID/Receipt #
+                </th>
+                <th>
+                  Tracking No. #
+                </th>
+                <th>
+                  Via
+                </th> 
+                <th style="text-align:right;padding-right:15px;"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php foreach ($payments as $row){
+
+                echo "<tr>";
+                 if($row['active'] == "1"){
+                  echo "<td class='vert batchOrderId'>".$row['batchOrderId']."</td>";  
+                 }else{
+                  echo "<td class='vert batchOrderId'>".$row['batchOrderId']." (DONE)</td>";
+                 }
+
+                 echo "<td></td>";
+                 echo "<td></td>";
+                
+                echo "<td class='vert usersId' style='text-align:right;'>
+                        <input type='hidden' name='usersId' class='usersId' value='".$row['usersId']."' >";
+                if($row['active'] == "1"){
+                echo "<span class='btn btn-success processOrderAdmin' style='margin-right:10px;'>Process Order</span>";   
+                }
+                echo"<span class='btn btn-danger'>Delete</span>
+                      </td>";
+                echo "</tr>";
+
+                }
+              ?>
+            </tbody>
+          </table>
+
+        </div>
       </div>
 
 

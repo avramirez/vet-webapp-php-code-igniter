@@ -13,6 +13,14 @@
                   echo'<p class="small" style="color:red;">You have an active order.</p>';
                 }
             ?>
+            <div class="input-group">
+              <span class="input-group-btn">
+                  <label>Sort: </label>
+                  <input type="radio" style="width:10px; height:10px; vertical-align:baseline;" class="form-control searchProductUser" name = "sortCategory1" value = "" checked = "true"> All
+                  <input type="radio" style="width:10px; height:10px; vertical-align:baseline;" class="form-control searchProductUser" name = "sortCategory1" value = "C" > Capsule and Tablets
+                  <input type="radio" style="width:10px; height:10px; vertical-align:baseline;" class="form-control searchProductUser" name = "sortCategory1" value = "V" > Vitamins
+              </span>
+            </div>
              <div class="input-group">
               <span class="input-group-btn">
                 <button class="btn btn-default searchProductUser" type="button">Search</button>
@@ -27,8 +35,7 @@
               <tr>
                 <th style="width:270px;">Product Name</th>
                 <th>Type</th>
-                <th style="text-align:right;padding-right:15px; display:none;">Quantity</th>
-                <th style="text-align:right;padding-right:15px;">Availability</th>
+                <th style="text-align:right;padding-right:15px;">Quantity</th>
                 <th style="text-align:right;padding-right:15px;">Price</th>
                  <?php
                 if($activeOrder !="true"){
@@ -39,7 +46,7 @@
                 
               </tr>
             </thead>
-            <tbody style="visible:hidden;">
+            <tbody>
               <?php foreach ($list_of_poducts as $row){
                 $productquantity = intval($row['product_quantity']);
                 if($productquantity <=20){
@@ -53,16 +60,13 @@
                 }else{
                    $availability="Out of Stock";
                 }
-
-
-                
                 echo "<td class='vert productName'>".$row['product_name']."</td>";
                 echo "<td class='vert productType'>".$row['product_type']."</td>";
                 echo "<td class='vert productQuantity rightalignPadding' style='display:none;'>".$row['product_quantity']."</td>";
                 echo "<td class='vert productQuantity rightalignPadding' >".$availability."</td>";
                 echo "<td class='vert productPrice rightalignPadding'>&#8369; <span>".$row['product_price']."</span></td>";
                  if($activeOrder !="true"){
-                echo '<td class="vert orderQuantity"><input type="number" min="1" value="1" class="form-control" name="orederQuantity" style="text-align:right;"></td>';
+                echo '<td class="vert orderQuantity"><input type="number" min="1" max="50" value="1" class="form-control" name="orederQuantity" style="text-align:right;"></td>';
                 echo "<td class='vert'>";
                 if($productquantity <=0){
                   echo "OUT OF STOCK!";

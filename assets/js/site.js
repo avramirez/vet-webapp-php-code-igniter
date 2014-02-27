@@ -28,6 +28,8 @@ $(document).ready(function(){
 		$('.userNavbar li.navReserveManage').addClass('active');
 
 		$("body").on("click",".editReservation",function(ccoie){
+			$("#reserveDoctorSelect option[value='"+$(this).parent().parent().children('.doctorsId').val()+"']").attr("selected", "selected");
+			$("#editReserveModal .doctorsIdEdit").text($(this).parent().parent().children('.doctorsId').text());
 			$("#editReserveModal #myModalLabel").text($(this).parent().parent().children('.serviceTitle').text());
 			$("#editReserveModal .reserveDate").text($(this).parent().parent().children('.serviceDate').text());
 			$("#editReserveModal .reserveTime").text($(this).parent().parent().children('.serviceTime').text());
@@ -40,14 +42,16 @@ $(document).ready(function(){
 		})
 
 		$("body").on("click",".updateReservation",function(e){
-			if($(".reserveDate").text()!="" && $(".reserveTime").text() !=""){
+			var doctorsId = parseInt($("#reserveDoctorSelect option:selected").val());
+			if($(".reserveDate").text()!="" && $(".reserveTime").text() !="" && $("#reserveDoctorSelect").text()!="Choose Doctor"){
 				$.ajax({
 					method:"POST",
 					async:true,
 					data:{
 						'reserveDate':$(".reserveDate").text(),
 						'reserveTime':$(".reserveTime").text(),
-						'serviceId':$(this).attr("data-objectId")
+						'serviceId':$(this).attr("data-objectId"),
+						'doctorsId':doctorsId
 					},
 					url:"updateReservation",
 					success:function(data,status,jqXHR){
@@ -97,15 +101,18 @@ $(document).ready(function(){
 		$('.userNavbar li.navReserve').addClass('active');
 
 			$("body").on("click",".submitReservation",function(e){
-				if($(".reserveDate").text()!="" && $(".reserveTime").text() !=""){
+				if($(".reserveDate").text()!="" && $(".reserveTime").text() !="" && $("#reserveDoctorSelect").text()!="Choose Doctor"){
 					var serviceId = $(this).attr("data-objectId");
+					var doctorsId = parseInt($(".reserveDoctorSelect option:selected").val());
+					console.log(doctorsId);
 					$.ajax({
 						method:"POST",
 						async:false,
 						data:{
 							'reserveDate':$(".reserveDate").text(),
 							'reserveTime':$(".reserveTime").text(),
-							'serviceId':serviceId
+							'serviceId':serviceId,
+							'doctorsId':doctorsId
 						},
 						url:"user/checkReservationAvailable",
 						success:function(data,status,jqXHR){
@@ -115,14 +122,16 @@ $(document).ready(function(){
 								data:{
 									'reserveDate':$(".reserveDate").text(),
 									'reserveTime':$(".reserveTime").text(),
-									'serviceId':serviceId
+									'serviceId':serviceId,
+									'doctorsId':doctorsId
 								},
 								url:"user/addReservation",
 								success:function(data,status,jqXHR){
 									$('#myModal').modal('hide');
 									$('.addSuccess').show();
+									$('.searchUserServices').click();
+									////gojo						
 								}
-
 							})
 						},
 						  statusCode:{
@@ -191,14 +200,6 @@ $(document).ready(function(){
 		  });
 		});
 		$("#userRegister").validate({
-			rules: {
-				inputPassword: "required",
-				confirm_inputPassword: {
-					equalTo: "#inputPassword"
-				}
-			}
-		});
-		$("#userRegister").validate({
 			submitHandler:function(form){
 				$.ajax({  
 				  type: "POST",  
@@ -233,11 +234,7 @@ $(document).ready(function(){
 			if($orderQuantityInput.val() == "" || (parseInt($orderQuantityInput.val()) > productQuantity)){
 				alert("Stock isnt Enough!");
 
-			}else if($orderQuantityInput.val() > 50){
-				alert("The Maximum order limit is 50");
-				$orderQuantityInput.val("50")
-			}
-			else if($orderQuantityInput.val() == "" || (parseInt($orderQuantityInput.val()) > productQuantity) || parseInt($orderQuantityInput.val()) < 0){
+			}else if($orderQuantityInput.val() == "" || (parseInt($orderQuantityInput.val()) > productQuantity) || parseInt($orderQuantityInput.val()) < 0){
 			
 			}else{
 				$('.detailProductName').text($orderRow.children('.productName').text());
@@ -283,8 +280,71 @@ $(document).ready(function(){
 						  }
 				})
 			}	
-		})		
+		})
 
+}else if ($("#adminAddService").length) {
+		$('body').on('click','.editServiceFromAdmin',function(e){
+			$('#addServicecollapse').collapse('show');
+			var $row = $(this).closest("tr");
+			$("#serviceNameUpdate").val($row.find(".servicesName").text());
+			$("#groupNameUpdate").val($row.find(".group").text());
+			$("#priceBoxUpdate").val($row.find(".price").text());			
+			$("#serviceObjectIdUpdate").val($(this).attr("data-objectid"));
+			$("#addServiceAdmin").hide();
+			$("#updateServiceAdmin").show();
+			$(".panelAddEditService > .panel-heading .panel-title").text("Update Service");
+			
+		});
+
+		$('body').on('click','.backToAddService',function(e){
+			$("#updateServiceAdmin").hide();
+			$("#addServiceAdmin").show();
+			$(".panelAddEditService > .panel-heading .panel-title").text("Add a User");
+		});
+
+		$('body').on('click','.removeServiceFromAdmin',function(e){
+			$('#confirmationModal .confirmAction').attr("data-objectid",$(this).attr("data-objectid"));
+			$('#confirmationModal .confirmAction').attr("data-confirm","confirmDeleteAdmin");
+			$('#confirmationModal .modal-body').text(" Are you sure you want to delete this item?");
+			$('#confirmationModal').modal();
+		});
+		$('body').on('click','.confirmAction',function(){
+			
+				$.ajax({
+					method:"POST",
+					url:'deleteService',
+					data:{
+						'serviceObjectId':$(this).attr("data-objectid")
+					},
+					success:function(data,status,jqXHR){
+					$(".addServiceSuccess strong").text("Successfuly removed Service!");
+				  	$(".addServiceSuccess").show();
+				  	$('#confirmationModal').modal('hide');
+				  	$.ajax({
+							url:document.URL,
+							success:function(data){
+								$("#adminServiceTables").html($(data).find("#adminServiceTables").html());
+							}
+					})
+					}
+				})
+		});
+		$('body').on('click','.searchServicesBtn',function(e){
+
+			$.ajax({
+				method:"POST",
+				url:'searchServicesName',
+				data:{
+					'servicesNameSearch':$(".searchServiceTextAdmin").val()
+				},
+				success:function(data,status,jqXHR){
+					$("#adminServiceTables").html($(data).find("#adminServiceTables").html());
+				}
+			});
+		});
+
+
+	
 	}else if ($("#adminManageReservation").length) {
 
 
@@ -920,31 +980,100 @@ $('body').on('click','#generateReservationReport',function(e){
 			});
 		});
 
-
+/////gerald
 	$('body').on('click','.searchUserServices',function(e){
+		if($('input[name=sortService1]:checked').val() == "S"){
+			console.log("Surgery");
 			$.ajax({
 				method:"POST",
 				url:'user/searchUserServices',
 				data:{
-					'userEmailSearch':$(".searchUserServicesText").val()
+					'userEmailSearch':$(".searchUserServicesText").val(),
+					'serviceSort':"S"
+
 				},
 				success:function(data,status,jqXHR){
 					$("#userReserve table").html($(data).find("#userReserve table").html());
 				}
-			});
+			});	
+		}else if($('input[name=sortService1]:checked').val() == "O"){
+			console.log("Others");
+			$.ajax({
+				method:"POST",
+				url:'user/searchUserServices',
+				data:{
+					'userEmailSearch':$(".searchUserServicesText").val(),
+					'serviceSort':"O"
+
+				},
+				success:function(data,status,jqXHR){
+					$("#userReserve table").html($(data).find("#userReserve table").html());
+				}
+			});	
+		} else{
+			console.log("All");
+			$.ajax({
+				method:"POST",
+				url:'user/searchUserServices',
+				data:{
+					'userEmailSearch':$(".searchUserServicesText").val(),
+					'serviceSort':""
+
+				},
+				success:function(data,status,jqXHR){
+					$("#userReserve table").html($(data).find("#userReserve table").html());
+				}
+			});	
+		}
+
+
+			
 		});
-	
+
 	$('body').on('click','.searchProductUser',function(e){
+		if($('input[name=sortCategory1]:checked').val() == "C"){
+			console.log("Capsule");
 			$.ajax({
 				method:"POST",
 				url:'searchorder',
 				data:{
-					'userEmailSearch':$(".searchProductUserText").val()
+					'userEmailSearch':$(".searchProductUserText").val(),
+					'userSort':"Cap"
 				},
 				success:function(data,status,jqXHR){
 					$("#orderPage table").html($(data).find("#orderPage table").html());
 				}
 			});
+		}
+		else if($('input[name=sortCategory1]:checked').val() == "V"){
+			console.log("Vitamins");
+			$.ajax({
+				method:"POST",
+				url:'searchorder',
+				data:{
+					'userEmailSearch':$(".searchProductUserText").val(),
+					'userSort':"Vit"
+				},
+				success:function(data,status,jqXHR){
+					$("#orderPage table").html($(data).find("#orderPage table").html());
+				}
+			});	
+		}
+		else{
+			console.log("Vitamins");
+			$.ajax({
+				method:"POST",
+				url:'searchorder',
+				data:{
+					'userEmailSearch':$(".searchProductUserText").val(),
+					'userSort':""
+				},
+				success:function(data,status,jqXHR){
+					$("#orderPage table").html($(data).find("#orderPage table").html());
+				}
+			});	
+		}
+			
 		});
 
 		$('body').on('click','.editProductAdmin',function(e){
