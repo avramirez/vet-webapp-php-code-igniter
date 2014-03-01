@@ -232,7 +232,9 @@
           <button type="submit" class="btn btn-sm btn-info" style="float:right;margin-top:10px;" id="generateReservationReport">Generate Billing</button>
           </form>
         </div>
-        <div style="height:300px; overflow:auto;border: 1px solid rgba(51, 51, 51, 0.17);margin: 5px;">
+      </div>
+
+      <div style="height:300px; overflow:auto;border: 1px solid rgba(51, 51, 51, 0.17);margin: 5px;">
           <!-- Table -->
           <table class="table table-hover" id="adminServiceTables">
            
@@ -254,14 +256,15 @@
               <?php foreach ($payments as $row){
 
                 echo "<tr>";
-                 if($row['active'] == "1"){
+                 if($row['active'] == "0"){
                   echo "<td class='vert batchOrderId'>".$row['batchOrderId']."</td>";  
+                  echo "<td class='vert batchOrderId'>".$row['trackingNo']."</td>";  
+                  echo "<td class='vert batchOrderId'>".$row['center']."</td>";  
                  }else{
                   echo "<td class='vert batchOrderId'>".$row['batchOrderId']." (DONE)</td>";
+                  echo "<td class='vert batchOrderId'>".$row['trackingNo']."</td>";
+                  echo "<td class='vert batchOrderId'>".$row['center']."</td>";
                  }
-
-                 echo "<td></td>";
-                 echo "<td></td>";
                 
                 echo "<td class='vert usersId' style='text-align:right;'>
                         <input type='hidden' name='usersId' class='usersId' value='".$row['usersId']."' >";
@@ -278,6 +281,26 @@
           </table>
 
         </div>
+         <!-- Modal -->
+        <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel"></h4>
+              </div>
+              
+              <div class="modal-body clearfix">
+               
+              </div>
+
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary confirmAction" data-formSubmit="form">Yes</button>
+              </div>
+            </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
       </div>
 
 

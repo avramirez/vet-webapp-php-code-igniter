@@ -232,8 +232,9 @@
 				$surgery = $this->db->query("SELECT * FROM services WHERE active=3;");
 				$billingData['surgerys'] = $surgery->result_array();
 
-				$payment = $this->db->query("SELECT * FROM users_order WHERE trackingNo IS NOT NULL;");
+				$payment = $this->db->query("SELECT * FROM users_order WHERE trackingNo IS NOT NULL GROUP BY batchOrderId;");
 				$billingData['payments'] = $payment->result_array();
+
 				$data['content_body'] = $this->load->view('admin_billing',$billingData,true);
 				
 				$this->load->view("layout",$data);
@@ -285,7 +286,6 @@
 				
 				$billingData['reportDateFrom']=$reportDateFrom;
 				$billingData['reportDateto']=$reportDateto;
-				
 
 			    $html =$this->load->view('admin_generated_billing',$billingData,true);
 			    // $this->output->append_output($html);
@@ -547,8 +547,9 @@
 				 LIMIT 0 , 2000;");	
 	
 				$servicesData['list_of_orders'] = $query->result_array();
+				$servicesData['reportTitle'] = 	"Receipt No.";
 
-				$updateActive=$this->db->query("UPDATE users_order SET active=3 
+				$updateActive=$this->db->query("UPDATE users_order SET active=0 
 					WHERE usersId=".$userId.";");				
 
 				$html =$this->load->view('user_order_receipt_report',$servicesData,true);
@@ -869,7 +870,6 @@
 		{
 			if($this->session->userdata('admin_objectId')){
 				$this->checkAllowed([3,4]);
-
 				$navbarData['userLevel'] = $this->session->userdata('user_level');
 
 				$data['stylesheets'] =array('jumbotron-narrow.css');

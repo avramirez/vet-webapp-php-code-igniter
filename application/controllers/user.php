@@ -465,7 +465,7 @@
 						'".$productAmount."',
 						'".$totalPrice."',
 						'".$orderDate."',
-						NULL,1,NULL);");
+						NULL,1,NULL,NULL);");
 
 				$newOrderID=$this->db->insert_id();
 
@@ -498,6 +498,7 @@
 
 		public function updateOrder(){
 			if($this->session->userdata('user_objectId')){
+
 				$orderObjectId= $this->input->post("orderObjectId");
 				$newAmount= $this->input->post("newAmount");
 				$newTotalPrice =$this->input->post("newTotalPrice");
@@ -568,6 +569,23 @@
 			 
 		}
 
+		public function payOrder(){
+			if($this->session->userdata('user_objectId')){
+
+				$batchId= $this->input->post("batchId");
+				$remitId= $this->input->post("remitId");
+				$trackingNo =$this->input->post("trackingNo");
+
+				$updateOrder = $this->db->query("UPDATE users_order set trackingNo = '".$trackingNo."', center = '".$remitId."' WHERE batchOrderId='".$batchId."';");
+				if ($this->db->affected_rows() > 0)
+				{
+					set_status_header((int)200); 
+				}else{
+					set_status_header((int)200); 
+				}
+			}
+		}
+
 		public function viewCart(){
 			if($this->session->userdata('user_objectId')){
 				
@@ -594,18 +612,22 @@
 					prod.objectId as productObjectId, 
 					uo.productAmount, 
 					uo.totalPrice, 
+					uo.batchOrderId as batchOrderId,
 					prod.product_name,
 					prod.product_price, 
 					(SELECT SUM(uo.totalPrice) from vet_app.users_order uo 
 				 INNER JOIN  vet_app.products prod ON uo.productId = prod.objectId 
-				 WHERE uo.usersId='".$userId."' AND uo.active =3
+				 WHERE uo.usersId='".$userId."' AND uo.active =1 
 				 AND uo.orderDate >=  DATE_SUB(NOW(), INTERVAL 1 DAY)) as totalAll 
 				 from vet_app.users_order uo 
 				 INNER JOIN  vet_app.products prod ON uo.productId = prod.objectId 
 				 WHERE uo.usersId='".$userId."' 
 				 AND uo.active=1 AND uo.orderDate >=  DATE_SUB(NOW(), INTERVAL 1 DAY)
 				 ORDER BY orderDate DESC 
-				 LIMIT 0 , 2000;");		
+				 LIMIT 0 , 2000;");	
+
+
+				 $servicesData['batchOrderId'] ="false";	
 	
 				$data['stylesheets'] =array('jumbotron-narrow.css');
 				$data['show_navbar'] ="true";
@@ -632,7 +654,8 @@
 			if($this->session->userdata('user_objectId')){
 				$userId = $this->session->userdata('user_objectId');
 
-				$addBatchNumber=$this->db->query("UPDATE users_order SET batchOrderId = NULL 
+				$addBatchNumber=$this->db->query("UPDATE users_order SET batchOrderId = NULL,
+					trackingNo = NULL, center = NULL 
 					WHERE usersId=".$userId." 
 					AND active=1;");
 
@@ -713,10 +736,7 @@
 	
 				$servicesData['list_of_orders'] = $query->result_array();				
 				$userlevel = $this->session->userdata('user_level');
-				$servicesData['reportTitle'] = 	"Receipt No.";
-				if($userlevel == "1"){
 					$servicesData['reportTitle'] = 	"Order Slip";
-				}
 				
 
 				$html =$this->load->view('user_order_receipt_report',$servicesData,true);

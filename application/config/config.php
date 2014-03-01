@@ -14,7 +14,7 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://localhost:8080/vet-webapp-php-code-igniter/';
+$config['base_url']	= 'http://localhost:80/vet-webapp-php-code-igniter/';
 
 /*
 |--------------------------------------------------------------------------

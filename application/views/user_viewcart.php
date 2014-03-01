@@ -42,6 +42,7 @@
                 echo "<td class='vert productPrice rightalignPadding'>&#8369; <span>".$row['product_price']."</span></td>";
                 echo "<td class='vert orderAmount rightalignPadding'>".$row['productAmount']."</td>";
                 echo "<td class='vert productTotal rightalignPadding'>&#8369; <span>".$row['totalPrice']."</span></td>";
+                echo "<input type='hidden' value='".$row['batchOrderId']."' id='batchId' name='batchId'> ";
                 if($activeOrder !="true"){
                 echo "<td class='vert'>";
                 echo "<button type='button' data-productId='".$row['productObjectId']."' data-objectId='".$row['orderObjectid']."' class='btn btn-primary btn-sm editOrder pull-left' style='margin-right: 5px;'>Edit</button>";
@@ -80,7 +81,7 @@
             <?php
               if(count($list_of_orders) > 0){
                 if($activeOrder =="true"){
-                  echo "<button type='button' class='btn btn-success btn-sm pull-left' style='margin-right:10px;'>Pay Order</button>";
+                  echo "<button type='button' class='btn btn-success btn-sm pull-left' id='payOrder' style='margin-right:10px;'>Pay Order</button>";
                   echo "<button type='submit' class='btn btn-warning btn-sm pull-left' style='margin-right:10px;'>Print Order Slip</button>";
                   echo "<button type='button' class='btn btn-info btn-sm pull-left' id='cancelOrder'>Cancel Order</button>";
                 }
@@ -106,6 +107,20 @@
               <div class="modal-body clearfix">
                 <div class="removeFromCartBody" style="display:none;">
                     <h4></h4>
+                </div>
+                <div class="payOrderBody"  style="display:none; vertical-align:middle; padding-left:150px;">
+                  <span>
+                      <label>
+                    Cash Remittance Center:
+                  </label>
+                  <input type="text" style="width:250px;" class="form-control" placeholder="Ex. Western Union" id="remitId" required>
+                  </span>
+                  <span>
+                      <label>
+                    Tracking Number:
+                  </label>
+                  <input type="text" style="width:250px;" class="form-control" placeholder="Tracking Number" id="trackingNo" required>
+                  </span>
                 </div>
                 <div class="editOrderBody" style="display:none;">
                   <h3 class="orderTitle"></h3>

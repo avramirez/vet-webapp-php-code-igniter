@@ -17,7 +17,7 @@
               <span class="input-group-btn">
                   <label>Sort: </label>
                   <input type="radio" style="width:10px; height:10px; vertical-align:baseline;" class="form-control searchProductUser" name = "sortCategory1" value = "" checked = "true"> All
-                  <input type="radio" style="width:10px; height:10px; vertical-align:baseline;" class="form-control searchProductUser" name = "sortCategory1" value = "C" > Capsule and Tablets
+                  <input type="radio" style="width:10px; height:10px; vertical-align:baseline;" class="form-control searchProductUser" name = "sortCategory1" value = "C" > Tablets and Capsule 
                   <input type="radio" style="width:10px; height:10px; vertical-align:baseline;" class="form-control searchProductUser" name = "sortCategory1" value = "V" > Vitamins
               </span>
             </div>

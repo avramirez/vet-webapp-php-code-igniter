@@ -234,6 +234,9 @@ $(document).ready(function(){
 			if($orderQuantityInput.val() == "" || (parseInt($orderQuantityInput.val()) > productQuantity)){
 				alert("Stock isnt Enough!");
 
+			}else if($orderQuantityInput.val() > 50 ){
+				alert("The max order is 50");
+				$orderQuantityInput.val("50");
 			}else if($orderQuantityInput.val() == "" || (parseInt($orderQuantityInput.val()) > productQuantity) || parseInt($orderQuantityInput.val()) < 0){
 			
 			}else{
@@ -858,6 +861,13 @@ $('body').on('click','#generateReservationReport',function(e){
 			$("#confirmationModal .confirmAction").text("Yes");
 		})
 
+		$('body').on('click','#payOrder',function(){
+			$("#confirmationModal #myModalLabel").text("Pay Order");
+			$("#confirmationModal").modal();
+			$("#confirmationModal .confirmAction").attr("data-confirm","confirmPay");
+			$("#confirmationModal .payOrderBody").show();
+		})
+
 		$('#confirmationModal').on('hidden.bs.modal', function () {
   			$("#confirmationModal .removeFromCartBody").hide();
   			$("#confirmationModal .editOrderBody").hide();
@@ -901,6 +911,28 @@ $('body').on('click','#generateReservationReport',function(e){
 					},
 					success:function(data,status,jqXHR){
 						$('.cartSuccess strong').text("Delete successful!");
+						$('.cartSuccess').show();
+						$.ajax({
+							url:document.URL,
+							success:function(data){
+								$("#viewCartPage").html($(data).find("#viewCartPage").html());
+								$("#confirmationModal").modal('hide');
+							}
+						})
+					}
+				});
+			}else if($this.attr("data-confirm") == "confirmPay"){
+				$.ajax({
+					type:"POST",
+					async:true,
+					url:'payOrder',
+					data:{
+						'batchId':$("#batchId").val(),
+						'remitId':$("#remitId").val(),
+						'trackingNo':$("#trackingNo").val()
+					},
+					success:function(data,status,jqXHR){
+						$('.cartSuccess strong').text("Transaction successful!");
 						$('.cartSuccess').show();
 						$.ajax({
 							url:document.URL,
