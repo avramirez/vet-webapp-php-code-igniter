@@ -20,8 +20,9 @@
                       </a>
                       
                     </div>
-                    <div class="panel-body panel-collapse collapse" id="addUsercollpase">
-                      <form action="admin/addUser" method="POST" id="addUserAdmin" name="adduseradmin">
+                    <div class="panel-body panel-collapse collapse clearfix" id="addUsercollpase">
+
+                      <form action="admin/addUser" method="POST" id="addUserAdmin" name="adduseradmin" class="clearfix">
                         <table class="table table-hover">
                           <thead>
                             <tr>
@@ -30,7 +31,6 @@
                               <th style="">First Name</th>
                               <th style="">Last Name</th>
                               <th style="">User Level</th>
-                              <th style="">Password</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -40,19 +40,44 @@
                               <td><input type="text" class="form-control" name="firstName" id="firstName" placeholder="First Name" required></td>
                               <td><input type="text" class="form-control" name="lastName" id="lastName" placeholder="Last Name" required></td>
                               <td>
-                                <select class="form-control" name="userLevel">
+                                <select class="form-control" name="userLevel" id="userLevelAdd">
                                   <option value=1>Customer</option>
                                   <option value=3>Admin - User</option>
                                   <option value=4>Admin - Resertvation</option>
-								    <option value=5>Admin - Accounting</option>
-									 <option value=6>Admin -Product Manager</option>
+            								      <option value=5>Admin - Accounting</option>
+            									    <option value=6>Admin -Product Manager</option>
                                   <option value=2>Super Admin</option>
                                 </select>
                               </td>
-                              <td> <input type="password" class="form-control" name="inputPassword" id="inputPassword" placeholder="Password" minlength="6" maxlength="50" required></td>
+                            </tr>
+                            <tr>
+                               <td> <input type="password" class="form-control" name="inputPassword" id="inputPassword" placeholder="Password" minlength="6" maxlength="50" required></td>
+                               <td> <input type="password" class="form-control" name="confirm_inputPassword" id="confirm_inputPassword" placeholder="Confirm Password" minlength="6" maxlength="50" required></td>
                             </tr>
                           </tbody>
                         </table>
+                        <div id="petInformationContainer">
+                          <h3>Pet Information</h3>
+                          <div class="form-group">
+                            <label for="petName">Pet Name</label>
+                            <input type="text" class="form-control" name="petName" id="petName" placeholder="Pet Name" required>
+                          </div>
+                          <div class="form-group">
+                            <label for="petType">Pet Type</label>
+                            <input type="text" class="form-control" name="petType" id="petType" placeholder="Pet Type" required>
+                          </div>
+                          <div class="form-group">
+                            <label for="petGender">Pet Gender</label>
+                          <select class="form-control" name="petGender" id="petGender" >
+                            <option value="female">Female</option>
+                            <option value="male">Male</option>
+                          </select>
+                          </div>
+                          <div class="form-group">
+                            <label for="petHistory">History Description</label>
+                            <textarea class="form-control" name="petHistory" id="petHistory" placeholder="Pet History" required></textarea>
+                          </div>
+                        </div>
                          <button type="submit" name="adduserbtn" class="btn btn-success pull-right">Add User</button>
                       </form>
                       <form action="admin/updateUser" method="POST" id="updateUser" name="updateuseradmin" style="display:none;">

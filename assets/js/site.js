@@ -21,6 +21,16 @@ $(document).ready(function(){
 		minDate:'0'
 	});
 
+	jQuery.validator.addMethod("notEqual", function(value, element, param) {
+  		var target = $(param);
+			if ( this.settings.onfocusout ) {
+				target.unbind(".validate-equalTo").bind("blur.validate-equalTo", function() {
+					$(element).valid();
+				});
+			}
+		return value.toLowerCase() !== target.val().toLowerCase();
+	}, "Username must be different from Email");
+
 
 
 	if($('#userManageReservation').length){
@@ -200,6 +210,12 @@ $(document).ready(function(){
 		  });
 		});
 		$("#userRegister").validate({
+			rules: {
+			    confirm_inputPassword: {
+			      equalTo: "#inputPassword"
+			    },
+			    username: { notEqual: "#inputEmail" }
+			  },
 			submitHandler:function(form){
 				$.ajax({  
 				  type: "POST",  
@@ -675,7 +691,14 @@ $('body').on('click','#generateReservationReport',function(e){
 			}
 		})
 		
-
+		
+		$('body').on('change','#userLevelAdd',function(e){
+			if($(this).val() !== "1"){
+				$("#petInformationContainer").hide();
+			}else{
+				$("#petInformationContainer").show();
+			}
+		});
 		$('body').on('click','.editUserFromAdmin',function(e){
 			$('#addUsercollpase').collapse('show');
 			var $row = $(this).closest("tr");
@@ -749,6 +772,12 @@ $('body').on('click','#generateReservationReport',function(e){
 			}
 		})
 		$("#addUserAdmin").validate({
+			rules: {
+			    confirm_inputPassword: {
+			      equalTo: "#inputPassword"
+			    },
+			    username: { notEqual: "#inputEmail" }
+			  },
 			submitHandler:function(form){
 				$.ajax({  
 				  type: "POST",  

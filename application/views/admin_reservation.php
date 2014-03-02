@@ -248,6 +248,7 @@
               <?php 
 
               foreach ($reservations as $row){
+                
               $date1 = date('Y-m-d H:i A', strtotime(str_replace('-', '/', ''.$row['reserveDate'].' '.$row['reserveTime'].'')));
               $dateToday =date('Y-m-d H:i A');
               if($date1 > $dateToday && $row['confirmed'] == "0"){

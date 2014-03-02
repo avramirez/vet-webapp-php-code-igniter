@@ -37,7 +37,7 @@
 			  	</div>
 			  	<div class="form-group">
 				    <label for="lastName">Contact Number</label>
-				    <input type="text" class="form-control" name="contactNo" id="contactNo" placeholder="Contact Number" minlength="6" required>
+				    <input type="number" class="form-control" name="contactNo" id="contactNo" placeholder="Contact Number" minlength="6" required>
 			  	</div>
 		  	</div>
 		  	<h3>Pet Information</h3>
@@ -51,7 +51,11 @@
 			  </div>
 			  <div class="form-group">
 			    <label for="petGender">Pet Gender</label>
-			    <input type="text" class="form-control" name="petGender" id="petGender" placeholder="Pet Gender" minlength="4" required>
+			    <select class="form-control" name="petGender" id="petGender" >
+			    	<option value="female">Female</option>
+			    	<option value="male">Male</option>
+			    </select>
+			    <!-- <input type="text" class="form-control" name="petGender" id="petGender" placeholder="Pet Gender" minlength="4" required> -->
 			  </div>
 			  <div class="form-group">
 				    <label for="petHistory">History Description</label>
