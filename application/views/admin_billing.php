@@ -236,7 +236,7 @@
 
       <div style="height:300px; overflow:auto;border: 1px solid rgba(51, 51, 51, 0.17);margin: 5px;">
           <!-- Table -->
-          <table class="table table-hover" id="adminServiceTables">
+          <table class="table table-hover" id="adminPaymentTable">
            
            <thead>
               <tr>
@@ -254,16 +254,16 @@
             </thead>
             <tbody>
               <?php foreach ($payments as $row){
-
+                if($row['active'] != "3"){
                 echo "<tr>";
-                 if($row['active'] == "0"){
+                 if($row['active'] == "1"){
                   echo "<td class='vert batchOrderId'>".$row['batchOrderId']."</td>";  
-                  echo "<td class='vert batchOrderId'>".$row['trackingNo']."</td>";  
-                  echo "<td class='vert batchOrderId'>".$row['center']."</td>";  
-                 }else{
+                  echo "<td class='vert trackingNo'>".$row['trackingNo']."</td>";  
+                  echo "<td class='vert center'>".$row['center']."</td>";  
+                 }else if($row['active'] == "0"){
                   echo "<td class='vert batchOrderId'>".$row['batchOrderId']." (DONE)</td>";
-                  echo "<td class='vert batchOrderId'>".$row['trackingNo']."</td>";
-                  echo "<td class='vert batchOrderId'>".$row['center']."</td>";
+                  echo "<td class='vert trackingNo'>".$row['trackingNo']."</td>";
+                  echo "<td class='vert center'>".$row['center']."</td>";
                  }
                 
                 echo "<td class='vert usersId' style='text-align:right;'>
@@ -271,10 +271,12 @@
                 if($row['active'] == "1"){
                 echo "<span class='btn btn-success processOrderAdmin' style='margin-right:10px;'>Process Order</span>";   
                 }
-                echo"<span class='btn btn-danger'>Delete</span>
+                echo" <input type='hidden' name='batchOrderIdDelete' class='batchOrderIdDelete' value='".$row['batchOrderId']."' >
+                <span class='btn btn-danger deleteOrderAdmin'>Delete</span>
                       </td>";
                 echo "</tr>";
 
+                }
                 }
               ?>
             </tbody>

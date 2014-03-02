@@ -677,10 +677,10 @@
 
 				$batchId = $this->db->query("SELECT * from users_order 
 					WHERE usersId='".$userId."' 
-					GROUP BY batchOrderId");
+					AND batchOrderId IS NOT NULL GROUP BY batchOrderId");
 
 				
-				$orderBatchNumber =$batchId->num_rows();
+				$orderBatchNumber =$batchId->num_rows() +1;
 
 				$addBatchNumber=$this->db->query("UPDATE users_order SET batchOrderId =".$orderBatchNumber." 
 					WHERE usersId=".$userId." 

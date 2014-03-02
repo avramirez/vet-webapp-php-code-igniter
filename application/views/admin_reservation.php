@@ -66,6 +66,7 @@
                                     </select>
 
                                     <input type="email" class="form-control" name="reservationUserEmail" id="reservationUserEmail" placeholder="User Email" required>
+                                     <h5>Pet Name: <span class="petName"></span></h5>
                                     <h5>Date: <span class="reserveDate"></span></h5>
                                     <h5>Time: <span class="reserveTime"></span></h5>
                                   </div>

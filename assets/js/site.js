@@ -402,7 +402,8 @@ $('body').on('click','#generateReservationReport',function(e){
 		  },
 		  url:"checkEmailExist",
 		  success:function(data,status,jQxr){
-		  
+		  	console.log(data);
+		  	$(".petName").text(data);
 		  },
 		  statusCode:{
 			  	400:function(){
@@ -600,6 +601,33 @@ $('body').on('click','#generateReservationReport',function(e){
 					$('#confirmationModal .modal-body').html(data);
 					$('#confirmationModal .modal-title').text('Process Order')
 					$('#confirmationModal').modal();
+				}
+			});
+
+		});
+
+		$('body').on('click','.deleteOrderAdmin',function(e){
+			console.log("sss");
+			var $row = $(this).closest('tr');
+			$.ajax({
+				method:"POST",
+				url:'deleteAdminOrder',
+				data:{
+					batchOrderId:$row.find('input.batchOrderIdDelete').val(),
+					usersId:$row.find('input.usersId').val()
+				},
+				success:function(data,status,jqXHR){
+					$(".addOrderSuccess strong").text("Delete Succes!");
+					$(".addOrderSuccess").show();
+					$.ajax({
+						method:"POST",
+						url:document.URL,
+						success:function(data,status,jqXHR){
+							$("#adminPaymentTable").html($(data).find("#adminPaymentTable").html());
+							$("#adminPaymentTable").html($(data).find("#adminPaymentTable").html());
+							
+						}
+					});
 				}
 			});
 
@@ -961,7 +989,7 @@ $('body').on('click','#generateReservationReport',function(e){
 						'trackingNo':$("#trackingNo").val()
 					},
 					success:function(data,status,jqXHR){
-						$('.cartSuccess strong').text("Transaction successful!");
+						$('.cartSuccess strong').text("Payment Details sent to the admin for confirmation.");
 						$('.cartSuccess').show();
 						$.ajax({
 							url:document.URL,

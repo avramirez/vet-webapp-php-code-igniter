@@ -232,7 +232,11 @@
 				$surgery = $this->db->query("SELECT * FROM services WHERE active=3;");
 				$billingData['surgerys'] = $surgery->result_array();
 
-				$payment = $this->db->query("SELECT * FROM users_order WHERE trackingNo IS NOT NULL GROUP BY batchOrderId;");
+				$payment = $this->db->query("SELECT batchOrderId,usersId,active,trackingNo,center from users_order 
+						WHERE batchOrderId IS NOT NULL 
+						AND trackingNo IS NOT NULL
+						GROUP BY batchOrderId 
+						ORDER BY orderDate DESC;");
 				$billingData['payments'] = $payment->result_array();
 
 				$data['content_body'] = $this->load->view('admin_billing',$billingData,true);
@@ -482,7 +486,23 @@
 				redirect("/");
 			}
 		}
-
+		public function deleteAdminOrder(){
+			if($this->session->userdata('admin_objectId')){
+				$usersId = $this->input->post('usersId');
+				$batchOrderId = $this->input->post('batchOrderId');
+				
+				$updateActive=$this->db->query("UPDATE users_order SET active=3,batchOrderId=NULL 
+					WHERE usersId=".$usersId." AND batchOrderId = ".$batchOrderId.";");	
+				if ($this->db->affected_rows() > 0)
+				{
+					set_status_header((int)200);
+				}else{
+					set_status_header((int)400);
+				}
+			}else{
+				redirect("/");
+			}
+		}
 		public function processOrder(){
 			if($this->session->userdata('admin_objectId')){
 				$usersId = $this->input->post('usersId');
@@ -519,12 +539,18 @@
 				$userId =$this->input->post('usersId');
 				
 
+				
+
 				$batchId = $this->db->query("SELECT * from users_order 
 					WHERE usersId='".$userId."' 
-					GROUP BY batchOrderId");
+					AND batchOrderId IS NOT NULL GROUP BY batchOrderId");
 
 				
 				$batchOrderId =$batchId->num_rows();
+
+				 // $this->output->append_output("SELECT * from users_order 
+					// WHERE usersId='".$userId."' 
+					// AND batchOrderId IS NOT NULL GROUP BY batchOrderId");
 
 				$query = $this->db->query("SELECT uo.objectId as orderObjectid, 
 					prod.objectId as productObjectId, 
@@ -790,9 +816,20 @@
 		public function checkEmailExist(){
 			$inputEmail = $this->input->post("userEmailCheck");
 			$query=$this->db->query("SELECT  * FROM users where email='".$inputEmail."'");
-			
+			$row = $query->row();
 			if($query->num_rows() > 0){
+
 			 //$datauser['userobject']=$query->result_array();
+			
+			if($row->user_level==1){
+				$queryPet=$this->db->query("SELECT * from pets where userId='".$row->objectId."'");
+				if($queryPet->num_rows() > 0){
+					$pet = $queryPet->row();
+					$this->output->append_output($pet->petName);
+				}
+				
+			}
+			
 			 set_status_header((int)200);
 			}else{
 			 set_status_header((int)400);
