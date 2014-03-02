@@ -903,12 +903,42 @@
 			$userLevel = $this->input->post("userLevel");
 
 
+			$address = $this->input->post("address");
+			$contactNo = $this->input->post("contactNo");
+			$petName = $this->input->post("petName");
+			$petType = $this->input->post("petType");
+			$petGender =  $this->input->post("petGender");
+			$petHistory = $this->input->post("petHistory");
+
+
 			if($inputEmail){
-				$query = $this->db->query("INSERT INTO `vet_app`.`users` VALUES (NULL,'".$username."', '".$inputPassword."', '".$firstName."', '".$lastName."','".$inputEmail."',".$userLevel.",NULL);");
+				
+				
+
+				// $query = $this->db->query("INSERT INTO `vet_app`.`users` VALUES (NULL,'".$username."', '".$inputPassword."', '".$firstName."', '".$lastName."','".$inputEmail."',".$userLevel.",NULL);");
+				
+				$query = $this->db->query("INSERT INTO `vet_app`.`users` VALUES (NULL,'".$username."', '".$inputPassword."', '".$firstName."', '".$lastName."','".$inputEmail."',".$userLevel.",NULL,'".$address."','".$contactNo."');");
+				
+				
 
 				if ($this->db->affected_rows() > 0)
 				{
-					set_status_header((int)200);
+					if($userLevel == 1){
+						$queryEmail= $this->db->query("SELECT objectId FROM users WHERE email ='".$inputEmail."'");
+						$row = $queryEmail->row();		
+						$query2 = $this->db->query("INSERT INTO pets VALUES(NULL,'".$petName."','".$petType."','".$petGender."','".$petHistory."', '".$row->objectId."');");
+						if ($this->db->affected_rows() > 0){
+							set_status_header((int)200);
+						}else{
+							set_status_header((int)400);
+						}
+					}else{
+						set_status_header((int)200);
+					}
+				
+
+					
+
 				}else{
 					set_status_header((int)400);
 				}
@@ -929,7 +959,7 @@
 
 
 			if($inputEmail){
-				$query = $this->db->query("UPDATE vet_app.users SET username='".$username."',first_name ='".$firstName."',last_name='".$lastName."', email='".$inputEmail."',user_level=".$userLevel." WHERE objectId='".$userObjectIdUpdate."';");
+				$query = $this->db->query("UPDATE users SET username='".$username."',first_name ='".$firstName."',last_name='".$lastName."', email='".$inputEmail."',user_level=".$userLevel." WHERE objectId='".$userObjectIdUpdate."';");
 
 				if ($this->db->affected_rows() > 0)
 				{
@@ -944,7 +974,8 @@
 
 		public function deleteUser(){
 			$userObjectId=$this->input->post("userObjectId");
-			$query = $this->db->query("DELETE FROM vet_app.users WHERE users.objectId = ".$userObjectId.";");
+			$deletePetUser = $this->db->query("DELETE FROM pets WHERE userId = ".$userObjectId.";");
+			$query = $this->db->query("DELETE FROM users WHERE users.objectId = ".$userObjectId.";");
 
 				if ($this->db->affected_rows() > 0)
 				{
