@@ -623,7 +623,7 @@ $('body').on('click','#generateReservationReport',function(e){
 						method:"POST",
 						url:document.URL,
 						success:function(data,status,jqXHR){
-							$("#adminPaymentTable").html($(data).find("#adminPaymentTable").html());
+							$("#adminOrderTable").html($(data).find("#adminOrderTable").html());
 							$("#adminPaymentTable").html($(data).find("#adminPaymentTable").html());
 							
 						}

@@ -253,6 +253,82 @@
 			}
 		}
 
+
+		public function billingmerge()
+		{
+			if($this->session->userdata('admin_objectId')){
+				$arrayAllowed=array(3,4);
+				$this->checkAllowed($arrayAllowed);
+				
+				$navbarData['userLevel'] = $this->session->userdata('user_level');
+
+				$data['stylesheets'] =array('jumbotron-narrow.css');
+				$data['show_navbar'] ="true";
+				$data['content_navbar'] = $this->load->view('admin_navbar',$navbarData,true);
+
+				$customer = $this->db->query("SELECT * FROM users WHERE user_level=1;");
+				$billingData['customers'] = $customer->result_array();
+
+				$doc = $this->db->query("SELECT * FROM doctors");
+				$billingData['docs'] = $doc->result_array();
+
+				$surgery = $this->db->query("SELECT * FROM services WHERE active=3;");
+				$billingData['surgerys'] = $surgery->result_array();
+
+				$payment = $this->db->query("SELECT batchOrderId,usersId,active,trackingNo,center from users_order 
+						WHERE batchOrderId IS NOT NULL 
+						AND trackingNo IS NOT NULL
+						GROUP BY batchOrderId 
+						ORDER BY orderDate DESC;");
+				$billingData['payments'] = $payment->result_array();
+
+
+				$query = $this->db->query("SELECT batchOrderId,usersId,active from users_order 
+						WHERE batchOrderId IS NOT NULL
+						GROUP BY batchOrderId 
+						ORDER BY orderDate DESC;");
+
+				$ordersData['list_of_orders'] = $query->result_array();
+
+				$billingData['order_table'] = $this->load->view('admin_order_table',$ordersData,true);
+
+
+$query = $this->db->query("SELECT 
+					ur.objectId as reservationobjectId,
+					svs.objectId as serviceObjectId,
+					u.objectId as usersObjectId,
+					u.username,
+					u.email,
+					u.first_name,
+					u.last_name,
+					svs.service_name,
+					ur.reserveDate,
+					ur.reserveTime,
+					svs.price,
+					ur.confirmed,
+					ur.timestamp
+					FROM users_reservation ur 
+					INNER JOIN services svs ON ur.serviceId = svs.objectId 
+					INNER JOIN users u ON ur.userId = u.objectId 
+					ORDER BY ur.reserveDateTime DESC;");
+
+				$services = $this->db->query("SELECT * FROM services where active=1;");	
+
+				$usersData['reservations'] = $query->result_array();
+				$billingData['serviceslist'] = $services->result_array();
+
+				
+
+
+				$data['content_body'] = $this->load->view('admin_billing_merge_all',$billingData,true);
+				
+				$this->load->view("layout",$data);
+
+			}else{
+				redirect("/");
+			}
+		}
+
 		public function generateBilling(){
 			if($this->session->userdata('admin_objectId')){
 				$this->load->helper(array('dompdf', 'file'));
@@ -454,6 +530,39 @@
 				redirect("/");
 			}
 		}
+
+
+		public function userorderembed(){
+			
+
+			if($this->session->userdata('admin_objectId')){
+				$arrayAllowed=array(4);
+				$this->checkAllowed($arrayAllowed);
+				
+				$navbarData['userLevel'] = $this->session->userdata('user_level');
+
+				$data['stylesheets'] =array('jumbotron-narrow.css');
+				$data['show_navbar'] ="true";
+				$data['content_navbar'] = $this->load->view('admin_navbar',$navbarData,true);
+
+				$query = $this->db->query("SELECT batchOrderId,usersId,active from users_order 
+						WHERE batchOrderId IS NOT NULL
+						GROUP BY batchOrderId 
+						ORDER BY orderDate DESC;");
+
+				$ordersData['list_of_orders'] = $query->result_array();
+				$tableOrder['order_table'] = $this->load->view('admin_order_table',$ordersData,true);
+
+
+				$data['content_body'] = $this->load->view('admin_order_embed',$tableOrder,true);
+				
+				$this->load->view("layout_embed",$data);
+
+			}else{
+				redirect("/");
+			}
+		}
+
 
 		public function searchUserOrder(){
 			if($this->session->userdata('admin_objectId')){
@@ -690,6 +799,52 @@
 				$data['content_body'] = $this->load->view('admin_reservation',$usersData,true);
 				
 				$this->load->view("layout",$data);
+
+			}else{
+				redirect("/");
+			}
+		}
+
+
+		public function manageReservationembed(){
+			if($this->session->userdata('admin_objectId')){
+
+				$arrayAllowed=array(3);
+				$this->checkAllowed($arrayAllowed);
+				
+				$navbarData['userLevel'] = $this->session->userdata('user_level');
+
+				$data['stylesheets'] =array('jumbotron-narrow.css');
+				$data['show_navbar'] ="true";
+				$data['content_navbar'] = $this->load->view('admin_navbar',$navbarData,true);
+
+				$query = $this->db->query("SELECT 
+					ur.objectId as reservationobjectId,
+					svs.objectId as serviceObjectId,
+					u.objectId as usersObjectId,
+					u.username,
+					u.email,
+					u.first_name,
+					u.last_name,
+					svs.service_name,
+					ur.reserveDate,
+					ur.reserveTime,
+					svs.price,
+					ur.confirmed,
+					ur.timestamp
+					FROM users_reservation ur 
+					INNER JOIN services svs ON ur.serviceId = svs.objectId 
+					INNER JOIN users u ON ur.userId = u.objectId 
+					ORDER BY ur.reserveDateTime DESC;");
+
+				$services = $this->db->query("SELECT * FROM services where active=1;");	
+
+				$usersData['reservations'] = $query->result_array();
+				$usersData['serviceslist'] = $services->result_array();
+
+				$data['content_body'] = $this->load->view('admin_reservation_embed',$usersData,true);
+				
+				$this->load->view("layout_embed",$data);
 
 			}else{
 				redirect("/");
