@@ -11,7 +11,7 @@
 			if($this->session->userdata('user_objectId')){
 
 				$userId = $this->session->userdata('user_objectId');
-				$checkActiveReservation = $this->db->query("SELECT * from vet_app.users_reservation
+				$checkActiveReservation = $this->db->query("SELECT * from users_reservation
 					WHERE userId='".$userId."' 
 					AND confirmed = 2;");
 				$num = $checkActiveReservation->num_rows(); 
@@ -54,7 +54,7 @@
 			if($this->session->userdata('user_objectId')){
 
 				$userId = $this->session->userdata('user_objectId');
-				$checkActiveReservation = $this->db->query("SELECT * from vet_app.users_reservation
+				$checkActiveReservation = $this->db->query("SELECT * from users_reservation
 					WHERE userId='".$userId."' 
 					AND confirmed = 2;");
 				$num = $checkActiveReservation->num_rows(); 
@@ -112,7 +112,7 @@
 					$this->session->set_userdata('user_level',''.$row->user_level.'');
 				}
 				
-				  	$auditLog=$this->db->query("INSERT INTO `vet_app`.`audit_trail`
+				  	$auditLog=$this->db->query("INSERT INTO audit_trail 
 											(`objectId`,
 											`description`,
 											`time`,
@@ -157,7 +157,7 @@
 			if($this->session->userdata('user_objectId')){
 			
 			$userId = $this->session->userdata('user_objectId');
-				$checkActiveReservation = $this->db->query("SELECT * from vet_app.users_reservation
+				$checkActiveReservation = $this->db->query("SELECT * from users_reservation
 					WHERE userId='".$userId."' 
 					AND confirmed = 2;");
 				$num = $checkActiveReservation->num_rows(); 
@@ -177,7 +177,7 @@
 			$doctorsId = $this->input->post("doctorsId");
 
 				$query = $this->db->query("INSERT INTO 
-					`vet_app`.`users_reservation`(objectId,
+					 users_reservation(objectId,
 						serviceId,
 						userId,
 						reserveDate,
@@ -195,7 +195,7 @@
 
 				if ($this->db->affected_rows() > 0)
 				{
-					$auditLog=$this->db->query("INSERT INTO `vet_app`.`audit_trail`
+					$auditLog=$this->db->query("INSERT INTO audit_trail 
 										(`objectId`,
 										`description`,
 										`time`,
@@ -223,7 +223,7 @@
 			$userId = $this->session->userdata('user_objectId');
 			$doctorsId = $this->input->post("doctorsId");
 	
-				$query = $this->db->query("UPDATE  vet_app.users_reservation 
+				$query = $this->db->query("UPDATE  users_reservation 
 					SET  reserveDate= '".$reserveDate."',
 					reserveTime='".$reserveTime."',
 					reserveDateTime='".$reserveDateTime."', doctorsId=".$doctorsId."   
@@ -231,7 +231,7 @@
 
 				if ($this->db->affected_rows() > 0)
 				{
-					$auditLog=$this->db->query("INSERT INTO `vet_app`.`audit_trail`
+					$auditLog=$this->db->query("INSERT INTO audit_trail 
 										(`objectId`,
 										`description`,
 										`time`,
@@ -280,11 +280,11 @@
 			if($this->session->userdata('user_objectId')){
 				$serviceId =$this->input->post("serviceId");
 
-				$query = $this->db->query("DELETE FROM vet_app.users_reservation WHERE users_reservation.objectId = ".$serviceId.";");
+				$query = $this->db->query("DELETE FROM users_reservation WHERE users_reservation.objectId = ".$serviceId.";");
 
 				if ($this->db->affected_rows() > 0)
 				{
-					$auditLog=$this->db->query("INSERT INTO `vet_app`.`audit_trail`
+					$auditLog=$this->db->query("INSERT INTO audit_trail 
 										(`objectId`,
 										`description`,
 										`time`,
@@ -347,7 +347,7 @@
 		// 		$sortType = $this->input->post('productType');
 
 
-		// 		$checkActiveorders = $this->db->query("SELECT * from vet_app.users_order 
+		// 		$checkActiveorders = $this->db->query("SELECT * from users_order 
 		// 			WHERE usersId='".$userId."' 
 		// 			AND batchOrderId IS NOT NULL 
 		// 			AND active=1;");
@@ -382,7 +382,7 @@
 				$userId = $this->session->userdata('user_objectId');
 
 
-				$checkActiveorders = $this->db->query("SELECT * from vet_app.users_order 
+				$checkActiveorders = $this->db->query("SELECT * from users_order 
 					WHERE usersId='".$userId."' 
 					AND batchOrderId IS NOT NULL 
 					AND active=1;");
@@ -417,7 +417,7 @@
 				$userId = $this->session->userdata('user_objectId');
 
 
-				$checkActiveorders = $this->db->query("SELECT * from vet_app.users_order 
+				$checkActiveorders = $this->db->query("SELECT * from users_order 
 					WHERE usersId='".$userId."' 
 					AND batchOrderId IS NOT NULL 
 					AND active=1;");
@@ -458,7 +458,7 @@
 				date_default_timezone_set('Asia/Manila');
 				$orderDate = $dateToday =date('Y-m-d H:i:s');
 
-				$query = $this->db->query("INSERT INTO `vet_app`.`users_order` 
+				$query = $this->db->query("INSERT INTO users_order  
 					VALUES (NULL,
 						'".$productId."',
 						'".$userId."',
@@ -469,11 +469,11 @@
 
 				$newOrderID=$this->db->insert_id();
 
-				$updateProduct = $this->db->simple_query("UPDATE vet_app.products set product_quantity = (CASE WHEN ((product_quantity - ".$productAmount.") < 0) THEN product_quantity ELSE (product_quantity - ".$productAmount.") END) WHERE objectId='".$productId."';");
+				$updateProduct = $this->db->simple_query("UPDATE products set product_quantity = (CASE WHEN ((product_quantity - ".$productAmount.") < 0) THEN product_quantity ELSE (product_quantity - ".$productAmount.") END) WHERE objectId='".$productId."';");
 
 				if ($this->db->affected_rows() > 0 && updateProduct)
 				{
-					$auditLog=$this->db->query("INSERT INTO `vet_app`.`audit_trail`
+					$auditLog=$this->db->query("INSERT INTO audit_trail 
 										(`objectId`,
 										`description`,
 										`time`,
@@ -506,8 +506,8 @@
 				$productId=$this->input->post("productId");
 				$userId = $this->session->userdata('user_objectId');
 	
-				$query = $this->db->query("UPDATE  vet_app.users_order SET  productAmount= '".$newAmount."',totalPrice='".$newTotalPrice."' WHERE users_order.objectId =".$orderObjectId.";");
-				$updateProduct = $this->db->simple_query("UPDATE vet_app.products set 
+				$query = $this->db->query("UPDATE  users_order SET  productAmount= '".$newAmount."',totalPrice='".$newTotalPrice."' WHERE users_order.objectId =".$orderObjectId.";");
+				$updateProduct = $this->db->simple_query("UPDATE products set 
 					product_quantity = (product_quantity + ".$incremental.") 
 					WHERE objectId='".$productId."';");
 
@@ -515,7 +515,7 @@
 
 				if ($this->db->affected_rows() > 0)
 				{
-					$auditLog=$this->db->query("INSERT INTO `vet_app`.`audit_trail`
+					$auditLog=$this->db->query("INSERT INTO audit_trail 
 										(`objectId`,
 										`description`,
 										`time`,
@@ -542,14 +542,14 @@
 				$incremental=$this->input->post("incremental");
 				$productId=$this->input->post("productId");
 
-				$query = $this->db->query("DELETE FROM vet_app.users_order WHERE users_order.objectId = ".$orderObjectid.";");
-				$updateProduct = $this->db->simple_query("UPDATE vet_app.products set 
+				$query = $this->db->query("DELETE FROM users_order WHERE users_order.objectId = ".$orderObjectid.";");
+				$updateProduct = $this->db->simple_query("UPDATE products set 
 					product_quantity = (product_quantity + ".$incremental.") 
 					WHERE objectId='".$productId."';");
 
 				if ($this->db->affected_rows() > 0)
 				{
-					$auditLog=$this->db->query("INSERT INTO `vet_app`.`audit_trail`
+					$auditLog=$this->db->query("INSERT INTO audit_trail 
 										(`objectId`,
 										`description`,
 										`time`,
@@ -591,7 +591,7 @@
 				
 				$userId = $this->session->userdata('user_objectId');
 
-				$checkActiveorders = $this->db->query("SELECT * from vet_app.users_order 
+				$checkActiveorders = $this->db->query("SELECT * from users_order 
 					WHERE usersId='".$userId."' 
 					AND batchOrderId IS NOT NULL 
 					AND active=1;");
@@ -601,11 +601,11 @@
 				{
 					$servicesData['activeOrder'] ="true";
 				}
-				// $updater = $this->db->query("UPDATE vet_app.users_order SET active =0 
+				// $updater = $this->db->query("UPDATE users_order SET active =0 
 				// 	WHERE usersId=".$userId." 
 				// 	AND orderDate <=  DATE_SUB(NOW(), INTERVAL 1 DAY);");
 
-				$deleter = $this->db->query("DELETE FROM  vet_app.users_order WHERE usersId=".$userId." 
+				$deleter = $this->db->query("DELETE FROM  users_order WHERE usersId=".$userId." 
 					AND orderDate <=  DATE_SUB(NOW(), INTERVAL 1 DAY) AND active = 1; ");
 
 				$query = $this->db->query("SELECT uo.objectId as orderObjectid, 
@@ -615,12 +615,12 @@
 					uo.batchOrderId as batchOrderId,
 					prod.product_name,
 					prod.product_price, 
-					(SELECT SUM(uo.totalPrice) from vet_app.users_order uo 
-				 INNER JOIN  vet_app.products prod ON uo.productId = prod.objectId 
+					(SELECT SUM(uo.totalPrice) from users_order uo 
+				 INNER JOIN  products prod ON uo.productId = prod.objectId 
 				 WHERE uo.usersId='".$userId."' AND uo.active =1 
 				 AND uo.orderDate >=  DATE_SUB(NOW(), INTERVAL 1 DAY)) as totalAll 
-				 from vet_app.users_order uo 
-				 INNER JOIN  vet_app.products prod ON uo.productId = prod.objectId 
+				 from users_order uo 
+				 INNER JOIN  products prod ON uo.productId = prod.objectId 
 				 WHERE uo.usersId='".$userId."' 
 				 AND uo.active=1 AND uo.orderDate >=  DATE_SUB(NOW(), INTERVAL 1 DAY)
 				 ORDER BY orderDate DESC 
@@ -688,7 +688,7 @@
 
 				if ($this->db->affected_rows() > 0)
 				{
-					$auditLog=$this->db->query("INSERT INTO `vet_app`.`audit_trail`
+					$auditLog=$this->db->query("INSERT INTO audit_trail
 										(`objectId`,
 										`description`,
 										`time`,
@@ -723,11 +723,11 @@
 					prod.product_name,
 					prod.product_price,
 					uo.batchOrderId, 
-					(SELECT SUM(uo.totalPrice) from vet_app.users_order uo 
+					(SELECT SUM(uo.totalPrice) from users_order uo 
 				 WHERE uo.usersId='".$userId."' AND uo.batchOrderId IS NOT NULL AND uo.active =1) as totalAll 
-				 from vet_app.users_order uo 
-				 INNER JOIN  vet_app.products prod ON uo.productId = prod.objectId 
-				 INNER JOIN  vet_app.users ur ON uo.usersId = ur.objectId 
+				 from users_order uo 
+				 INNER JOIN  products prod ON uo.productId = prod.objectId 
+				 INNER JOIN  users ur ON uo.usersId = ur.objectId 
 				 WHERE uo.usersId='".$userId."' 
 				 AND uo.batchOrderId IS NOT NULL 
 				 AND uo.active =1 

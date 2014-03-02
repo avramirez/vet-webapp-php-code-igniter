@@ -19,7 +19,8 @@
 				}
 		public function index(){
 			if($this->session->userdata('admin_objectId')){
-				$this->checkAllowed([4]);
+				$arrayAllowed=array(4);
+				$this->checkAllowed($arrayAllowed);
 				
 				$navbarData['userLevel'] = $this->session->userdata('user_level');
 
@@ -45,7 +46,7 @@
 				$pprice = $this->input->post('productPrice');
 				$ptype = $this->input->post('productType');
 
-				$query = $this->db->query("INSERT INTO `vet_app`.`products`
+				$query = $this->db->query("INSERT INTO products 
 											(`objectId`,
 											`product_name`,
 											`product_quantity`,
@@ -77,7 +78,7 @@
 			$ptype = $this->input->post('productTypeEdit');
 			$pid = $this->input->post('productIdToEdit');
 
-			$updateActive=$this->db->query("UPDATE `vet_app`.`products`
+			$updateActive=$this->db->query("UPDATE products 
 											SET
 											`product_name` = '".$pname."',
 											`product_quantity` = ".$pqty.",
@@ -90,7 +91,7 @@
 		public function deleteProductAdmin(){
 				$pid = $this->input->post('objectId');
 
-				$query = $this->db->query("DELETE FROM vet_app.products WHERE objectId = ".$pid.";");
+				$query = $this->db->query("DELETE FROM products WHERE objectId = ".$pid.";");
 
 				if ($this->db->affected_rows() > 0)
 				{
@@ -143,7 +144,8 @@
 
 		public function audit(){
 			if($this->session->userdata('admin_objectId')){
-				$this->checkAllowed([3,4]);
+				$arrayAllowed=array(3,4);
+				$this->checkAllowed($arrayAllowed);
 				
 				$navbarData['userLevel'] = $this->session->userdata('user_level');
 
@@ -167,7 +169,8 @@
 		public function manageProducts()
 		{
 			if($this->session->userdata('admin_objectId')){
-				$this->checkAllowed([3,4]);
+				$arrayAllowed=array(3,4);
+				$this->checkAllowed($arrayAllowed);
 				
 				$navbarData['userLevel'] = $this->session->userdata('user_level');
 
@@ -190,7 +193,8 @@
 
 		public function searchAdminProducts(){
 			if($this->session->userdata('admin_objectId')){
-				$this->checkAllowed([3,4]);
+				$arrayAllowed=array(3,4);
+				$this->checkAllowed($arrayAllowed);
 				$inputEmail = $this->input->post('userEmailSearch');
 
 				$navbarData['userLevel'] = $this->session->userdata('user_level');
@@ -215,7 +219,8 @@
 		public function billing()
 		{
 			if($this->session->userdata('admin_objectId')){
-				$this->checkAllowed([3,4]);
+				$arrayAllowed=array(3,4);
+				$this->checkAllowed($arrayAllowed);
 				
 				$navbarData['userLevel'] = $this->session->userdata('user_level');
 
@@ -303,7 +308,8 @@
 		public function sales()
 		{
 			if($this->session->userdata('admin_objectId')){
-				$this->checkAllowed([3,4]);
+				$arrayAllowed=array(3,4);
+				$this->checkAllowed($arrayAllowed);
 				
 				$navbarData['userLevel'] = $this->session->userdata('user_level');
 
@@ -422,7 +428,8 @@
 			
 
 			if($this->session->userdata('admin_objectId')){
-				$this->checkAllowed([4]);
+				$arrayAllowed=array(4);
+				$this->checkAllowed($arrayAllowed);
 				
 				$navbarData['userLevel'] = $this->session->userdata('user_level');
 
@@ -516,8 +523,8 @@
 						uo.totalPrice, 
 						prod.product_name,
 						prod.product_price
-					 from vet_app.users_order uo 
-					 INNER JOIN  vet_app.products prod ON uo.productId = prod.objectId 
+					 from users_order uo 
+					 INNER JOIN  products prod ON uo.productId = prod.objectId 
 					 WHERE uo.usersId='".$usersId."' 
 					 AND uo.batchOrderId='".$batchOrderId."' 
 					 ORDER BY uo.orderDate DESC 
@@ -561,11 +568,11 @@
 					prod.product_name,
 					prod.product_price,
 					uo.batchOrderId, 
-					(SELECT SUM(uo.totalPrice) from vet_app.users_order uo 
+					(SELECT SUM(uo.totalPrice) from users_order uo 
 				 WHERE uo.usersId='".$userId."' AND uo.batchOrderId IS NOT NULL) as totalAll 
-				 from vet_app.users_order uo 
-				 INNER JOIN  vet_app.products prod ON uo.productId = prod.objectId 
-				 INNER JOIN  vet_app.users ur ON uo.usersId = ur.objectId 
+				 from users_order uo 
+				 INNER JOIN  products prod ON uo.productId = prod.objectId 
+				 INNER JOIN  users ur ON uo.usersId = ur.objectId 
 				 WHERE uo.usersId='".$userId."' 
 				 AND uo.batchOrderId='".$batchOrderId."' 
 				 AND uo.batchOrderId IS NOT NULL 
@@ -647,7 +654,8 @@
 		public function manageReservation(){
 			if($this->session->userdata('admin_objectId')){
 
-				$this->checkAllowed([3]);
+				$arrayAllowed=array(3);
+				$this->checkAllowed($arrayAllowed);
 				
 				$navbarData['userLevel'] = $this->session->userdata('user_level');
 
@@ -691,7 +699,8 @@
 		public function searchAdminReservation(){
 			if($this->session->userdata('admin_objectId')){
 
-				$this->checkAllowed([3]);
+				$arrayAllowed=array(3);
+				$this->checkAllowed($arrayAllowed);
 				$inputEmail = $this->input->post('userEmailSearch');
 				
 				$navbarData['userLevel'] = $this->session->userdata('user_level');
@@ -739,7 +748,7 @@
 			if($this->session->userdata('admin_objectId')){
 				$serviceId =$this->input->post("reservationObjecId");
 
-				$query = $this->db->query("DELETE FROM vet_app.users_reservation WHERE users_reservation.objectId = ".$serviceId.";");
+				$query = $this->db->query("DELETE FROM users_reservation WHERE users_reservation.objectId = ".$serviceId.";");
 
 				if ($this->db->affected_rows() > 0)
 				{
@@ -763,7 +772,7 @@
 			
 			$user = $userByEmail->row();
 
-			$query = $this->db->query("INSERT INTO `vet_app`.`users_reservation` 
+			$query = $this->db->query("INSERT INTO users_reservation  
 			VALUES (NULL,'".$serviceId."',
 			'".$user->objectId."',
 			'".$reserveDate."',
@@ -794,7 +803,7 @@
 			
 			$user = $userByEmail->row();
 
-			$query = $this->db->query("UPDATE `vet_app`.`users_reservation` 
+			$query = $this->db->query("UPDATE users_reservation 
 				SET serviceId='".$serviceId."',
 				userId='".$user->objectId."',
 				reserveDate='".$reserveDate."',
@@ -841,7 +850,7 @@
 			$serviceName = $this->input->post("serviceName");
 			$groupName = $this->input->post("groupName");
 			$priceBox = $this->input->post("priceBox");
-			$query = $this->db->query("INSERT INTO `vet_app`.`services` VALUES (NULL,1,'".$serviceName."','".$groupName."','".$priceBox."');");
+			$query = $this->db->query("INSERT INTO services VALUES (NULL,1,'".$serviceName."','".$groupName."','".$priceBox."');");
 
 			if ($this->db->affected_rows() > 0)
 				{
@@ -881,7 +890,8 @@
 
 		public function searchServicesName(){
 			if($this->session->userdata('admin_objectId')){
-				$this->checkAllowed([3,4]);
+				$arrayAllowed=array(3,4);
+				$this->checkAllowed($arrayAllowed);
 				$servicesName = $this->input->post('servicesNameSearch');
 
 				$navbarData['userLevel'] = $this->session->userdata('user_level');
@@ -906,7 +916,8 @@
 		public function manageservice()
 		{
 			if($this->session->userdata('admin_objectId')){
-				$this->checkAllowed([3,4]);
+				$arrayAllowed=array(3,4);
+				$this->checkAllowed($arrayAllowed);
 				$navbarData['userLevel'] = $this->session->userdata('user_level');
 
 				$data['stylesheets'] =array('jumbotron-narrow.css');
@@ -954,7 +965,7 @@
 
 				// $query = $this->db->query("INSERT INTO `vet_app`.`users` VALUES (NULL,'".$username."', '".$inputPassword."', '".$firstName."', '".$lastName."','".$inputEmail."',".$userLevel.",NULL);");
 				
-				$query = $this->db->query("INSERT INTO `vet_app`.`users` VALUES (NULL,'".$username."', '".$inputPassword."', '".$firstName."', '".$lastName."','".$inputEmail."',".$userLevel.",NULL,'".$address."','".$contactNo."');");
+				$query = $this->db->query("INSERT INTO users VALUES (NULL,'".$username."', '".$inputPassword."', '".$firstName."', '".$lastName."','".$inputEmail."',".$userLevel.",NULL,'".$address."','".$contactNo."');");
 				
 				
 
@@ -1028,7 +1039,7 @@
 			$inputPassword = $this->input->post("inputPassword");
 			$inputPassword = $hash = $this->encrypt->sha1($inputPassword);
 
-			$query = $this->db->query("UPDATE vet_app.users 
+			$query = $this->db->query("UPDATE users 
 				SET password = '".$inputPassword."' 
 				WHERE users.objectId = ".$userObjectId.";");
 
