@@ -90,6 +90,8 @@
 		public function signIn(){
 
 		}
+
+		
 		public function postSignIn(){	
 
 			$this->load->library('encrypt');
@@ -152,7 +154,18 @@
 
 			
 		}
-
+		public function getPetName(){
+			if($this->session->userdata('user_objectId')){
+				$userId = $this->session->userdata('user_objectId');
+				$queryPet=$this->db->query("SELECT * from pets where userId='".$userId."'");
+				if($queryPet->num_rows() > 0){
+					$pet = $queryPet->row();
+					$this->output->append_output($pet->petName);
+				}else{
+					$this->output->append_output("");
+				}
+			}
+		}
 		public function addReservation(){
 			if($this->session->userdata('user_objectId')){
 			

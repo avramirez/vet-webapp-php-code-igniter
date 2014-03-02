@@ -122,6 +122,7 @@
                       <h3 class="panel-title">Reservation details</h3>
                     </div>
                     <div class="panel-body" style="padding: 5px 15px;">
+                       <h5>Pet Name: <span class="petNameUser"></span></h5>
                       <h5>Date: <span class="reserveDate"></span></h5>
                       <h5>Time: <span class="reserveTime"></span></h5>
                     </div>

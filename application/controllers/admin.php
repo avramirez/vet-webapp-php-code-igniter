@@ -758,7 +758,14 @@ $query = $this->db->query("SELECT
 				redirect("/");
 			}
 		}
-		
+		public function getAllDoctors()
+		{
+			if($this->session->userdata('admin_objectId')){
+
+				$query = $this->db->query("SELECT * FROM doctors;");
+			return $query->result_array();
+			}
+		}
 		
 		public function manageReservation(){
 			if($this->session->userdata('admin_objectId')){
@@ -795,7 +802,7 @@ $query = $this->db->query("SELECT
 
 				$usersData['reservations'] = $query->result_array();
 				$usersData['serviceslist'] = $services->result_array();
-
+				$usersData['list_of_doctors'] = $this->getAllDoctors();
 				$data['content_body'] = $this->load->view('admin_reservation',$usersData,true);
 				
 				$this->load->view("layout",$data);
@@ -842,6 +849,8 @@ $query = $this->db->query("SELECT
 				$usersData['reservations'] = $query->result_array();
 				$usersData['serviceslist'] = $services->result_array();
 
+				$usersData['list_of_doctors'] = $this->getAllDoctors();
+
 				$data['content_body'] = $this->load->view('admin_reservation_embed',$usersData,true);
 				
 				$this->load->view("layout_embed",$data);
@@ -850,6 +859,8 @@ $query = $this->db->query("SELECT
 				redirect("/");
 			}
 		}
+
+
 
 		public function searchAdminReservation(){
 			if($this->session->userdata('admin_objectId')){
@@ -920,6 +931,7 @@ $query = $this->db->query("SELECT
 			$reserveTime= $this->input->post("reserveTime");
 			$reserveDateTime = date('Y-m-d H:i:s', strtotime(str_replace('-', '/', ''.$reserveDate.' '.$reserveTime.'')));
 			$serviceId =$this->input->post("serviceId");
+			$doctorsId = $this->input->post("doctorsId");
 			
 	 		$inputEmail = $this->input->post("reservationUserEmail");
 	 		
@@ -927,13 +939,30 @@ $query = $this->db->query("SELECT
 			
 			$user = $userByEmail->row();
 
-			$query = $this->db->query("INSERT INTO users_reservation  
-			VALUES (NULL,'".$serviceId."',
-			'".$user->objectId."',
-			'".$reserveDate."',
-			'".$reserveTime."',
-			'".$reserveDateTime."',
-			0,NULL);");
+			// $query = $this->db->query("INSERT INTO users_reservation  
+			// VALUES (NULL,'".$serviceId."',
+			// '".$user->objectId."',
+			// '".$reserveDate."',
+			// '".$reserveTime."',
+			// '".$reserveDateTime."',
+			// 0,NULL);");
+
+			$query = $this->db->query("INSERT INTO 
+					 users_reservation(objectId,
+						serviceId,
+						userId,
+						reserveDate,
+						reserveTime,
+						reserveDateTime,
+						confirmed,
+						doctorsId,
+						timestamp)
+					VALUES (NULL,'".$serviceId."',
+						'".$user->objectId."',
+						'".$reserveDate."',
+						'".$reserveTime."',
+						'".$reserveDateTime."',2,".$doctorsId.",
+						NULL);");
 
 			 	if ($this->db->affected_rows() > 0)
 			 	{

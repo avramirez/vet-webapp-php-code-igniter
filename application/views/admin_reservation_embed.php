@@ -25,6 +25,22 @@
                 </div>
                 <div class="panel-body clearfix">
                  <form action="addReservation" method="POST" id="addReservationAdmin">
+                  <div class="col-md-12">
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h3 class="panel-title">Doctor</h3>
+                    </div>
+                    <div class="panel-body">
+            <select class="form-control reserveDoctorSelect" name="doctorsId">
+                <option>Choose Doctor</option>
+                <?php foreach ($list_of_doctors as $row){
+                  echo "<option value='".$row['objectId']."'>".$row['doctor_name']."</option>";
+                }             
+                ?>
+                </select>
+                    </div>
+                  </div>
+                </div>
                               <div class="col-md-6">
                                 <div id="datepicker" style="margin:0 45px;"></div>
                               </div>

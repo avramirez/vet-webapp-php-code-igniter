@@ -3,6 +3,12 @@ $(document).ready(function(){
 		$("#myModal #myModalLabel").text($(this).parent().parent().children('.serviceTitle').text());
 		$(".submitReservation").attr("data-objectId",$(this).attr("data-objectId"));
 		$("#myModal").modal();
+		$.ajax({
+			url:"user/getPetName",
+			success:function(data){
+				$(".petNameUser").text(data);
+			}
+		});
 	})
 	$('#myModal').on('hidden.bs.modal', function () {
   		resetReservationModal("#myModal");
@@ -507,6 +513,7 @@ $('body').on('click','#generateReservationReport',function(e){
 					$(".reserveTime").html('<label for="reservationUserEmail" class="error">This field is required.</label>');
 				}
 				if($(".reserveDate label").length ==0 && $(".reserveTime label").length ==0){
+					var doctorsId = parseInt($(".reserveDoctorSelect option:selected").val());
 					var serviceId =$('select.adminServicesReservation').val();
 							$.ajax({
 								method:"POST",
@@ -514,9 +521,10 @@ $('body').on('click','#generateReservationReport',function(e){
 								data:{
 									'reserveDate':$(".reserveDate").text(),
 								  	'reserveTime':$(".reserveTime").text(),
-								  	'serviceId':serviceId
+								  	'serviceId':serviceId,
+								  	'doctorsId':doctorsId
 								},
-								url:"/vet-webapp-php-code-igniter/user/checkReservationAvailable",
+								url:"/user/checkReservationAvailable",
 								success:function(data,status,jqXHR){
 														$.ajax({  
 														  type: "POST",  
@@ -526,7 +534,8 @@ $('body').on('click','#generateReservationReport',function(e){
 														  	'reserveTime':$(".reserveTime").text(),
 														  	'serviceId':serviceId,
 														  	'reservationUserEmail':$('#reservationUserEmail').val(),
-														  	'reservationId':$("#reservationId").val()
+														  	'reservationId':$("#reservationId").val(),
+														  	'doctorsId':doctorsId
 														  },
 														  success: function(data,status,jqXHR) {  
 														  	if($('#saveChangesReservation:visible').length){
